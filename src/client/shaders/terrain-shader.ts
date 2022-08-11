@@ -4,6 +4,7 @@ precision highp float;
 uniform mat4 modelMatrix;
 uniform mat4 modelViewMatrix;
 uniform mat4 projectionMatrix;
+uniform int z;
 
 in vec3 position;
 in vec3 normal;
@@ -15,7 +16,7 @@ out vec3 vPosition;
 
 void main(){
     vNormal = normal;
-    vPosition = position.xyz / vec3(4104.0, 1856.0, 500.0);
+    vPosition = position.xyz / vec3(4104.0, 1856.0, float(z));
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
     // vPosition = gl_Position.xyz*vec3(0.5,0.5,0.5) + vec3(0.5,0.5,0.5);
   }
@@ -31,6 +32,7 @@ uniform mat4 modelMatrix;
 uniform mat4 modelViewMatrix;
 uniform vec3 cameraPosition;
 uniform sampler2D diffuseTexture;
+uniform int triPlanar;
 
 in vec3 vNormal;
 in vec3 vPosition;
@@ -45,16 +47,31 @@ vec3 blendNormal(vec3 normal){
 
 vec3 triplanarMapping (sampler2D tex, vec3 normal, vec3 position) {
   vec3 normalBlend = blendNormal(normal);
-  vec3 xColor = texture(tex, position.yz).rgb;
-  vec3 yColor = texture(tex, position.xz).rgb;
-  vec3 zColor = texture(tex, position.xy).rgb;
+  vec2 x = position.zy;
+  vec2 y = position.xz;
+  vec2 z = position.xy;
+  if (normal.x < 0.0) {
+    x.x = -x.x;
+  }
+  if (normal.y < 0.0) {
+    y.x = -y.x;
+  }
+  if (normal.z < 0.0) {
+    z.x = -z.x;
+  }
+  vec3 xColor = texture(tex, x).rgb;
+  vec3 yColor = texture(tex, y).rgb;
+  vec3 zColor = texture(tex, z).rgb;
   return (xColor * normalBlend.x + yColor * normalBlend.y + zColor * normalBlend.z);
 }
 
 void main(){
-    vec3 color = triplanarMapping(diffuseTexture, vNormal, vPosition);
-    // vec3 color = texture(diffuseTexture, vPosition.xy * 1000);
-    // out_FragColor = texture(diffuseTexture, vPosition.yz);
+    vec3 color;
+    if (triPlanar == 0) {
+        color = texture(diffuseTexture, vPosition.xy).rgb;
+    } else {
+        color = triplanarMapping(diffuseTexture, vNormal, vPosition);
+    }
     out_FragColor = vec4(color, 1.0);
   }
 `;
