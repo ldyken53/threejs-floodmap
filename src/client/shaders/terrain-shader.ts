@@ -32,6 +32,7 @@ uniform mat4 modelMatrix;
 uniform mat4 modelViewMatrix;
 uniform vec3 cameraPosition;
 uniform sampler2D diffuseTexture;
+uniform sampler2D annotationTexture;
 uniform int triPlanar;
 
 in vec3 vNormal;
@@ -72,7 +73,8 @@ void main(){
     } else {
         color = triplanarMapping(diffuseTexture, vNormal, vPosition);
     }
-    out_FragColor = vec4(color, 1.0);
-  }
+    vec3 aColor = texture(annotationTexture, vPosition.xy).rgb;
+    out_FragColor = vec4((color + aColor) / 2.0, 1.0);
+}
 `;
 export const terrainShader = { _VS, _FS };

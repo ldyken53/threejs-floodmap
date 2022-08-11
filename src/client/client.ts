@@ -6,9 +6,26 @@ import Stats from 'three/examples/jsm/libs/stats.module'
 import { GUI } from 'dat.gui'
 import { Mesh } from 'three'
 
+
+
+var data : number[] = [];
+async function getElevationData() {
+    const height_data_response = await fetch("./stl/elevation.json");
+  
+    if (!height_data_response.ok) {
+      const message = `An error has occured: ${height_data_response.status}`;
+      throw new Error(message);
+    }
+    data = await height_data_response.json();
+    console.log(data);
+}
+getElevationData();
+
 const scene = new THREE.Scene()
-const blurs = [0, 1, 2];
-const zs = [100, 200, 300, 400, 500];
+// const blurs = [0, 1, 2];
+// const zs = [100, 200, 300, 400, 500];
+const blurs = [0];
+const zs = [100];
 var meshes : {[key:string]: Mesh}= {};
 
 // const light = new THREE.SpotLight()
@@ -34,32 +51,60 @@ document.body.appendChild(renderer.domElement)
 const controls = new OrbitControls(camera, renderer.domElement)
 controls.target = new THREE.Vector3(2000,1000,-2000);
 
-const satelliteTexture = new THREE.TextureLoader().load('./satellite.png');
-// scene.background = satelliteTexture;
+var canvas = document.createElement('canvas');
+canvas.width = 4104;
+canvas.height = 1856;
+var annotationTexture = new THREE.Texture(canvas);
+var context = canvas.getContext('2d');
 
-const uvTexture = new THREE.TextureLoader().load('./img/grid.png');
-// scene.background = uvTexture;
-
-const material = new THREE.MeshStandardMaterial({
-    map: uvTexture,
-});
-
-const boxG = new THREE.BoxGeometry(100, 100, 100);
-const boxM = new THREE.MeshStandardMaterial({
-    map: uvTexture,
-});
-const box = new THREE.Mesh(boxG, boxM);
-// scene.add(box);
 const gui = new GUI();
 var params = {blur: 0, z: 100, triPlanarMapping: 0};
 var uniforms = {
     z: {value: params.z},
     triPlanar: {value: params.triPlanarMapping},
     diffuseTexture: { type: "t", value: new THREE.Texture() },
+    annotationTexture: { type: "t", value: annotationTexture },
 };
 gui.add(params, "blur", 0, 2, 1).onFinishChange(() => {scene.remove(scene.children[0]); scene.add(meshes[`z${params.z}blur${params.blur}`])});
 gui.add(params, "z", 100, 500, 100).onFinishChange(() => {scene.remove(scene.children[0]); uniforms.z.value = params.z; scene.add(meshes[`z${params.z}blur${params.blur}`])});
 gui.add(params, "triPlanarMapping", 0, 1, 1).onFinishChange(() => {uniforms.triPlanar.value = params.triPlanarMapping});
+
+function BFS(point : THREE.Vector3) {
+    context!.fillStyle = "red";
+    var visited = new Map();
+    var x = Math.trunc(point.x);
+    var y = Math.trunc(point.y);
+    visited.set(`${x}, ${y}`, 1);
+    BFS_recursive(x, y);
+    function BFS_recursive(x : number, y : number) {
+        context!.fillRect(x, 1856 - y, 100, 100);
+        console.log(x, y);
+        console.log(data[x + y * 4104]);
+    }
+    annotationTexture.needsUpdate = true;
+    uniforms.annotationTexture.value = annotationTexture;
+}
+
+const pointer = new THREE.Vector2();
+const raycaster = new THREE.Raycaster(); 
+const onMouseMove = (event : MouseEvent) => {
+    // calculate pointer position in normalized device coordinates
+    // (-1 to +1) for both components
+    pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
+    pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
+};
+const onFPress = (event : KeyboardEvent) => {
+    if (event.key == 'f') {
+        console.log(pointer.x, pointer.y);     
+        raycaster.setFromCamera(pointer, camera);
+        const intersects = raycaster.intersectObjects(scene.children);
+    
+        BFS(intersects[0].point);
+    }
+}
+window.addEventListener('mousemove', onMouseMove);
+window.addEventListener('keydown', onFPress);
+
 
 const satelliteLoader = new THREE.TextureLoader();
 satelliteLoader.load(
