@@ -22,10 +22,10 @@ async function getElevationData() {
 getElevationData();
 
 const scene = new THREE.Scene()
-// const blurs = [0, 1, 2];
-// const zs = [100, 200, 300, 400, 500];
-const blurs = [0];
-const zs = [100];
+const blurs = [0, 1, 2];
+const zs = [100, 200, 300, 400, 500];
+// const blurs = [0];
+// const zs = [100];
 var meshes : {[key:string]: Mesh}= {};
 
 // const light = new THREE.SpotLight()
@@ -73,13 +73,37 @@ function BFS(point : THREE.Vector3) {
     context!.fillStyle = "red";
     var visited = new Map();
     var x = Math.trunc(point.x);
-    var y = Math.trunc(point.y);
+    var y = 1856 - Math.ceil(point.y);
     visited.set(`${x}, ${y}`, 1);
     BFS_recursive(x, y);
     function BFS_recursive(x : number, y : number) {
-        context!.fillRect(x, 1856 - y, 100, 100);
-        console.log(x, y);
-        console.log(data[x + y * 4104]);
+        context!.fillRect(x, y, 1, 1);
+        var value = data[x + y * 4104];
+        if (data[(x + 1) + y * 4104] <= value) {
+            if (!visited.get(`${x + 1}, ${y}`)) {
+                visited.set(`${x + 1}, ${y}`, 1);
+                BFS_recursive(x + 1, y);
+            }
+        }
+        if (data[(x - 1) + y * 4104] <= value) {
+            if (!visited.get(`${x - 1}, ${y}`)) {
+                visited.set(`${x - 1}, ${y}`, 1);
+                BFS_recursive(x - 1, y);
+            }
+        }
+        if (data[x + (y + 1) * 4104] <= value) {
+            if (!visited.get(`${x}, ${y + 1}`)) {
+                visited.set(`${x}, ${y + 1}`, 1);
+                BFS_recursive(x, y + 1);
+            }
+        }
+        if (data[x + (y - 1) * 4104] <= value) {
+            if (!visited.get(`${x}, ${y - 1}`)) {
+                visited.set(`${x}, ${y - 1}`, 1);
+                BFS_recursive(x, y - 1);
+            }
+        }
+
     }
     annotationTexture.needsUpdate = true;
     uniforms.annotationTexture.value = annotationTexture;
@@ -95,7 +119,6 @@ const onMouseMove = (event : MouseEvent) => {
 };
 const onFPress = (event : KeyboardEvent) => {
     if (event.key == 'f') {
-        console.log(pointer.x, pointer.y);     
         raycaster.setFromCamera(pointer, camera);
         const intersects = raycaster.intersectObjects(scene.children);
     
