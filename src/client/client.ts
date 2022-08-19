@@ -57,7 +57,7 @@ var annotationTexture = new THREE.Texture(canvas);
 var context = canvas.getContext('2d');
 
 const gui = new GUI();
-var params = {blur: 0, z: 100, triPlanarMapping: 0, minCanny: 50, maxCanny: 100, canny: 0, annotation: 0};
+var params = {blur: 0, z: 100, triPlanarMapping: 0, minCanny: 50, maxCanny: 100, canny: 0, annotation: 1};
 var uniforms = {
     z: {value: params.z},
     triPlanar: {value: params.triPlanarMapping},
@@ -77,12 +77,14 @@ gui.add(params, "minCanny", 50, 500, 10).onFinishChange(() => {
     cv.imshow("streamCanvas", edge);
     edgeTexture = new THREE.CanvasTexture(canvas);
     uniforms.edgeTexture.value = edgeTexture;
+    edgeData = edge.data;
 });
 gui.add(params, "maxCanny", 100, 550, 10).onFinishChange(() => {
     cv.Canny(satSource, edge, params.minCanny, params.maxCanny);
     cv.imshow("streamCanvas", edge);
     edgeTexture = new THREE.CanvasTexture(canvas);
     uniforms.edgeTexture.value = edgeTexture;
+    edgeData = edge.data;
 });
 
 var edgeTexture = new THREE.Texture();
@@ -90,7 +92,7 @@ var canvas = document.getElementById("streamCanvas") as HTMLCanvasElement;
 var ctx = canvas.getContext('2d')!;
 var base_image = new Image();
 base_image.src = 'img/satelliteblur0.png';
-var satSource : Mat, edge : Mat;
+var satSource : Mat, edge : Mat, edgeData : Uint8Array;
 base_image.onload = function(){
   ctx.drawImage(base_image, 0, 0);
   satSource = cv.imread("streamCanvas");
@@ -99,6 +101,7 @@ base_image.onload = function(){
   cv.imshow("streamCanvas", edge);
   edgeTexture = new THREE.CanvasTexture(canvas);
   uniforms.edgeTexture.value = edgeTexture;
+  edgeData = edge.data;
 }
 
 function BFS(point : THREE.Vector3) {
@@ -112,56 +115,57 @@ function BFS(point : THREE.Vector3) {
     while (stack.length > 0) {
         y = stack.pop()!;
         x = stack.pop()!;
+        console.log(edgeData[x + y * 4104]);
         context!.fillRect(x, y, 1, 1);
         var value = data[x + y * 4104];
-        if (data[(x + 1) + y * 4104] <= value) {
+        if (data[(x + 1) + y * 4104] <= value && edgeData[(x + 1) + y * 4104] == 0) {
             if (!visited.get(`${x + 1}, ${y}`)) {
                 visited.set(`${x + 1}, ${y}`, 1);
                 stack.push(x + 1, y);
             }
         }
-        if (data[(x - 1) + y * 4104] <= value) {
+        if (data[(x - 1) + y * 4104] <= value && edgeData[(x - 1) + y * 4104] == 0) {
             if (!visited.get(`${x - 1}, ${y}`)) {
                 visited.set(`${x - 1}, ${y}`, 1);
                 stack.push(x - 1, y);
             }
         }
-        if (data[x + (y + 1) * 4104] <= value) {
+        if (data[x + (y + 1) * 4104] <= value && edgeData[x + (y + 1) * 4104] == 0) {
             if (!visited.get(`${x}, ${y + 1}`)) {
                 visited.set(`${x}, ${y + 1}`, 1);
                 stack.push(x, y + 1);
             }
         }
-        if (data[x + (y - 1) * 4104] <= value) {
+        if (data[x + (y - 1) * 4104] <= value && edgeData[x + (y - 1) * 4104] == 0) {
             if (!visited.get(`${x}, ${y - 1}`)) {
                 visited.set(`${x}, ${y - 1}`, 1);
                 stack.push(x, y - 1);
             }
         }
-        if (data[(x + 1) + (y + 1) * 4104] <= value) {
-            if (!visited.get(`${x + 1}, ${y + 1}`)) {
-                visited.set(`${x + 1}, ${y + 1}`, 1);
-                stack.push(x + 1, y + 1);
-            }
-        }
-        if (data[(x - 1) + (y + 1) * 4104] <= value) {
-            if (!visited.get(`${x - 1}, ${y + 1}`)) {
-                visited.set(`${x - 1}, ${y + 1}`, 1);
-                stack.push(x - 1, y + 1);
-            }
-        }
-        if (data[(x - 1) + (y - 1) * 4104] <= value) {
-            if (!visited.get(`${x - 1}, ${y - 1}`)) {
-                visited.set(`${x - 1}, ${y - 1}`, 1);
-                stack.push(x - 1, y - 1);
-            }
-        }
-        if (data[(x + 1) + (y - 1) * 4104] <= value) {
-            if (!visited.get(`${x + 1}, ${y - 1}`)) {
-                visited.set(`${x + 1}, ${y - 1}`, 1);
-                stack.push(x + 1, y - 1);
-            }
-        }
+        // if (data[(x + 1) + (y + 1) * 4104] <= value && edgeData[(x + 1) + (y + 1) * 4104] == 0) {
+        //     if (!visited.get(`${x + 1}, ${y + 1}`)) {
+        //         visited.set(`${x + 1}, ${y + 1}`, 1);
+        //         stack.push(x + 1, y + 1);
+        //     }
+        // }
+        // if (data[(x - 1) + (y + 1) * 4104] <= value && edgeData[(x - 1) + (y + 1) * 4104] == 0) {
+        //     if (!visited.get(`${x - 1}, ${y + 1}`)) {
+        //         visited.set(`${x - 1}, ${y + 1}`, 1);
+        //         stack.push(x - 1, y + 1);
+        //     }
+        // }
+        // if (data[(x - 1) + (y - 1) * 4104] <= value && edgeData[(x - 1) + (y - 1) * 4104] == 0) {
+        //     if (!visited.get(`${x - 1}, ${y - 1}`)) {
+        //         visited.set(`${x - 1}, ${y - 1}`, 1);
+        //         stack.push(x - 1, y - 1);
+        //     }
+        // }
+        // if (data[(x + 1) + (y - 1) * 4104] <= value && edgeData[(x + 1) + (y - 1) * 4104] == 0) {
+        //     if (!visited.get(`${x + 1}, ${y - 1}`)) {
+        //         visited.set(`${x + 1}, ${y - 1}`, 1);
+        //         stack.push(x + 1, y - 1);
+        //     }
+        // }
 
     }
     annotationTexture.needsUpdate = true;
