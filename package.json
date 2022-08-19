@@ -25,6 +25,7 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
-    "express": "^4.17.3"
+    "express": "^4.17.3",
+    "opencv-ts": "^1.3.6"
   }
 }
