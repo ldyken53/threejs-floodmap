@@ -57,7 +57,7 @@ var annotationTexture = new THREE.Texture(canvas);
 var context = canvas.getContext('2d');
 
 const gui = new GUI();
-var params = {blur: 0, z: 100, triPlanarMapping: 0, minCanny: 50, maxCanny: 100, canny: 0, annotation: 1};
+var params = {blur: 0, z: 100, triPlanarMapping: 0, minCanny: 500, maxCanny: 550, canny: 0, annotation: 1};
 var uniforms = {
     z: {value: params.z},
     triPlanar: {value: params.triPlanarMapping},
@@ -115,63 +115,129 @@ function BFS(point : THREE.Vector3) {
     while (stack.length > 0) {
         y = stack.pop()!;
         x = stack.pop()!;
-        console.log(edgeData[x + y * 4104]);
         context!.fillRect(x, y, 1, 1);
         var value = data[x + y * 4104];
-        if (data[(x + 1) + y * 4104] <= value && edgeData[(x + 1) + y * 4104] == 0) {
+        if (data[(x + 1) + y * 4104] <= value) {
             if (!visited.get(`${x + 1}, ${y}`)) {
                 visited.set(`${x + 1}, ${y}`, 1);
                 stack.push(x + 1, y);
             }
         }
-        if (data[(x - 1) + y * 4104] <= value && edgeData[(x - 1) + y * 4104] == 0) {
+        if (data[(x - 1) + y * 4104] <= value) {
             if (!visited.get(`${x - 1}, ${y}`)) {
                 visited.set(`${x - 1}, ${y}`, 1);
                 stack.push(x - 1, y);
             }
         }
-        if (data[x + (y + 1) * 4104] <= value && edgeData[x + (y + 1) * 4104] == 0) {
+        if (data[x + (y + 1) * 4104] <= value) {
             if (!visited.get(`${x}, ${y + 1}`)) {
                 visited.set(`${x}, ${y + 1}`, 1);
                 stack.push(x, y + 1);
             }
         }
-        if (data[x + (y - 1) * 4104] <= value && edgeData[x + (y - 1) * 4104] == 0) {
+        if (data[x + (y - 1) * 4104] <= value) {
             if (!visited.get(`${x}, ${y - 1}`)) {
                 visited.set(`${x}, ${y - 1}`, 1);
                 stack.push(x, y - 1);
             }
         }
-        // if (data[(x + 1) + (y + 1) * 4104] <= value && edgeData[(x + 1) + (y + 1) * 4104] == 0) {
-        //     if (!visited.get(`${x + 1}, ${y + 1}`)) {
-        //         visited.set(`${x + 1}, ${y + 1}`, 1);
-        //         stack.push(x + 1, y + 1);
-        //     }
-        // }
-        // if (data[(x - 1) + (y + 1) * 4104] <= value && edgeData[(x - 1) + (y + 1) * 4104] == 0) {
-        //     if (!visited.get(`${x - 1}, ${y + 1}`)) {
-        //         visited.set(`${x - 1}, ${y + 1}`, 1);
-        //         stack.push(x - 1, y + 1);
-        //     }
-        // }
-        // if (data[(x - 1) + (y - 1) * 4104] <= value && edgeData[(x - 1) + (y - 1) * 4104] == 0) {
-        //     if (!visited.get(`${x - 1}, ${y - 1}`)) {
-        //         visited.set(`${x - 1}, ${y - 1}`, 1);
-        //         stack.push(x - 1, y - 1);
-        //     }
-        // }
-        // if (data[(x + 1) + (y - 1) * 4104] <= value && edgeData[(x + 1) + (y - 1) * 4104] == 0) {
-        //     if (!visited.get(`${x + 1}, ${y - 1}`)) {
-        //         visited.set(`${x + 1}, ${y - 1}`, 1);
-        //         stack.push(x + 1, y - 1);
-        //     }
-        // }
+        if (data[(x + 1) + (y + 1) * 4104] <= value) {
+            if (!visited.get(`${x + 1}, ${y + 1}`)) {
+                visited.set(`${x + 1}, ${y + 1}`, 1);
+                stack.push(x + 1, y + 1);
+            }
+        }
+        if (data[(x - 1) + (y + 1) * 4104] <= value) {
+            if (!visited.get(`${x - 1}, ${y + 1}`)) {
+                visited.set(`${x - 1}, ${y + 1}`, 1);
+                stack.push(x - 1, y + 1);
+            }
+        }
+        if (data[(x - 1) + (y - 1) * 4104] <= value) {
+            if (!visited.get(`${x - 1}, ${y - 1}`)) {
+                visited.set(`${x - 1}, ${y - 1}`, 1);
+                stack.push(x - 1, y - 1);
+            }
+        }
+        if (data[(x + 1) + (y - 1) * 4104] <= value) {
+            if (!visited.get(`${x + 1}, ${y - 1}`)) {
+                visited.set(`${x + 1}, ${y - 1}`, 1);
+                stack.push(x + 1, y - 1);
+            }
+        }
+
+    }
+    annotationTexture.needsUpdate = true;
+    uniforms.annotationTexture.value = annotationTexture;
+}
+function BFS2(point : THREE.Vector3) {
+    context!.fillStyle = "green";
+    var visited = new Map();
+    var stack = [];
+    var x = Math.trunc(point.x);
+    var y = 1856 - Math.ceil(point.y);
+    visited.set(`${x}, ${y}`, 1);
+    stack.push(x, y);
+    while (stack.length > 0) {
+        y = stack.pop()!;
+        x = stack.pop()!;
+        context!.fillRect(x, y, 1, 1);
+        var value = data[x + y * 4104];
+        if (data[(x + 1) + y * 4104] >= value) {
+            if (!visited.get(`${x + 1}, ${y}`)) {
+                visited.set(`${x + 1}, ${y}`, 1);
+                stack.push(x + 1, y);
+            }
+        }
+        if (data[(x - 1) + y * 4104] >= value) {
+            if (!visited.get(`${x - 1}, ${y}`)) {
+                visited.set(`${x - 1}, ${y}`, 1);
+                stack.push(x - 1, y);
+            }
+        }
+        if (data[x + (y + 1) * 4104] >= value) {
+            if (!visited.get(`${x}, ${y + 1}`)) {
+                visited.set(`${x}, ${y + 1}`, 1);
+                stack.push(x, y + 1);
+            }
+        }
+        if (data[x + (y - 1) * 4104] >= value) {
+            if (!visited.get(`${x}, ${y - 1}`)) {
+                visited.set(`${x}, ${y - 1}`, 1);
+                stack.push(x, y - 1);
+            }
+        }
+        if (data[(x + 1) + (y + 1) * 4104] >= value) {
+            if (!visited.get(`${x + 1}, ${y + 1}`)) {
+                visited.set(`${x + 1}, ${y + 1}`, 1);
+                stack.push(x + 1, y + 1);
+            }
+        }
+        if (data[(x - 1) + (y + 1) * 4104] >= value) {
+            if (!visited.get(`${x - 1}, ${y + 1}`)) {
+                visited.set(`${x - 1}, ${y + 1}`, 1);
+                stack.push(x - 1, y + 1);
+            }
+        }
+        if (data[(x - 1) + (y - 1) * 4104] >= value) {
+            if (!visited.get(`${x - 1}, ${y - 1}`)) {
+                visited.set(`${x - 1}, ${y - 1}`, 1);
+                stack.push(x - 1, y - 1);
+            }
+        }
+        if (data[(x + 1) + (y - 1) * 4104] >= value) {
+            if (!visited.get(`${x + 1}, ${y - 1}`)) {
+                visited.set(`${x + 1}, ${y - 1}`, 1);
+                stack.push(x + 1, y - 1);
+            }
+        }
 
     }
     annotationTexture.needsUpdate = true;
     uniforms.annotationTexture.value = annotationTexture;
 }
 
+var erase = false;
 const pointer = new THREE.Vector2();
 const raycaster = new THREE.Raycaster(); 
 const onMouseMove = (event : MouseEvent) => {
@@ -179,17 +245,68 @@ const onMouseMove = (event : MouseEvent) => {
     // (-1 to +1) for both components
     pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
     pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    if (erase) {
+        // raycaster.setFromCamera(pointer, camera);
+        // const intersects = raycaster.intersectObjects(scene.children);
+        // var point = intersects[0].point;
+        // var x = Math.trunc(point.x);
+        // var y = 1856 - Math.ceil(point.y);
+        // console.log(x, y);
+        // context!.clearRect(x - 2, y - 2, 5, 5);
+        // annotationTexture.needsUpdate = true;
+        // uniforms.annotationTexture.value = annotationTexture; 
+    }
 };
-const onFPress = (event : KeyboardEvent) => {
+const onKeyPress = (event : KeyboardEvent) => {
     if (event.key == 'f') {
         raycaster.setFromCamera(pointer, camera);
         const intersects = raycaster.intersectObjects(scene.children);
     
         BFS(intersects[0].point);
+    } else if (event.key == 'd') {
+        raycaster.setFromCamera(pointer, camera);
+        const intersects = raycaster.intersectObjects(scene.children);
+    
+        BFS2(intersects[0].point);
+    } else if (event.key == 'e') {
+        raycaster.setFromCamera(pointer, camera);
+        const intersects = raycaster.intersectObjects(scene.children);
+        var point = intersects[0].point;
+        var x = Math.trunc(point.x);
+        var y = 1856 - Math.ceil(point.y);
+        context!.clearRect(x - 2, y - 2, 5, 5);
+        annotationTexture.needsUpdate = true;
+        uniforms.annotationTexture.value = annotationTexture;     
+    } else if (event.key == 'r') {
+        raycaster.setFromCamera(pointer, camera);
+        const intersects = raycaster.intersectObjects(scene.children);
+        var point = intersects[0].point;
+        var x = Math.trunc(point.x);
+        var y = 1856 - Math.ceil(point.y);
+        context!.fillStyle = "red";
+        context!.fillRect(x - 2, y - 2, 5, 5);
+        annotationTexture.needsUpdate = true;
+        uniforms.annotationTexture.value = annotationTexture;     
+    } else if (event.key == 't') {
+        raycaster.setFromCamera(pointer, camera);
+        const intersects = raycaster.intersectObjects(scene.children);
+        var point = intersects[0].point;
+        var x = Math.trunc(point.x);
+        var y = 1856 - Math.ceil(point.y);
+        context!.fillStyle = "green";
+        context!.fillRect(x - 2, y - 2, 5, 5);
+        annotationTexture.needsUpdate = true;
+        uniforms.annotationTexture.value = annotationTexture;     
+    }
+}
+const onKeyUp = (event : KeyboardEvent) => {
+    if (event.key == 'e') {
+        erase = false;
     }
 }
 window.addEventListener('mousemove', onMouseMove);
-window.addEventListener('keydown', onFPress);
+window.addEventListener('keydown', onKeyPress);
+window.addEventListener('keyup', onKeyUp);
 
 
 const satelliteLoader = new THREE.TextureLoader();
