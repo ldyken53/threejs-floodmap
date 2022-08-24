@@ -57,7 +57,7 @@ var annotationTexture = new THREE.Texture(canvas);
 var context = canvas.getContext('2d');
 
 const gui = new GUI();
-var params = {blur: 0, z: 100, triPlanarMapping: 0, minCanny: 500, maxCanny: 550, canny: 0, annotation: 1};
+var params = {blur: 0, z: 100, triPlanarMapping: 0, minCanny: 500, maxCanny: 550, canny: 0, annotation: 1, brushSize: 5};
 var uniforms = {
     z: {value: params.z},
     triPlanar: {value: params.triPlanarMapping},
@@ -67,25 +67,31 @@ var uniforms = {
     canny: {value: params.canny},
     annotation: {value: params.annotation}
 };
-gui.add(params, "blur", 0, 2, 1).onFinishChange(() => {scene.remove(scene.children[0]); scene.add(meshes[`z${params.z}blur${params.blur}`])});
-gui.add(params, "z", 100, 500, 100).onFinishChange(() => {scene.remove(scene.children[0]); uniforms.z.value = params.z; scene.add(meshes[`z${params.z}blur${params.blur}`])});
-gui.add(params, "triPlanarMapping", 0, 1, 1).onFinishChange(() => {uniforms.triPlanar.value = params.triPlanarMapping});
-gui.add(params, "canny", 0, 2, 1).onFinishChange(() => {uniforms.canny.value = params.canny});
-gui.add(params, "annotation", 0, 1, 1).onFinishChange(() => {uniforms.annotation.value = params.annotation});
-gui.add(params, "minCanny", 50, 500, 10).onFinishChange(() => { 
+const meshFolder = gui.addFolder("Mesh Settings");
+const viewFolder = gui.addFolder("View Settings");
+const cannyFolder = gui.addFolder("Edge Detection Settings");
+meshFolder.add(params, "blur", 0, 2, 1).onFinishChange(() => {scene.remove(scene.children[0]); scene.add(meshes[`z${params.z}blur${params.blur}`])});
+meshFolder.add(params, "z", 100, 500, 100).onFinishChange(() => {scene.remove(scene.children[0]); uniforms.z.value = params.z; scene.add(meshes[`z${params.z}blur${params.blur}`])});
+viewFolder.add(params, "triPlanarMapping", 0, 1, 1).onFinishChange(() => {uniforms.triPlanar.value = params.triPlanarMapping});
+cannyFolder.add(params, "canny", 0, 2, 1).onFinishChange(() => {uniforms.canny.value = params.canny});
+viewFolder.add(params, "annotation", 0, 1, 1).onFinishChange(() => {uniforms.annotation.value = params.annotation});
+viewFolder.add(params, "brushSize", 1, 50, 1);
+cannyFolder.add(params, "minCanny", 50, 500, 10).onFinishChange(() => { 
     cv.Canny(satSource, edge, params.minCanny, params.maxCanny);
     cv.imshow("streamCanvas", edge);
     edgeTexture = new THREE.CanvasTexture(canvas);
     uniforms.edgeTexture.value = edgeTexture;
     edgeData = edge.data;
 });
-gui.add(params, "maxCanny", 100, 550, 10).onFinishChange(() => {
+cannyFolder.add(params, "maxCanny", 100, 550, 10).onFinishChange(() => {
     cv.Canny(satSource, edge, params.minCanny, params.maxCanny);
     cv.imshow("streamCanvas", edge);
     edgeTexture = new THREE.CanvasTexture(canvas);
     uniforms.edgeTexture.value = edgeTexture;
     edgeData = edge.data;
 });
+viewFolder.open();
+meshFolder.open();
 
 var edgeTexture = new THREE.Texture();
 var canvas = document.getElementById("streamCanvas") as HTMLCanvasElement;
@@ -234,7 +240,7 @@ function BFS2(point : THREE.Vector3) {
 
     }
     annotationTexture.needsUpdate = true;
-    uniforms.annotationTexture.value = annotationTexture;
+    // uniforms.annotationTexture.value = annotationTexture;
 }
 
 var erase = false;
@@ -274,7 +280,7 @@ const onKeyPress = (event : KeyboardEvent) => {
         var point = intersects[0].point;
         var x = Math.trunc(point.x);
         var y = 1856 - Math.ceil(point.y);
-        context!.clearRect(x - 2, y - 2, 5, 5);
+        context!.clearRect(x - Math.floor(params.brushSize / 2), y - Math.floor(params.brushSize / 2), params.brushSize, params.brushSize);
         annotationTexture.needsUpdate = true;
         uniforms.annotationTexture.value = annotationTexture;     
     } else if (event.key == 'r') {
@@ -284,7 +290,7 @@ const onKeyPress = (event : KeyboardEvent) => {
         var x = Math.trunc(point.x);
         var y = 1856 - Math.ceil(point.y);
         context!.fillStyle = "red";
-        context!.fillRect(x - 2, y - 2, 5, 5);
+        context!.fillRect(x - Math.floor(params.brushSize / 2), y - Math.floor(params.brushSize / 2), params.brushSize, params.brushSize);
         annotationTexture.needsUpdate = true;
         uniforms.annotationTexture.value = annotationTexture;     
     } else if (event.key == 't') {
@@ -294,7 +300,7 @@ const onKeyPress = (event : KeyboardEvent) => {
         var x = Math.trunc(point.x);
         var y = 1856 - Math.ceil(point.y);
         context!.fillStyle = "green";
-        context!.fillRect(x - 2, y - 2, 5, 5);
+        context!.fillRect(x - Math.floor(params.brushSize / 2), y - Math.floor(params.brushSize / 2), params.brushSize, params.brushSize);
         annotationTexture.needsUpdate = true;
         uniforms.annotationTexture.value = annotationTexture;     
     }
