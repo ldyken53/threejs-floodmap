@@ -6,20 +6,19 @@ import Stats from 'three/examples/jsm/libs/stats.module'
 import { GUI } from 'dat.gui'
 import { Mesh } from 'three'
 import cv, { Mat } from 'opencv-ts'
-import { floorPowerOfTwo } from 'three/src/math/MathUtils'
 
 var data : number[] = [];
-async function getElevationData() {
-    const height_data_response = await fetch("./stl/elevation.json");
-  
-    if (!height_data_response.ok) {
-      const message = `An error has occured: ${height_data_response.status}`;
-      throw new Error(message);
-    }
-    data = await height_data_response.json();
-    console.log(data);
+var elevImage = new Image();
+elevImage.src = 'img/elevation.png';
+var elevateCanvas = document.getElementById("elevateCanvas") as HTMLCanvasElement;
+var ctx = elevateCanvas.getContext('2d')!;
+elevImage.onload = function(){
+  ctx.drawImage(elevImage, 0, 0);
+  var tempData = Array.from(ctx.getImageData(0, 0, elevImage.width, elevImage.height).data);
+  for (var i = 0; i < tempData.length; i+=4) {
+    data.push(tempData[i]);
+  }
 }
-getElevationData();
 
 const scene = new THREE.Scene()
 // const blurs = [0, 1, 2];
@@ -111,11 +110,12 @@ base_image.onload = function(){
   edgeData = edge.data;
 }
 
+var visitedFlood = new Map();
 function BFS(x : number, y : number) {
     context!.fillStyle = "red";
-    var visited = new Map();
+    // var visited = new Map();
     var stack = [];
-    visited.set(`${x}, ${y}`, 1);
+    visitedFlood.set(`${x}, ${y}`, 1);
     stack.push(x, y);
     while (stack.length > 0) {
         y = stack.pop()!;
@@ -123,60 +123,60 @@ function BFS(x : number, y : number) {
         context!.fillRect(x, y, 1, 1);
         var value = data[x + y * 4104];
         if (data[(x + 1) + y * 4104] <= value) {
-            if (!visited.get(`${x + 1}, ${y}`)) {
-                visited.set(`${x + 1}, ${y}`, 1);
+            if (!visitedFlood.get(`${x + 1}, ${y}`)) {
+                visitedFlood.set(`${x + 1}, ${y}`, 1);
                 stack.push(x + 1, y);
             }
         }
         if (data[(x - 1) + y * 4104] <= value) {
-            if (!visited.get(`${x - 1}, ${y}`)) {
-                visited.set(`${x - 1}, ${y}`, 1);
+            if (!visitedFlood.get(`${x - 1}, ${y}`)) {
+                visitedFlood.set(`${x - 1}, ${y}`, 1);
                 stack.push(x - 1, y);
             }
         }
         if (data[x + (y + 1) * 4104] <= value) {
-            if (!visited.get(`${x}, ${y + 1}`)) {
-                visited.set(`${x}, ${y + 1}`, 1);
+            if (!visitedFlood.get(`${x}, ${y + 1}`)) {
+                visitedFlood.set(`${x}, ${y + 1}`, 1);
                 stack.push(x, y + 1);
             }
         }
         if (data[x + (y - 1) * 4104] <= value) {
-            if (!visited.get(`${x}, ${y - 1}`)) {
-                visited.set(`${x}, ${y - 1}`, 1);
+            if (!visitedFlood.get(`${x}, ${y - 1}`)) {
+                visitedFlood.set(`${x}, ${y - 1}`, 1);
                 stack.push(x, y - 1);
             }
         }
         if (data[(x + 1) + (y + 1) * 4104] <= value) {
-            if (!visited.get(`${x + 1}, ${y + 1}`)) {
-                visited.set(`${x + 1}, ${y + 1}`, 1);
+            if (!visitedFlood.get(`${x + 1}, ${y + 1}`)) {
+                visitedFlood.set(`${x + 1}, ${y + 1}`, 1);
                 stack.push(x + 1, y + 1);
             }
         }
         if (data[(x - 1) + (y + 1) * 4104] <= value) {
-            if (!visited.get(`${x - 1}, ${y + 1}`)) {
-                visited.set(`${x - 1}, ${y + 1}`, 1);
+            if (!visitedFlood.get(`${x - 1}, ${y + 1}`)) {
+                visitedFlood.set(`${x - 1}, ${y + 1}`, 1);
                 stack.push(x - 1, y + 1);
             }
         }
         if (data[(x - 1) + (y - 1) * 4104] <= value) {
-            if (!visited.get(`${x - 1}, ${y - 1}`)) {
-                visited.set(`${x - 1}, ${y - 1}`, 1);
+            if (!visitedFlood.get(`${x - 1}, ${y - 1}`)) {
+                visitedFlood.set(`${x - 1}, ${y - 1}`, 1);
                 stack.push(x - 1, y - 1);
             }
         }
         if (data[(x + 1) + (y - 1) * 4104] <= value) {
-            if (!visited.get(`${x + 1}, ${y - 1}`)) {
-                visited.set(`${x + 1}, ${y - 1}`, 1);
+            if (!visitedFlood.get(`${x + 1}, ${y - 1}`)) {
+                visitedFlood.set(`${x + 1}, ${y - 1}`, 1);
                 stack.push(x + 1, y - 1);
             }
         }
 
     }
     annotationTexture.needsUpdate = true;
-    uniforms.annotationTexture.value = annotationTexture;
+    // uniforms.annotationTexture.value = annotationTexture;
 }
 function BFS2(x : number, y : number) {
-    context!.fillStyle = "green";
+    context!.fillStyle = "blue";
     var visited = new Map();
     var stack = [];
     visited.set(`${x}, ${y}`, 1);
@@ -306,7 +306,7 @@ const onKeyPress = (event : KeyboardEvent) => {
         var point = intersects[0].point;
         var x = Math.trunc(point.x);
         var y = 1856 - Math.ceil(point.y);
-        context!.fillStyle = "green";
+        context!.fillStyle = "blue";
         context!.fillRect(x - Math.floor(params.brushSize / 2), y - Math.floor(params.brushSize / 2), params.brushSize, params.brushSize);
         annotationTexture.needsUpdate = true;
         uniforms.annotationTexture.value = annotationTexture;     
