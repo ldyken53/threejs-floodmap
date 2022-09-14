@@ -6,6 +6,7 @@ import Stats from 'three/examples/jsm/libs/stats.module'
 import { GUI } from 'dat.gui'
 import { Mesh } from 'three'
 import cv, { Mat } from 'opencv-ts'
+import { floorPowerOfTwo } from 'three/src/math/MathUtils'
 
 var data : number[] = [];
 async function getElevationData() {
@@ -21,10 +22,10 @@ async function getElevationData() {
 getElevationData();
 
 const scene = new THREE.Scene()
-const blurs = [0, 1, 2];
-const zs = [100, 200, 300, 400, 500];
-// const blurs = [0];
-// const zs = [100];
+// const blurs = [0, 1, 2];
+// const zs = [100, 200, 300, 400, 500];
+const blurs = [0];
+const zs = [500];
 var meshes : {[key:string]: Mesh}= {};
 
 // const light = new THREE.SpotLight()
@@ -57,7 +58,7 @@ var annotationTexture = new THREE.Texture(canvas);
 var context = canvas.getContext('2d');
 
 const gui = new GUI();
-var params = {blur: 0, z: 100, triPlanarMapping: 0, minCanny: 500, maxCanny: 550, canny: 0, annotation: 1, brushSize: 5};
+var params = {blur: 0, z: 500, triPlanarMapping: 0, minCanny: 500, maxCanny: 550, canny: 0, annotation: 1, brushSize: 5};
 var uniforms = {
     z: {value: params.z},
     triPlanar: {value: params.triPlanarMapping},
@@ -110,12 +111,10 @@ base_image.onload = function(){
   edgeData = edge.data;
 }
 
-function BFS(point : THREE.Vector3) {
+function BFS(x : number, y : number) {
     context!.fillStyle = "red";
     var visited = new Map();
     var stack = [];
-    var x = Math.trunc(point.x);
-    var y = 1856 - Math.ceil(point.y);
     visited.set(`${x}, ${y}`, 1);
     stack.push(x, y);
     while (stack.length > 0) {
@@ -176,12 +175,10 @@ function BFS(point : THREE.Vector3) {
     annotationTexture.needsUpdate = true;
     uniforms.annotationTexture.value = annotationTexture;
 }
-function BFS2(point : THREE.Vector3) {
+function BFS2(x : number, y : number) {
     context!.fillStyle = "green";
     var visited = new Map();
     var stack = [];
-    var x = Math.trunc(point.x);
-    var y = 1856 - Math.ceil(point.y);
     visited.set(`${x}, ${y}`, 1);
     stack.push(x, y);
     while (stack.length > 0) {
@@ -243,6 +240,13 @@ function BFS2(point : THREE.Vector3) {
     // uniforms.annotationTexture.value = annotationTexture;
 }
 
+function fpart(x : number) {
+    return x - Math.floor(x);
+}
+function rfpart(x : number) {
+    return 1 - fpart(x);
+}
+
 var erase = false;
 const pointer = new THREE.Vector2();
 const raycaster = new THREE.Raycaster(); 
@@ -268,13 +272,15 @@ const onKeyPress = (event : KeyboardEvent) => {
     if (event.key == 'f') {
         raycaster.setFromCamera(pointer, camera);
         const intersects = raycaster.intersectObjects(scene.children);
-    
-        BFS(intersects[0].point);
+        var x = Math.trunc(intersects[0].point.x);
+        var y = 1856 - Math.ceil(intersects[0].point.y);
+        BFS(x, y);
     } else if (event.key == 'd') {
         raycaster.setFromCamera(pointer, camera);
         const intersects = raycaster.intersectObjects(scene.children);
-    
-        BFS2(intersects[0].point);
+        var x = Math.trunc(intersects[0].point.x);
+        var y = 1856 - Math.ceil(intersects[0].point.y);
+        BFS2(x, y);
     } else if (event.key == 'e') {
         raycaster.setFromCamera(pointer, camera);
         const intersects = raycaster.intersectObjects(scene.children);
@@ -323,6 +329,75 @@ const onKeyPress = (event : KeyboardEvent) => {
         }
         context!.closePath();
         context!.fill();
+        var linePixels : Array<number> = [];
+        for (var i = 0; i < polyPoints.length; i+=2) {
+            var x0 = polyPoints[i];
+            var y0 = polyPoints[i + 1];
+            var x1, y1;
+            if (i + 2 == polyPoints.length) {
+                x1 = polyPoints[0];
+                y1 = polyPoints[1];
+            } else {
+                x1 = polyPoints[i + 2];
+                y1 = polyPoints[i + 3];
+            }
+            var steep : boolean = Math.abs(y1 - y0) > Math.abs(x1 - x0);
+            if (steep) {
+                [x0, y0] = [y0, x0];
+                [x1, y1] = [y1, x1];
+            }
+            if (x0 > x1) {
+                [x0, x1] = [x1, x0];
+                [y0, y1] = [y1, y0];
+            }
+            var dx = x1 - x0;
+            var dy = y1 - y0;
+            var gradient;
+            if (dx == 0) {
+                gradient = 1;
+            } else {
+                gradient = dy / dx;
+            }
+            var xend = x0;
+            var yend = y0;
+            var xpxl1 = xend;
+            var ypxl1 = yend;
+            if (steep) {
+                linePixels.push(ypxl1, xpxl1);
+                linePixels.push(ypxl1 + 1, xpxl1);
+            } else {
+                linePixels.push(xpxl1, ypxl1);
+                linePixels.push(xpxl1, ypxl1 + 1);
+            }
+            var intery = yend + gradient;
+            xend = x1;
+            yend = y1;
+            var xpxl2 = xend;
+            var ypxl2 = yend;
+            if (steep) {
+                linePixels.push(ypxl2, xpxl2);
+                linePixels.push(ypxl2 + 1, xpxl2);
+            } else {
+                linePixels.push(xpxl2, ypxl2);
+                linePixels.push(xpxl2, ypxl2 + 1);
+            }
+            if (steep) {
+                for (var x = xpxl1 + 1; x < xpxl2; x++) {
+                    linePixels.push(Math.floor(intery), x);
+                    linePixels.push(Math.floor(intery) + 1, x);
+                    intery = intery + gradient;
+                }
+            } else {
+                for (var x = xpxl1 + 1; x < xpxl2; x++) {
+                    linePixels.push(x, Math.floor(intery));
+                    linePixels.push(x, Math.floor(intery) + 1);
+                    intery = intery + gradient;
+                }
+            }
+        }
+        for (var i = 0; i < linePixels.length; i+=2){
+            BFS(linePixels[i], linePixels[i+1]);
+        }
         polyPoints = [];
         annotationTexture.needsUpdate = true;
     }
@@ -362,7 +437,7 @@ satelliteLoader.load(
                     mesh.position.set(0, 0, -100);
                     console.log(mesh);
                     meshes[`z${z}blur${blur}`] = mesh;
-                    if (blur == 0 && z == 100) {
+                    if (blur == 0 && z == 500) {
                         scene.add(mesh);
                         console.log(scene);
                     }
