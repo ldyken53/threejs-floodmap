@@ -263,6 +263,7 @@ const onMouseMove = (event : MouseEvent) => {
         // uniforms.annotationTexture.value = annotationTexture; 
     }
 };
+var polyPoints : Array<number> = [];
 const onKeyPress = (event : KeyboardEvent) => {
     if (event.key == 'f') {
         raycaster.setFromCamera(pointer, camera);
@@ -303,6 +304,27 @@ const onKeyPress = (event : KeyboardEvent) => {
         context!.fillRect(x - Math.floor(params.brushSize / 2), y - Math.floor(params.brushSize / 2), params.brushSize, params.brushSize);
         annotationTexture.needsUpdate = true;
         uniforms.annotationTexture.value = annotationTexture;     
+    } else if (event.key == 'p') {
+        raycaster.setFromCamera(pointer, camera);
+        const intersects = raycaster.intersectObjects(scene.children);
+        var point = intersects[0].point;
+        var x = Math.trunc(point.x);
+        var y = 1856 - Math.ceil(point.y);
+        polyPoints.push(x, y);
+        context!.fillStyle = "red";
+        context!.fillRect(x - 2, y - 2, 4, 4);
+        annotationTexture.needsUpdate = true;
+    } else if (event.key == 'l') {
+        context!.fillStyle = "red";
+        context!.beginPath();
+        context!.moveTo(polyPoints[0], polyPoints[1]);
+        for (var i = 2; i < polyPoints.length; i+=2) {
+            context!.lineTo(polyPoints[i], polyPoints[i+1]);
+        }
+        context!.closePath();
+        context!.fill();
+        polyPoints = [];
+        annotationTexture.needsUpdate = true;
     }
 }
 const onKeyUp = (event : KeyboardEvent) => {
