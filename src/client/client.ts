@@ -108,7 +108,7 @@ meshFolder.add(params, "blur", 0, 2, 1).onFinishChange(() => {scene.remove(scene
 meshFolder.add(params, "z", 100, 500, 100).onFinishChange(() => {scene.remove(scene.children[0]); uniforms.z.value = params.z; scene.add(meshes[`z${params.z}blur${params.blur}`])});
 viewFolder.add(params, "annotation", 0, 1, 1).onFinishChange(() => {uniforms.annotation.value = params.annotation});
 viewFolder.add(params, "pers", 20, 50, 10).onFinishChange(() => {uniforms.segs.value = persToSegs[params.pers]; uniforms.persTexture.value = persTextures[params.pers]});
-viewFolder.add(params, "persShow", 0, 1, 1).onFinishChange(() => {uniforms.persShow.value = params.persShow});
+viewFolder.add(params, "persShow", 0, 3, 1).onFinishChange(() => {uniforms.persShow.value = params.persShow});
 viewFolder.add(params, "brushSize", 1, 50, 1);
 
 viewFolder.open();

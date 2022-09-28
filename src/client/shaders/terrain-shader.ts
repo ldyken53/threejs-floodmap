@@ -4,7 +4,6 @@ precision highp float;
 uniform mat4 modelMatrix;
 uniform mat4 modelViewMatrix;
 uniform mat4 projectionMatrix;
-uniform int z;
 
 in vec3 position;
 in vec3 normal;
@@ -16,7 +15,7 @@ out vec3 vPosition;
 
 void main(){
     vNormal = normal;
-    vPosition = position.xyz / vec3(4104.0, 1856.0, float(z));
+    vPosition = position.xyz;
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
     // vPosition = gl_Position.xyz*vec3(0.5,0.5,0.5) + vec3(0.5,0.5,0.5);
   }
@@ -38,19 +37,38 @@ uniform sampler2D colormap;
 uniform int annotation;
 uniform int persShow;
 uniform int segs;
+uniform int z;
 
 in vec3 vNormal;
 in vec3 vPosition;
 
 out vec4 out_FragColor;
 
+vec4 sampleTexture(sampler2D sampleTex, vec2 coords) {
+  return texture(sampleTex, coords / vec2(4104.0, 1856.0));
+}
+
 void main(){
-    vec3 color = texture(diffuseTexture, vPosition.xy).rgb;
+    vec3 color = sampleTexture(diffuseTexture, vPosition.xy).rgb;
     
-    if (persShow == 1) {
-      color = color + 0.5 * texture(colormap, vec2(texture(persTexture, vPosition.xy).r * (255.0 / float(segs)), 0)).rgb;
+    if (persShow > 0) {
+      float segID = sampleTexture(persTexture, vPosition.xy).r;
+      if (persShow == 1 || persShow == 3) {
+        color = 0.9 * color + 0.1 * texture(colormap, vec2(segID * (255.0 / float(segs)), 0)).rgb;
+      }
+      if (persShow > 1) {
+        const vec2 neighbors[8] = vec2[8](
+          vec2(-1, -1), vec2(-1, 0), vec2(-1, 1), vec2(0, -1), vec2(0, 1), vec2(1, -1), vec2(1, 0), vec2(1, 1)
+        );
+        for (int i = 0; i < 8; i++) {
+          if (abs(sampleTexture(persTexture, vPosition.xy + neighbors[i]).r - segID) > 0.001) {
+            color = texture(colormap, vec2(segID * (255.0 / float(segs)), 0)).rgb;
+            break;
+          }
+        }
+      }
     }
-    
+
     if (annotation == 1) {
         vec3 aColor = texture(annotationTexture, vPosition.xy).rgb;
         out_FragColor = vec4(color + aColor, 1.0);
