@@ -34,9 +34,13 @@ uniform vec3 cameraPosition;
 uniform sampler2D diffuseTexture;
 uniform sampler2D annotationTexture;
 uniform sampler2D edgeTexture;
+uniform sampler2D persTexture;
+uniform sampler2D colormap;
 uniform int triPlanar;
 uniform int canny;
 uniform int annotation;
+uniform int persShow;
+uniform int segs;
 
 in vec3 vNormal;
 in vec3 vPosition;
@@ -69,12 +73,19 @@ vec3 triplanarMapping (sampler2D tex, vec3 normal, vec3 position) {
   return (xColor * normalBlend.x + yColor * normalBlend.y + zColor * normalBlend.z);
 }
 
+float rnd(float i) {
+	return mod(4000.*sin(23464.345*i+45.345),1.);
+}
+
 void main(){
     vec3 color;
     if (triPlanar == 0) {
         color = texture(diffuseTexture, vPosition.xy).rgb;
     } else {
         color = triplanarMapping(diffuseTexture, vNormal, vPosition);
+    }
+    if (persShow == 1) {
+      color = color + 0.5 * texture(colormap, vec2(texture(persTexture, vPosition.xy).r * (255.0 / float(segs)), 0)).rgb;
     }
     if (canny == 1) {
         color = texture(edgeTexture, vPosition.xy).rgb;

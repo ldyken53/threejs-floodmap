@@ -25,8 +25,42 @@ const scene = new THREE.Scene()
 // const zs = [100, 200, 300, 400, 500];
 const blurs = [0];
 const zs = [500];
+const pers = [20, 30, 40, 50];
 var meshes : {[key:string]: Mesh}= {};
 
+var persToSegs : {[key: number]: number}= {
+    20: 242,
+    30: 116,
+    40: 56,
+    50: 34
+};
+const persLoader = new THREE.TextureLoader();
+var persTextures : {[key: number]: THREE.Texture} = { };
+pers.forEach((thresh) => {
+    persLoader.load(
+        `./img/pers${thresh}.png`,
+        function (texture) {
+          persTextures[thresh] = texture;
+          if (thresh == 20) {
+            uniforms.persTexture.value = texture;
+          }
+        },
+        undefined,
+        function (err) {
+          console.error("An error happened.");
+        }
+      );
+});
+persLoader.load(
+    "./img/rainbow.png",
+    function (texture) {
+        uniforms.colormap.value = texture;
+      },
+      undefined,
+      function (err) {
+        console.error("An error happened.");
+      }
+);
 // const light = new THREE.SpotLight()
 // light.position.set(4000, 4000, 20)
 // scene.add(light)
@@ -57,15 +91,20 @@ var annotationTexture = new THREE.Texture(canvas);
 var context = canvas.getContext('2d');
 
 const gui = new GUI();
-var params = {blur: 0, z: 500, triPlanarMapping: 0, minCanny: 500, maxCanny: 550, canny: 0, annotation: 1, brushSize: 5};
+var params = {blur: 0, z: 500, triPlanarMapping: 0, minCanny: 500, maxCanny: 550, canny: 0, annotation: 1, brushSize: 5, pers: 20, persShow: 0};
 var uniforms = {
     z: {value: params.z},
     triPlanar: {value: params.triPlanarMapping},
     diffuseTexture: { type: "t", value: new THREE.Texture() },
     annotationTexture: { type: "t", value: annotationTexture },
-    edgeTexture: {type: "t", value: new THREE.Texture() },
+    persTexture: { type: "t", value: new THREE.Texture() },
+    edgeTexture: { type: "t", value: new THREE.Texture() },
+    colormap: { type: "t", value: new THREE.Texture() },
     canny: {value: params.canny},
-    annotation: {value: params.annotation}
+    pers: {value: params.pers},
+    segs: {value: persToSegs[params.pers]},
+    annotation: {value: params.annotation},
+    persShow: {value: params.persShow}
 };
 const meshFolder = gui.addFolder("Mesh Settings");
 const viewFolder = gui.addFolder("View Settings");
@@ -75,6 +114,8 @@ meshFolder.add(params, "z", 100, 500, 100).onFinishChange(() => {scene.remove(sc
 viewFolder.add(params, "triPlanarMapping", 0, 1, 1).onFinishChange(() => {uniforms.triPlanar.value = params.triPlanarMapping});
 cannyFolder.add(params, "canny", 0, 2, 1).onFinishChange(() => {uniforms.canny.value = params.canny});
 viewFolder.add(params, "annotation", 0, 1, 1).onFinishChange(() => {uniforms.annotation.value = params.annotation});
+viewFolder.add(params, "pers", 20, 50, 10).onFinishChange(() => {uniforms.segs.value = persToSegs[params.pers]; uniforms.persTexture.value = persTextures[params.pers]});
+viewFolder.add(params, "persShow", 0, 1, 1).onFinishChange(() => {uniforms.persShow.value = params.persShow});
 viewFolder.add(params, "brushSize", 1, 50, 1);
 cannyFolder.add(params, "minCanny", 50, 500, 10).onFinishChange(() => { 
     cv.Canny(satSource, edge, params.minCanny, params.maxCanny);
