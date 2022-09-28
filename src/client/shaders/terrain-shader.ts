@@ -57,8 +57,11 @@ void main(){
         color = 0.9 * color + 0.1 * texture(colormap, vec2(segID * (255.0 / float(segs)), 0)).rgb;
       }
       if (persShow > 1) {
-        const vec2 neighbors[8] = vec2[8](
-          vec2(-1, -1), vec2(-1, 0), vec2(-1, 1), vec2(0, -1), vec2(0, 1), vec2(1, -1), vec2(1, 0), vec2(1, 1)
+        const vec2 neighbors[4] = vec2[4](
+          // Diagonal neighbors
+          // vec2(-1, -1), vec2(1, -1), vec2(1, 1),vec2(-1, 1), 
+          // Cross neighbors
+          vec2(-1, 0), vec2(0, -1), vec2(0, 1), vec2(1, 0)
         );
         for (int i = 0; i < 8; i++) {
           if (abs(sampleTexture(persTexture, vPosition.xy + neighbors[i]).r - segID) > 0.001) {
@@ -70,7 +73,7 @@ void main(){
     }
 
     if (annotation == 1) {
-        vec3 aColor = texture(annotationTexture, vPosition.xy).rgb;
+        vec3 aColor = sampleTexture(annotationTexture, vPosition.xy).rgb;
         out_FragColor = vec4(color + aColor, 1.0);
     } else {
         out_FragColor = vec4(color, 1.0);

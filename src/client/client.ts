@@ -19,6 +19,7 @@ elevImage.onload = function(){
   }
 }
 
+
 const scene = new THREE.Scene()
 // const blurs = [0, 1, 2];
 // const zs = [100, 200, 300, 400, 500];
@@ -27,16 +28,26 @@ const zs = [500];
 const pers = [20, 30, 40, 50];
 var meshes : {[key:string]: Mesh}= {};
 
-var persToSegs : {[key: number]: number}= {
+var persToSegs : {[key: number]: number} = {
     20: 242,
     30: 116,
     40: 56,
     50: 34
 };
+var persToIndex : {[key: number]: number} = {
+    20: 0,
+    30: 1,
+    40: 2,
+    50: 3
+};
+var segsToPixels = Array(pers.length);
+var segDatas = Array(pers.length);
 const persLoader = new THREE.TextureLoader();
 var persTextures : {[key: number]: THREE.Texture} = { };
-pers.forEach((thresh) => {
-    persLoader.load(
+var persCanvas = document.getElementById("streamCanvas") as HTMLCanvasElement;
+var persctx = persCanvas.getContext('2d')!;
+pers.forEach((thresh, i) => {
+   persLoader.load(
         `./img/pers${thresh}.png`,
         function (texture) {
           persTextures[thresh] = texture;
@@ -48,7 +59,23 @@ pers.forEach((thresh) => {
         function (err) {
           console.error("An error happened.");
         }
-      );
+    );
+    segDatas[i] = [];
+    segsToPixels[i] = {};
+    var persImage = new Image();
+    persImage.src = `img/pers${pers[i]}.png`;
+    persImage.onload = function(){
+        persctx.drawImage(persImage, 0, 0);
+        var tempData = Array.from(persctx.getImageData(0, 0, persImage.width, persImage.height).data);
+        for (var x = 0; x < tempData.length; x+=4) {
+            segDatas[i].push(tempData[x]);
+            if (segsToPixels[i][tempData[x]]) {
+                segsToPixels[i][tempData[x]].push(x / 4);
+            } else {
+                segsToPixels[i][tempData[x]] = [x / 4];
+            }
+        }
+    }
 });
 persLoader.load(
     "./img/rainbow.png",
@@ -91,6 +118,7 @@ var context = canvas.getContext('2d');
 
 const gui = new GUI();
 var params = {blur: 0, z: 500, annotation: 1, brushSize: 5, pers: 20, persShow: 0};
+var persIndex = persToIndex[params.pers];
 var uniforms = {
     z: {value: params.z},
     diffuseTexture: { type: "t", value: new THREE.Texture() },
@@ -107,7 +135,11 @@ const viewFolder = gui.addFolder("View Settings");
 meshFolder.add(params, "blur", 0, 2, 1).onFinishChange(() => {scene.remove(scene.children[0]); scene.add(meshes[`z${params.z}blur${params.blur}`])});
 meshFolder.add(params, "z", 100, 500, 100).onFinishChange(() => {scene.remove(scene.children[0]); uniforms.z.value = params.z; scene.add(meshes[`z${params.z}blur${params.blur}`])});
 viewFolder.add(params, "annotation", 0, 1, 1).onFinishChange(() => {uniforms.annotation.value = params.annotation});
-viewFolder.add(params, "pers", 20, 50, 10).onFinishChange(() => {uniforms.segs.value = persToSegs[params.pers]; uniforms.persTexture.value = persTextures[params.pers]});
+viewFolder.add(params, "pers", 20, 50, 10).onFinishChange(() => {
+    persIndex = persToIndex[params.pers];
+    uniforms.segs.value = persToSegs[params.pers]; 
+    uniforms.persTexture.value = persTextures[params.pers]
+});
 viewFolder.add(params, "persShow", 0, 3, 1).onFinishChange(() => {uniforms.persShow.value = params.persShow});
 viewFolder.add(params, "brushSize", 1, 50, 1);
 
@@ -175,6 +207,18 @@ function BFS(x : number, y : number) {
             }
         }
 
+    }
+    annotationTexture.needsUpdate = true;
+    // uniforms.annotationTexture.value = annotationTexture;
+}
+function segSelect(x : number, y : number) {
+    var value = segDatas[persIndex][x + y * 4104];
+    var pixels = segsToPixels[persIndex][value];
+    context!.fillStyle = "red";
+    for (var i = 0; i < pixels.length; i++) {
+        var x = pixels[i] % 4104;
+        var y = Math.floor(pixels[i] / 4104);
+        context!.fillRect(x, y, 1, 1);
     }
     annotationTexture.needsUpdate = true;
     // uniforms.annotationTexture.value = annotationTexture;
@@ -404,6 +448,12 @@ const onKeyPress = (event : KeyboardEvent) => {
         }
         polyPoints = [];
         annotationTexture.needsUpdate = true;
+    } else if (event.key == 'n') {
+        raycaster.setFromCamera(pointer, camera);
+        const intersects = raycaster.intersectObjects(scene.children);
+        var x = Math.trunc(intersects[0].point.x);
+        var y = 1856 - Math.ceil(intersects[0].point.y);
+        segSelect(x, y);
     }
 }
 const onKeyUp = (event : KeyboardEvent) => {
@@ -439,7 +489,6 @@ satelliteLoader.load(
                     mesh.receiveShadow = true;
                     mesh.castShadow = true;
                     mesh.position.set(0, 0, -100);
-                    console.log(mesh);
                     meshes[`z${z}blur${blur}`] = mesh;
                     if (blur == 0 && z == 500) {
                         scene.add(mesh);
