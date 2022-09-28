@@ -5,7 +5,6 @@ import { terrainShader } from "./shaders/terrain-shader"
 import Stats from 'three/examples/jsm/libs/stats.module'
 import { GUI } from 'dat.gui'
 import { Mesh } from 'three'
-import cv, { Mat } from 'opencv-ts'
 
 var data : number[] = [];
 var elevImage = new Image();
@@ -91,16 +90,13 @@ var annotationTexture = new THREE.Texture(canvas);
 var context = canvas.getContext('2d');
 
 const gui = new GUI();
-var params = {blur: 0, z: 500, triPlanarMapping: 0, minCanny: 500, maxCanny: 550, canny: 0, annotation: 1, brushSize: 5, pers: 20, persShow: 0};
+var params = {blur: 0, z: 500, annotation: 1, brushSize: 5, pers: 20, persShow: 0};
 var uniforms = {
     z: {value: params.z},
-    triPlanar: {value: params.triPlanarMapping},
     diffuseTexture: { type: "t", value: new THREE.Texture() },
     annotationTexture: { type: "t", value: annotationTexture },
     persTexture: { type: "t", value: new THREE.Texture() },
-    edgeTexture: { type: "t", value: new THREE.Texture() },
     colormap: { type: "t", value: new THREE.Texture() },
-    canny: {value: params.canny},
     pers: {value: params.pers},
     segs: {value: persToSegs[params.pers]},
     annotation: {value: params.annotation},
@@ -108,48 +104,15 @@ var uniforms = {
 };
 const meshFolder = gui.addFolder("Mesh Settings");
 const viewFolder = gui.addFolder("View Settings");
-const cannyFolder = gui.addFolder("Edge Detection Settings");
 meshFolder.add(params, "blur", 0, 2, 1).onFinishChange(() => {scene.remove(scene.children[0]); scene.add(meshes[`z${params.z}blur${params.blur}`])});
 meshFolder.add(params, "z", 100, 500, 100).onFinishChange(() => {scene.remove(scene.children[0]); uniforms.z.value = params.z; scene.add(meshes[`z${params.z}blur${params.blur}`])});
-viewFolder.add(params, "triPlanarMapping", 0, 1, 1).onFinishChange(() => {uniforms.triPlanar.value = params.triPlanarMapping});
-cannyFolder.add(params, "canny", 0, 2, 1).onFinishChange(() => {uniforms.canny.value = params.canny});
 viewFolder.add(params, "annotation", 0, 1, 1).onFinishChange(() => {uniforms.annotation.value = params.annotation});
 viewFolder.add(params, "pers", 20, 50, 10).onFinishChange(() => {uniforms.segs.value = persToSegs[params.pers]; uniforms.persTexture.value = persTextures[params.pers]});
 viewFolder.add(params, "persShow", 0, 1, 1).onFinishChange(() => {uniforms.persShow.value = params.persShow});
 viewFolder.add(params, "brushSize", 1, 50, 1);
-cannyFolder.add(params, "minCanny", 50, 500, 10).onFinishChange(() => { 
-    cv.Canny(satSource, edge, params.minCanny, params.maxCanny);
-    cv.imshow("streamCanvas", edge);
-    edgeTexture = new THREE.CanvasTexture(canvas);
-    uniforms.edgeTexture.value = edgeTexture;
-    edgeData = edge.data;
-});
-cannyFolder.add(params, "maxCanny", 100, 550, 10).onFinishChange(() => {
-    cv.Canny(satSource, edge, params.minCanny, params.maxCanny);
-    cv.imshow("streamCanvas", edge);
-    edgeTexture = new THREE.CanvasTexture(canvas);
-    uniforms.edgeTexture.value = edgeTexture;
-    edgeData = edge.data;
-});
+
 viewFolder.open();
 meshFolder.open();
-
-var edgeTexture = new THREE.Texture();
-var canvas = document.getElementById("streamCanvas") as HTMLCanvasElement;
-var ctx = canvas.getContext('2d')!;
-var base_image = new Image();
-base_image.src = 'img/satelliteblur0.png';
-var satSource : Mat, edge : Mat, edgeData : Uint8Array;
-base_image.onload = function(){
-  ctx.drawImage(base_image, 0, 0);
-  satSource = cv.imread("streamCanvas");
-  edge = satSource.clone();
-  cv.Canny(satSource, edge, params.minCanny, params.maxCanny);
-  cv.imshow("streamCanvas", edge);
-  edgeTexture = new THREE.CanvasTexture(canvas);
-  uniforms.edgeTexture.value = edgeTexture;
-  edgeData = edge.data;
-}
 
 var visitedFlood = new Map();
 function BFS(x : number, y : number) {

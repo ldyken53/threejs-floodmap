@@ -33,11 +33,8 @@ uniform mat4 modelViewMatrix;
 uniform vec3 cameraPosition;
 uniform sampler2D diffuseTexture;
 uniform sampler2D annotationTexture;
-uniform sampler2D edgeTexture;
 uniform sampler2D persTexture;
 uniform sampler2D colormap;
-uniform int triPlanar;
-uniform int canny;
 uniform int annotation;
 uniform int persShow;
 uniform int segs;
@@ -47,51 +44,13 @@ in vec3 vPosition;
 
 out vec4 out_FragColor;
 
-vec3 blendNormal(vec3 normal){
-	vec3 blending = abs(normal);
-	blending /= (blending.x + blending.y + blending.z);
-	return blending;
-}
-
-vec3 triplanarMapping (sampler2D tex, vec3 normal, vec3 position) {
-  vec3 normalBlend = blendNormal(normal);
-  vec2 x = position.zy;
-  vec2 y = position.xz;
-  vec2 z = position.xy;
-  if (normal.x < 0.0) {
-    x.x = -x.x;
-  }
-  if (normal.y < 0.0) {
-    y.x = -y.x;
-  }
-  if (normal.z < 0.0) {
-    z.x = -z.x;
-  }
-  vec3 xColor = texture(tex, x).rgb;
-  vec3 yColor = texture(tex, y).rgb;
-  vec3 zColor = texture(tex, z).rgb;
-  return (xColor * normalBlend.x + yColor * normalBlend.y + zColor * normalBlend.z);
-}
-
-float rnd(float i) {
-	return mod(4000.*sin(23464.345*i+45.345),1.);
-}
-
 void main(){
-    vec3 color;
-    if (triPlanar == 0) {
-        color = texture(diffuseTexture, vPosition.xy).rgb;
-    } else {
-        color = triplanarMapping(diffuseTexture, vNormal, vPosition);
-    }
+    vec3 color = texture(diffuseTexture, vPosition.xy).rgb;
+    
     if (persShow == 1) {
       color = color + 0.5 * texture(colormap, vec2(texture(persTexture, vPosition.xy).r * (255.0 / float(segs)), 0)).rgb;
     }
-    if (canny == 1) {
-        color = texture(edgeTexture, vPosition.xy).rgb;
-    } else if (canny == 2) {
-        color = vec3(color + texture(edgeTexture, vPosition.xy).rgb);
-    }
+    
     if (annotation == 1) {
         vec3 aColor = texture(annotationTexture, vPosition.xy).rgb;
         out_FragColor = vec4(color + aColor, 1.0);
