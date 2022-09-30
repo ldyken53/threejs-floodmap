@@ -146,8 +146,10 @@ viewFolder.add(params, "brushSize", 1, 50, 1);
 viewFolder.open();
 meshFolder.open();
 
+var recentFills : Array<number> = [];
 var visitedFlood = new Map();
 function BFS(x : number, y : number) {
+    recentFills = [];
     context!.fillStyle = "red";
     // var visited = new Map();
     var stack = [];
@@ -156,6 +158,7 @@ function BFS(x : number, y : number) {
     while (stack.length > 0) {
         y = stack.pop()!;
         x = stack.pop()!;
+        recentFills.push(x, y);
         context!.fillRect(x, y, 1, 1);
         var value = data[x + y * 4104];
         if (data[(x + 1) + y * 4104] <= value) {
@@ -211,13 +214,15 @@ function BFS(x : number, y : number) {
     annotationTexture.needsUpdate = true;
     // uniforms.annotationTexture.value = annotationTexture;
 }
+
 function segSelect(x : number, y : number) {
+    recentFills = [];
     var value = segDatas[persIndex][x + y * 4104];
     var pixels = segsToPixels[persIndex][value];
-    context!.fillStyle = "red";
     for (var i = 0; i < pixels.length; i++) {
         var x = pixels[i] % 4104;
         var y = Math.floor(pixels[i] / 4104);
+        recentFills.push(x, y);
         context!.fillRect(x, y, 1, 1);
     }
     annotationTexture.needsUpdate = true;
@@ -453,7 +458,20 @@ const onKeyPress = (event : KeyboardEvent) => {
         const intersects = raycaster.intersectObjects(scene.children);
         var x = Math.trunc(intersects[0].point.x);
         var y = 1856 - Math.ceil(intersects[0].point.y);
+        context!.fillStyle = "red";
         segSelect(x, y);
+    } else if (event.key == 'b') {
+        raycaster.setFromCamera(pointer, camera);
+        const intersects = raycaster.intersectObjects(scene.children);
+        var x = Math.trunc(intersects[0].point.x);
+        var y = 1856 - Math.ceil(intersects[0].point.y);
+        context!.fillStyle = "blue";
+        segSelect(x, y);
+    } else if (event.key == 'z') {
+        for (var i = 0; i < recentFills.length; i+=2) {
+            context!.clearRect(recentFills[i], recentFills[i + 1], 1, 1);
+        }
+        annotationTexture.needsUpdate = true;
     }
 }
 const onKeyUp = (event : KeyboardEvent) => {
