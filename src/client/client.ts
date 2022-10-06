@@ -2,9 +2,9 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader'
 import { terrainShader } from "./shaders/terrain-shader"
-import Stats from 'three/examples/jsm/libs/stats.module'
 import { GUI } from 'dat.gui'
 import { Mesh } from 'three'
+import axios from 'axios'
 
 var data : number[] = [];
 var elevImage = new Image();
@@ -19,7 +19,6 @@ elevImage.onload = function(){
   }
 }
 
-
 const scene = new THREE.Scene()
 // const blurs = [0, 1, 2];
 // const zs = [100, 200, 300, 400, 500];
@@ -28,55 +27,96 @@ const zs = [500];
 const pers = [20, 30, 40, 50];
 var meshes : {[key:string]: Mesh}= {};
 
-var persToSegs : {[key: number]: number} = {
-    20: 242,
-    30: 116,
-    40: 56,
-    50: 34
-};
-var persToIndex : {[key: number]: number} = {
-    20: 0,
-    30: 1,
-    40: 2,
-    50: 3
-};
-var segsToPixels = Array(pers.length);
-var segDatas = Array(pers.length);
+// var persToSegs : {[key: number]: number} = {
+//     20: 242,
+//     30: 116,
+//     40: 56,
+//     50: 34
+// };
+// var persToIndex : {[key: number]: number} = {
+//     20: 0,
+//     30: 1,
+//     40: 2,
+//     50: 3
+// };
+// var segsToPixels = Array(pers.length);
+// var segDatas = Array(pers.length);
 const persLoader = new THREE.TextureLoader();
-var persTextures : {[key: number]: THREE.Texture} = { };
-var persCanvas = document.getElementById("streamCanvas") as HTMLCanvasElement;
-var persctx = persCanvas.getContext('2d')!;
-pers.forEach((thresh, i) => {
-   persLoader.load(
-        `./img/pers${thresh}.png`,
-        function (texture) {
-          persTextures[thresh] = texture;
-          if (thresh == 20) {
-            uniforms.persTexture.value = texture;
-          }
-        },
-        undefined,
-        function (err) {
-          console.error("An error happened.");
-        }
-    );
-    segDatas[i] = [];
-    segsToPixels[i] = {};
-    var persImage = new Image();
-    persImage.src = `img/pers${pers[i]}.png`;
-    persImage.onload = function(){
-        persctx.drawImage(persImage, 0, 0);
-        var tempData = Array.from(persctx.getImageData(0, 0, persImage.width, persImage.height).data);
-        for (var x = 0; x < tempData.length; x+=4) {
-            segDatas[i].push(tempData[x]);
-            if (segsToPixels[i][tempData[x]]) {
-                segsToPixels[i][tempData[x]].push(x / 4);
-            } else {
-                segsToPixels[i][tempData[x]] = [x / 4];
-            }
-        }
+// var persTextures : {[key: number]: THREE.Texture} = { };
+// var persCanvas = document.getElementById("streamCanvas") as HTMLCanvasElement;
+// var persctx = persCanvas.getContext('2d')!;
+// pers.forEach((thresh, i) => {
+//    persLoader.load(
+//         `./img/pers${thresh}.png`,
+//         function (texture) {
+//           persTextures[thresh] = texture;
+//           if (thresh == 50) {
+//             uniforms.persTexture.value = texture;
+//           }
+//         },
+//         undefined,
+//         function (err) {
+//           console.error("An error happened.");
+//         }
+//     );
+//     segDatas[i] = [];
+//     segsToPixels[i] = {};
+//     var persImage = new Image();
+//     persImage.src = `img/pers${pers[i]}.png`;
+//     persImage.onload = function(){
+//         try {
+//             persctx.drawImage(persImage, 0, 0);
+//             var tempData = Array.from(persctx.getImageData(0, 0, persImage.width, persImage.height).data);
+//             for (var x = 0; x < tempData.length; x+=4) {
+//                 segDatas[i].push(tempData[x]);
+//                 if (segsToPixels[i][tempData[x]]) {
+//                     segsToPixels[i][tempData[x]].push(x / 4);
+//                 } else {
+//                     segsToPixels[i][tempData[x]] = [x / 4];
+//                 }
+//             }
+//         } catch (error) {
+//             console.log(error);
+//         }
+//     }
+// });
+var segsToPixels2 : {
+    [key : number] : {
+        [key : number] : Array<number>
     }
-});
+} = {};
+var persDatas : {
+    [key : number] : Array<number>
+} = {};
+var persTextures : {[key: number]: THREE.Texture} = { };
+async function getPersistence(threshold : number) {
+    axios.get(`http://localhost:5000/test?threshold=${threshold}`).then(response => {
+        console.log(response.data);
+        persDatas[threshold] = response.data.array;
+        var imageData = new Uint8Array(4 * persDatas[threshold].length);
+        segsToPixels2[threshold] = {};
+        for (var x = 0; x < persDatas[threshold].length; x++) {
+            var segID = Math.floor(255 * persDatas[threshold][x] / response.data.max);
+            imageData[x * 4] = segID;
+            imageData[x * 4 + 1] = segID;
+            imageData[x * 4 + 2] = segID;
+            imageData[x * 4 + 3] = 255;
+            if (segsToPixels2[threshold][persDatas[threshold][x]]) {
+                segsToPixels2[threshold][persDatas[threshold][x]].push(x);
+            } else {
+                segsToPixels2[threshold][persDatas[threshold][x]] = [x];
+            }
+        }  
+        console.log(imageData);
+        var texture = new THREE.DataTexture(imageData, 4104, 1856);
+        texture.needsUpdate = true;
+        persTextures[threshold] = texture;
+        uniforms.persTexture.value = texture;
+     }).catch(error => {
+        console.log(error)
+      })
+}
+getPersistence(50);
 persLoader.load(
     "./img/rainbow.png",
     function (texture) {
@@ -117,8 +157,8 @@ var annotationTexture = new THREE.Texture(canvas);
 var context = canvas.getContext('2d');
 
 const gui = new GUI();
-var params = {blur: 0, z: 500, annotation: 1, brushSize: 5, pers: 20, persShow: 0};
-var persIndex = persToIndex[params.pers];
+var params = {blur: 0, z: 500, annotation: 1, brushSize: 5, pers: 50, persShow: 0};
+// var persIndex = persToIndex[params.pers];
 var uniforms = {
     z: {value: params.z},
     diffuseTexture: { type: "t", value: new THREE.Texture() },
@@ -126,7 +166,6 @@ var uniforms = {
     persTexture: { type: "t", value: new THREE.Texture() },
     colormap: { type: "t", value: new THREE.Texture() },
     pers: {value: params.pers},
-    segs: {value: persToSegs[params.pers]},
     annotation: {value: params.annotation},
     persShow: {value: params.persShow}
 };
@@ -136,9 +175,11 @@ meshFolder.add(params, "blur", 0, 2, 1).onFinishChange(() => {scene.remove(scene
 meshFolder.add(params, "z", 100, 500, 100).onFinishChange(() => {scene.remove(scene.children[0]); uniforms.z.value = params.z; scene.add(meshes[`z${params.z}blur${params.blur}`])});
 viewFolder.add(params, "annotation", 0, 1, 1).onFinishChange(() => {uniforms.annotation.value = params.annotation});
 viewFolder.add(params, "pers", 20, 50, 10).onFinishChange(() => {
-    persIndex = persToIndex[params.pers];
-    uniforms.segs.value = persToSegs[params.pers]; 
-    uniforms.persTexture.value = persTextures[params.pers]
+    if (persTextures[params.pers]) {
+        uniforms.persTexture.value = persTextures[params.pers];
+    } else {
+        getPersistence(params.pers);
+    }
 });
 viewFolder.add(params, "persShow", 0, 3, 1).onFinishChange(() => {uniforms.persShow.value = params.persShow});
 viewFolder.add(params, "brushSize", 1, 50, 1);
@@ -217,11 +258,12 @@ function BFS(x : number, y : number) {
 
 function segSelect(x : number, y : number) {
     recentFills = [];
-    var value = segDatas[persIndex][x + y * 4104];
-    var pixels = segsToPixels[persIndex][value];
+    var value = persDatas[params.pers][x + y * 4104];
+    console.log(params.pers, value);
+    var pixels = segsToPixels2[params.pers][value];
     for (var i = 0; i < pixels.length; i++) {
         var x = pixels[i] % 4104;
-        var y = Math.floor(pixels[i] / 4104);
+        var y = 1855 - Math.floor(pixels[i] / 4104);
         recentFills.push(x, y);
         context!.fillRect(x, y, 1, 1);
     }
@@ -457,14 +499,14 @@ const onKeyPress = (event : KeyboardEvent) => {
         raycaster.setFromCamera(pointer, camera);
         const intersects = raycaster.intersectObjects(scene.children);
         var x = Math.trunc(intersects[0].point.x);
-        var y = 1856 - Math.ceil(intersects[0].point.y);
+        var y = Math.floor(intersects[0].point.y);
         context!.fillStyle = "red";
         segSelect(x, y);
     } else if (event.key == 'b') {
         raycaster.setFromCamera(pointer, camera);
         const intersects = raycaster.intersectObjects(scene.children);
         var x = Math.trunc(intersects[0].point.x);
-        var y = 1856 - Math.ceil(intersects[0].point.y);
+        var y = Math.floor(intersects[0].point.y);
         context!.fillStyle = "blue";
         segSelect(x, y);
     } else if (event.key == 'z') {
@@ -537,9 +579,6 @@ function onWindowResize() {
     render()
 }
 
-const stats = Stats()
-document.body.appendChild(stats.dom)
-
 function animate() {
     requestAnimationFrame(animate)
 
@@ -547,7 +586,6 @@ function animate() {
 
     render()
 
-    stats.update()
 }
 
 function render() {

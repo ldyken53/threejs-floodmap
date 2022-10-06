@@ -54,7 +54,7 @@ void main(){
     if (persShow > 0) {
       float segID = sampleTexture(persTexture, vPosition.xy).r;
       if (persShow == 1 || persShow == 3) {
-        color = 0.9 * color + 0.1 * texture(colormap, vec2(segID * (255.0 / float(segs)), 0)).rgb;
+        color = 0.9 * color + 0.1 * texture(colormap, vec2(segID, 0)).rgb;
       }
       if (persShow > 1) {
         const vec2 neighbors[4] = vec2[4](
@@ -65,7 +65,7 @@ void main(){
         );
         for (int i = 0; i < 8; i++) {
           if (abs(sampleTexture(persTexture, vPosition.xy + neighbors[i]).r - segID) > 0.001) {
-            color = texture(colormap, vec2(segID * (255.0 / float(segs)), 0)).rgb;
+            color = texture(colormap, vec2(segID, 0)).rgb;
             break;
           }
         }
