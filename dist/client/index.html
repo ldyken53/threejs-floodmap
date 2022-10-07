@@ -4,17 +4,25 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Three.js Flood Annotation</title>
-        <canvas hidden width=4104 height=1856 src="img/satelliteblur0.png" id="streamCanvas"></canvas>
-        <canvas hidden width=4104 height=1856 src="img/satelliteblur0.png" id="elevateCanvas"></canvas>
-        <style>
-            body {
-                overflow: hidden;
-                margin: 0px;
-            }
-        </style>
+        <canvas
+            hidden
+            width="4104"
+            height="1856"
+            src="img/satelliteblur0.png"
+            id="streamCanvas"
+        ></canvas>
+        <canvas
+            hidden
+            width="4104"
+            height="1856"
+            src="img/satelliteblur0.png"
+            id="elevateCanvas"
+        ></canvas>
     </head>
 
     <body>
+        <button class="session-terminal" id=" start">START</button>
+        <button class="session-terminal" id="end">FINISH</button>
         <script type="module" src="bundle.js"></script>
     </body>
 </html>
