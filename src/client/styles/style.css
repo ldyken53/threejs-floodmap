@@ -1,8 +1,21 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     overflow: hidden;
     margin: 0px;
+    padding: 0px;
 }
 
+p,
+h5,
+h6,
+span,
+button,
+div {
+    font-family: 'Roboto', sans-serif !important;
+}
 button {
     padding: 10px 10px;
     width: 120px;
