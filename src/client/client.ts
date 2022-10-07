@@ -5,7 +5,9 @@ import { terrainShader } from './shaders/terrain-shader'
 import { GUI } from 'dat.gui'
 import { Mesh } from 'three'
 import axios from 'axios'
+import { startSession, endSession, init } from './util'
 import './styles/style.css'
+// import * as fs from 'fs'
 
 var data: number[] = []
 var elevImage = new Image()
@@ -19,7 +21,7 @@ elevImage.onload = function () {
         data.push(tempData[i])
     }
 }
-
+window.onload = init
 const scene = new THREE.Scene()
 // const blurs = [0, 1, 2];
 // const zs = [100, 200, 300, 400, 500];
