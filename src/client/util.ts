@@ -18,12 +18,9 @@ function download(filename: string, text: string) {
     var element = document.createElement('a')
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text))
     element.setAttribute('download', filename)
-
     element.style.display = 'none'
     document.body.appendChild(element)
-
     element.click()
-
     document.body.removeChild(element)
 }
 
@@ -55,10 +52,16 @@ function downloadSession(event: Event) {
     download(_fileName, _data)
 }
 
+function hideModal() {
+    ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'none'
+    ;(document.getElementById('ui-menu') as HTMLElement).style.display = 'block'
+}
+
 function init() {
     document.getElementById('start')?.addEventListener('click', startSession)
     document.getElementById('end')?.addEventListener('click', endSession)
     document.getElementById('download')?.addEventListener('click', downloadSession)
+    document.getElementById('exploration')?.addEventListener('click', hideModal)
 }
 
 export { resetCamera, startSession, endSession, init }
