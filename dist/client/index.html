@@ -4,17 +4,59 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Three.js Flood Annotation</title>
-        <canvas hidden width=4104 height=1856 src="img/satelliteblur0.png" id="streamCanvas"></canvas>
-        <canvas hidden width=4104 height=1856 src="img/satelliteblur0.png" id="elevateCanvas"></canvas>
-        <style>
-            body {
-                overflow: hidden;
-                margin: 0px;
-            }
-        </style>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
+            rel="stylesheet"
+        />
+
+        <canvas
+            hidden
+            width="4104"
+            height="1856"
+            src="img/satelliteblur0.png"
+            id="streamCanvas"
+        ></canvas>
+        <canvas
+            hidden
+            width="4104"
+            height="1856"
+            src="img/satelliteblur0.png"
+            id="elevateCanvas"
+        ></canvas>
     </head>
 
     <body>
+        <div id="ui-menu">
+            <button class="session-terminal" id="download">DOWNLOAD</button>
+            <button class="session-terminal" id="end">FINISH</button>
+            <button class="session-terminal" id="start">START</button>
+        </div>
+
+        <div id="modal-wrapper">
+            <div class="modal-header">
+                <h2>Instructions and Guide:</h2>
+                <a href="#modal-wrapper" class="btn-close" aria-hidden="true">×</a>
+            </div>
+            <div class="modal-body">
+                <p>Please read and note these instruction if needed ! :D</p>
+                <hr />
+                <ul>
+                    <li>Press <b>f</b> to start raytracing</li>
+                    <li>Press <b>R</b> to release a pointer</li>
+                    <li>Press <b>Escape</b> to reset the camera</li>
+                    <li>Press <b>e</b> undo selection</li>
+                    <li>Press <b>r</b> to annotate by brush in red color</li>
+                    <li>Press <b>t</b> to annotate by brush in blue color</li>
+                    <li>Press <b>p</b> to annotate and select rectangle of 4x4 in red color</li>
+                    <li>Press <b>l</b> to annotate with BFS to triangle selected by "p"</li>
+                    <li>Press <b>N</b> to annotate with Contour tree generated Segmentation</li>
+                    <li>Press <b>Z</b> to undo all the annotion job done till now</li>
+                    <li>Press <b>M</b> to bring this menu back</li>
+                    <li></li>
+                </ul>
+                <button id="exploration">Explore !!!</button>
+            </div>
+        </div>
         <script type="module" src="bundle.js"></script>
     </body>
 </html>
