@@ -379,6 +379,8 @@ const onKeyPress = (event: KeyboardEvent) => {
         camera.position.set(2000, 1000, 1000)
         controls = new OrbitControls(camera, renderer.domElement)
         controls.target = new THREE.Vector3(2000, 1000, -2000)
+    } else if (event.key == 'm') {
+        ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
     } else if (event.key == 'f') {
         raycaster.setFromCamera(pointer, camera)
         const intersects = raycaster.intersectObjects(scene.children)
