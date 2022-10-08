@@ -4,6 +4,7 @@ type sessionDataType = {
     sessionEnd: Date | null
     totalSessionTime: number
     wasCompleted: boolean
+    annotatedPixelCount: number
 }
 
 const sessionData: sessionDataType = {
@@ -12,6 +13,7 @@ const sessionData: sessionDataType = {
     sessionEnd: null,
     totalSessionTime: 0,
     wasCompleted: false,
+    annotatedPixelCount: 0,
 }
 
 function download(filename: string, text: string) {
@@ -64,4 +66,4 @@ function init() {
     document.getElementById('exploration')?.addEventListener('click', hideModal)
 }
 
-export { resetCamera, startSession, endSession, init }
+export { resetCamera, startSession, endSession, init, sessionData }

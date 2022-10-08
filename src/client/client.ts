@@ -5,7 +5,7 @@ import { terrainShader } from './shaders/terrain-shader'
 import { GUI } from 'dat.gui'
 import { Mesh } from 'three'
 import axios from 'axios'
-import { startSession, endSession, init } from './util'
+import { startSession, endSession, init, sessionData } from './util'
 import './styles/style.css'
 // import * as fs from 'fs'
 
@@ -99,14 +99,11 @@ async function getPersistence(threshold: number) {
         .then((response) => {
             console.log(response.data)
             persDatas[threshold] = response.data.array
-            var imageData = new Uint8Array(4 * persDatas[threshold].length)
+            var imageData = new Uint16Array(persDatas[threshold].length)
             segsToPixels2[threshold] = {}
             for (var x = 0; x < persDatas[threshold].length; x++) {
                 var segID = Math.floor((255 * persDatas[threshold][x]) / response.data.max)
-                imageData[x * 4] = segID
-                imageData[x * 4 + 1] = segID
-                imageData[x * 4 + 2] = segID
-                imageData[x * 4 + 3] = 255
+                imageData[x] = segID
                 if (segsToPixels2[threshold][persDatas[threshold][x]]) {
                     segsToPixels2[threshold][persDatas[threshold][x]].push(x)
                 } else {
@@ -114,7 +111,13 @@ async function getPersistence(threshold: number) {
                 }
             }
             console.log(imageData)
-            var texture = new THREE.DataTexture(imageData, 4104, 1856)
+            var texture = new THREE.DataTexture(
+                imageData,
+                4104,
+                1856,
+                THREE.RedFormat,
+                THREE.IntType
+            )
             texture.needsUpdate = true
             persTextures[threshold] = texture
             uniforms.persTexture.value = texture
@@ -147,6 +150,13 @@ const renderer = new THREE.WebGLRenderer()
 renderer.outputEncoding = THREE.sRGBEncoding
 renderer.setSize(window.innerWidth, window.innerHeight)
 renderer.shadowMap.enabled = true
+
+// enable extension
+var gl = renderer.getContext()
+var extension1 = gl.getExtension('OES_texture_float')
+if (!extension1) {
+    console.warn('float texture support extension does not available on this device')
+}
 document.body.appendChild(renderer.domElement)
 
 let controls = new OrbitControls(camera, renderer.domElement)
@@ -217,48 +227,56 @@ function BFS(x: number, y: number) {
         var value = data[x + y * 4104]
         if (data[x + 1 + y * 4104] <= value) {
             if (!visitedFlood.get(`${x + 1}, ${y}`)) {
+                sessionData.annotatedPixelCount++
                 visitedFlood.set(`${x + 1}, ${y}`, 1)
                 stack.push(x + 1, y)
             }
         }
         if (data[x - 1 + y * 4104] <= value) {
             if (!visitedFlood.get(`${x - 1}, ${y}`)) {
+                sessionData.annotatedPixelCount++
                 visitedFlood.set(`${x - 1}, ${y}`, 1)
                 stack.push(x - 1, y)
             }
         }
         if (data[x + (y + 1) * 4104] <= value) {
             if (!visitedFlood.get(`${x}, ${y + 1}`)) {
+                sessionData.annotatedPixelCount++
                 visitedFlood.set(`${x}, ${y + 1}`, 1)
                 stack.push(x, y + 1)
             }
         }
         if (data[x + (y - 1) * 4104] <= value) {
             if (!visitedFlood.get(`${x}, ${y - 1}`)) {
+                sessionData.annotatedPixelCount++
                 visitedFlood.set(`${x}, ${y - 1}`, 1)
                 stack.push(x, y - 1)
             }
         }
         if (data[x + 1 + (y + 1) * 4104] <= value) {
             if (!visitedFlood.get(`${x + 1}, ${y + 1}`)) {
+                sessionData.annotatedPixelCount++
                 visitedFlood.set(`${x + 1}, ${y + 1}`, 1)
                 stack.push(x + 1, y + 1)
             }
         }
         if (data[x - 1 + (y + 1) * 4104] <= value) {
             if (!visitedFlood.get(`${x - 1}, ${y + 1}`)) {
+                sessionData.annotatedPixelCount++
                 visitedFlood.set(`${x - 1}, ${y + 1}`, 1)
                 stack.push(x - 1, y + 1)
             }
         }
         if (data[x - 1 + (y - 1) * 4104] <= value) {
             if (!visitedFlood.get(`${x - 1}, ${y - 1}`)) {
+                sessionData.annotatedPixelCount++
                 visitedFlood.set(`${x - 1}, ${y - 1}`, 1)
                 stack.push(x - 1, y - 1)
             }
         }
         if (data[x + 1 + (y - 1) * 4104] <= value) {
             if (!visitedFlood.get(`${x + 1}, ${y - 1}`)) {
+                sessionData.annotatedPixelCount++
                 visitedFlood.set(`${x + 1}, ${y - 1}`, 1)
                 stack.push(x + 1, y - 1)
             }
@@ -279,6 +297,7 @@ function segSelect(x: number, y: number) {
         recentFills.push(x, y)
         context!.fillRect(x, y, 1, 1)
     }
+    sessionData.annotatedPixelCount = sessionData.annotatedPixelCount + pixels.length
     annotationTexture.needsUpdate = true
     // uniforms.annotationTexture.value = annotationTexture;
 }
@@ -295,48 +314,56 @@ function BFS2(x: number, y: number) {
         var value = data[x + y * 4104]
         if (data[x + 1 + y * 4104] >= value) {
             if (!visited.get(`${x + 1}, ${y}`)) {
+                sessionData.annotatedPixelCount++
                 visited.set(`${x + 1}, ${y}`, 1)
                 stack.push(x + 1, y)
             }
         }
         if (data[x - 1 + y * 4104] >= value) {
             if (!visited.get(`${x - 1}, ${y}`)) {
+                sessionData.annotatedPixelCount++
                 visited.set(`${x - 1}, ${y}`, 1)
                 stack.push(x - 1, y)
             }
         }
         if (data[x + (y + 1) * 4104] >= value) {
             if (!visited.get(`${x}, ${y + 1}`)) {
+                sessionData.annotatedPixelCount++
                 visited.set(`${x}, ${y + 1}`, 1)
                 stack.push(x, y + 1)
             }
         }
         if (data[x + (y - 1) * 4104] >= value) {
             if (!visited.get(`${x}, ${y - 1}`)) {
+                sessionData.annotatedPixelCount++
                 visited.set(`${x}, ${y - 1}`, 1)
                 stack.push(x, y - 1)
             }
         }
         if (data[x + 1 + (y + 1) * 4104] >= value) {
             if (!visited.get(`${x + 1}, ${y + 1}`)) {
+                sessionData.annotatedPixelCount++
                 visited.set(`${x + 1}, ${y + 1}`, 1)
                 stack.push(x + 1, y + 1)
             }
         }
         if (data[x - 1 + (y + 1) * 4104] >= value) {
             if (!visited.get(`${x - 1}, ${y + 1}`)) {
+                sessionData.annotatedPixelCount++
                 visited.set(`${x - 1}, ${y + 1}`, 1)
                 stack.push(x - 1, y + 1)
             }
         }
         if (data[x - 1 + (y - 1) * 4104] >= value) {
             if (!visited.get(`${x - 1}, ${y - 1}`)) {
+                sessionData.annotatedPixelCount++
                 visited.set(`${x - 1}, ${y - 1}`, 1)
                 stack.push(x - 1, y - 1)
             }
         }
         if (data[x + 1 + (y - 1) * 4104] >= value) {
             if (!visited.get(`${x + 1}, ${y - 1}`)) {
+                sessionData.annotatedPixelCount++
                 visited.set(`${x + 1}, ${y - 1}`, 1)
                 stack.push(x + 1, y - 1)
             }
@@ -374,6 +401,14 @@ const onMouseMove = (event: MouseEvent) => {
     }
 }
 var polyPoints: Array<number> = []
+const state = {
+    BFS: false,
+    segmentation: false,
+    semi: false,
+    brushSelection: false,
+    polygonSelection: false,
+    segEnabled: false,
+}
 const onKeyPress = (event: KeyboardEvent) => {
     if (event.key == 'Escape') {
         camera.position.set(2000, 1000, 1000)
@@ -381,20 +416,20 @@ const onKeyPress = (event: KeyboardEvent) => {
         controls.target = new THREE.Vector3(2000, 1000, -2000)
     } else if (event.key == 'm') {
         ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
-    } else if (event.key == 'f') {
+    } else if (event.key == 'f' && state.BFS) {
         raycaster.setFromCamera(pointer, camera)
         const intersects = raycaster.intersectObjects(scene.children)
         console.log(intersects)
         var x = Math.trunc(intersects[0].point.x)
         var y = 1856 - Math.ceil(intersects[0].point.y)
         BFS(x, y)
-    } else if (event.key == 'd') {
+    } else if (event.key == 'd' && state.BFS) {
         raycaster.setFromCamera(pointer, camera)
         const intersects = raycaster.intersectObjects(scene.children)
         var x = Math.trunc(intersects[0].point.x)
         var y = 1856 - Math.ceil(intersects[0].point.y)
         BFS2(x, y)
-    } else if (event.key == 'e') {
+    } else if (event.key == 'e' && state.brushSelection) {
         raycaster.setFromCamera(pointer, camera)
         const intersects = raycaster.intersectObjects(scene.children)
         var point = intersects[0].point
@@ -406,9 +441,10 @@ const onKeyPress = (event: KeyboardEvent) => {
             params.brushSize,
             params.brushSize
         )
+        sessionData.annotatedPixelCount -= params.brushSize * params.brushSize
         annotationTexture.needsUpdate = true
         uniforms.annotationTexture.value = annotationTexture
-    } else if (event.key == 'r') {
+    } else if (event.key == 'r' && state.brushSelection) {
         raycaster.setFromCamera(pointer, camera)
         const intersects = raycaster.intersectObjects(scene.children)
         var point = intersects[0].point
@@ -421,9 +457,10 @@ const onKeyPress = (event: KeyboardEvent) => {
             params.brushSize,
             params.brushSize
         )
+        sessionData.annotatedPixelCount += params.brushSize * params.brushSize
         annotationTexture.needsUpdate = true
         uniforms.annotationTexture.value = annotationTexture
-    } else if (event.key == 't') {
+    } else if (event.key == 't' && state.brushSelection) {
         raycaster.setFromCamera(pointer, camera)
         const intersects = raycaster.intersectObjects(scene.children)
         var point = intersects[0].point
@@ -436,9 +473,10 @@ const onKeyPress = (event: KeyboardEvent) => {
             params.brushSize,
             params.brushSize
         )
+        sessionData.annotatedPixelCount += params.brushSize * params.brushSize
         annotationTexture.needsUpdate = true
         uniforms.annotationTexture.value = annotationTexture
-    } else if (event.key == 'p') {
+    } else if (event.key == 'p' && state.polygonSelection) {
         raycaster.setFromCamera(pointer, camera)
         const intersects = raycaster.intersectObjects(scene.children)
         var point = intersects[0].point
@@ -447,8 +485,9 @@ const onKeyPress = (event: KeyboardEvent) => {
         polyPoints.push(x, y)
         context!.fillStyle = 'red'
         context!.fillRect(x - 2, y - 2, 4, 4)
+        sessionData.annotatedPixelCount += 16; //follow this with the line selection to minimize the double counting
         annotationTexture.needsUpdate = true
-    } else if (event.key == 'l') {
+    } else if (event.key == 'l' && state.polygonSelection) {
         context!.fillStyle = 'red'
         context!.beginPath()
         context!.moveTo(polyPoints[0], polyPoints[1])
@@ -528,14 +567,14 @@ const onKeyPress = (event: KeyboardEvent) => {
         }
         polyPoints = []
         annotationTexture.needsUpdate = true
-    } else if (event.key == 'n') {
+    } else if (event.key == 'n' && state.segEnabled) {
         raycaster.setFromCamera(pointer, camera)
         const intersects = raycaster.intersectObjects(scene.children)
         var x = Math.trunc(intersects[0].point.x)
         var y = Math.floor(intersects[0].point.y)
         context!.fillStyle = 'red'
         segSelect(x, y)
-    } else if (event.key == 'b') {
+    } else if (event.key == 'b' && state.segEnabled) {
         raycaster.setFromCamera(pointer, camera)
         const intersects = raycaster.intersectObjects(scene.children)
         var x = Math.trunc(intersects[0].point.x)
