@@ -384,6 +384,7 @@ const onKeyPress = (event: KeyboardEvent) => {
     } else if (event.key == 'f') {
         raycaster.setFromCamera(pointer, camera)
         const intersects = raycaster.intersectObjects(scene.children)
+        console.log(intersects)
         var x = Math.trunc(intersects[0].point.x)
         var y = 1856 - Math.ceil(intersects[0].point.y)
         BFS(x, y)
