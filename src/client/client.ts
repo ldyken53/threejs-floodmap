@@ -5,7 +5,7 @@ import { terrainShader } from './shaders/terrain-shader'
 import { GUI } from 'dat.gui'
 import { Mesh } from 'three'
 import axios from 'axios'
-import { startSession, endSession, init, sessionData } from './util'
+import { init, sessionData } from './util'
 import './styles/style.css'
 // import * as fs from 'fs'
 
@@ -402,7 +402,7 @@ const onMouseMove = (event: MouseEvent) => {
 }
 var polyPoints: Array<number> = []
 const state = {
-    BFS: false,
+    BFS: true,
     segmentation: false,
     semi: false,
     brushSelection: false,
@@ -420,12 +420,14 @@ const onKeyPress = (event: KeyboardEvent) => {
         raycaster.setFromCamera(pointer, camera)
         const intersects = raycaster.intersectObjects(scene.children)
         console.log(intersects)
+        sessionData.numberofClick++
         var x = Math.trunc(intersects[0].point.x)
         var y = 1856 - Math.ceil(intersects[0].point.y)
         BFS(x, y)
     } else if (event.key == 'd' && state.BFS) {
         raycaster.setFromCamera(pointer, camera)
         const intersects = raycaster.intersectObjects(scene.children)
+        sessionData.numberofClick++
         var x = Math.trunc(intersects[0].point.x)
         var y = 1856 - Math.ceil(intersects[0].point.y)
         BFS2(x, y)
@@ -441,6 +443,7 @@ const onKeyPress = (event: KeyboardEvent) => {
             params.brushSize,
             params.brushSize
         )
+        sessionData.numberofUndo++
         sessionData.annotatedPixelCount -= params.brushSize * params.brushSize
         annotationTexture.needsUpdate = true
         uniforms.annotationTexture.value = annotationTexture
@@ -457,6 +460,7 @@ const onKeyPress = (event: KeyboardEvent) => {
             params.brushSize,
             params.brushSize
         )
+        sessionData.numberofClick++
         sessionData.annotatedPixelCount += params.brushSize * params.brushSize
         annotationTexture.needsUpdate = true
         uniforms.annotationTexture.value = annotationTexture
@@ -473,6 +477,7 @@ const onKeyPress = (event: KeyboardEvent) => {
             params.brushSize,
             params.brushSize
         )
+        sessionData.numberofClick++
         sessionData.annotatedPixelCount += params.brushSize * params.brushSize
         annotationTexture.needsUpdate = true
         uniforms.annotationTexture.value = annotationTexture
@@ -485,7 +490,8 @@ const onKeyPress = (event: KeyboardEvent) => {
         polyPoints.push(x, y)
         context!.fillStyle = 'red'
         context!.fillRect(x - 2, y - 2, 4, 4)
-        sessionData.annotatedPixelCount += 16; //follow this with the line selection to minimize the double counting
+        sessionData.numberofClick++
+        sessionData.annotatedPixelCount += 16 //follow this with the line selection to minimize the double counting
         annotationTexture.needsUpdate = true
     } else if (event.key == 'l' && state.polygonSelection) {
         context!.fillStyle = 'red'
@@ -496,6 +502,7 @@ const onKeyPress = (event: KeyboardEvent) => {
         }
         context!.closePath()
         context!.fill()
+        sessionData.numberofClick++
         var linePixels: Array<number> = []
         for (var i = 0; i < polyPoints.length; i += 2) {
             var x0 = polyPoints[i]
@@ -573,6 +580,7 @@ const onKeyPress = (event: KeyboardEvent) => {
         var x = Math.trunc(intersects[0].point.x)
         var y = Math.floor(intersects[0].point.y)
         context!.fillStyle = 'red'
+        sessionData.numberofClick++
         segSelect(x, y)
     } else if (event.key == 'b' && state.segEnabled) {
         raycaster.setFromCamera(pointer, camera)
@@ -580,11 +588,13 @@ const onKeyPress = (event: KeyboardEvent) => {
         var x = Math.trunc(intersects[0].point.x)
         var y = Math.floor(intersects[0].point.y)
         context!.fillStyle = 'blue'
+        sessionData.numberofClick++
         segSelect(x, y)
     } else if (event.key == 'z') {
         for (var i = 0; i < recentFills.length; i += 2) {
             context!.clearRect(recentFills[i], recentFills[i + 1], 1, 1)
         }
+        sessionData.numberofReset++
         annotationTexture.needsUpdate = true
     }
 }
@@ -593,9 +603,12 @@ const onKeyUp = (event: KeyboardEvent) => {
         erase = false
     }
 }
-window.addEventListener('mousemove', onMouseMove)
-window.addEventListener('keydown', onKeyPress)
-window.addEventListener('keyup', onKeyUp)
+
+function startUp() {
+    window.addEventListener('mousemove', onMouseMove)
+    window.addEventListener('keydown', onKeyPress)
+    window.addEventListener('keyup', onKeyUp)
+}
 
 const satelliteLoader = new THREE.TextureLoader()
 satelliteLoader.load(
@@ -663,3 +676,5 @@ function render() {
 }
 
 animate()
+
+export { startUp }

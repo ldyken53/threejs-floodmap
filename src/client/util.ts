@@ -1,3 +1,5 @@
+import { startUp } from './client'
+
 type sessionDataType = {
     name: string
     sessionStart: Date | null
@@ -5,6 +7,9 @@ type sessionDataType = {
     totalSessionTime: number
     wasCompleted: boolean
     annotatedPixelCount: number
+    numberofClick: number
+    numberofUndo: number
+    numberofReset: number
 }
 
 const sessionData: sessionDataType = {
@@ -14,6 +19,9 @@ const sessionData: sessionDataType = {
     totalSessionTime: 0,
     wasCompleted: false,
     annotatedPixelCount: 0,
+    numberofClick: 0,
+    numberofUndo: 0,
+    numberofReset: 0,
 }
 
 function download(filename: string, text: string) {
@@ -35,6 +43,7 @@ function startSession(event: Event) {
     event.preventDefault()
     ;(event.target as HTMLTextAreaElement).style.display = 'none'
     sessionData.sessionStart = new Date()
+    startUp()
 }
 
 function endSession(event: Event) {
