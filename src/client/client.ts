@@ -10,6 +10,7 @@ import './styles/style.css'
 // import * as fs from 'fs'
 
 var data: number[] = []
+let fire: boolean = false
 var elevImage = new Image()
 elevImage.src = 'img/elevation.png'
 var elevateCanvas = document.getElementById('elevateCanvas') as HTMLCanvasElement
@@ -92,32 +93,34 @@ var segsToPixels2: {
 var persDatas: {
     [key: number]: Array<number>
 } = {}
+
+console.log(persDatas)
 var persTextures: { [key: number]: THREE.Texture } = {}
 async function getPersistence(threshold: number) {
     axios
         .get(`http://localhost:5000/test?threshold=${threshold}`)
         .then((response) => {
-            console.log(response.data)
             persDatas[threshold] = response.data.array
-            var imageData = new Uint16Array(persDatas[threshold].length)
+            var imageData = new Uint8Array(4 * persDatas[threshold].length)
             segsToPixels2[threshold] = {}
+            let paddedSize = 255 * Math.floor(response.data.max / 255) + 255
             for (var x = 0; x < persDatas[threshold].length; x++) {
-                var segID = Math.floor((255 * persDatas[threshold][x]) / response.data.max)
-                imageData[x] = segID
+                var segID = Math.floor((paddedSize * persDatas[threshold][x]) / response.data.max)
+                let tempString = segID.toString()
+                tempString.padStart(4 - tempString.length, '0')
+                const realId = Array.from(tempString).map(Number)
+                imageData[x * 4] = +tempString[0]
+                imageData[x * 4 + 1] = +tempString[1]
+                imageData[x * 4 + 2] = +tempString[2]
+                imageData[x * 4 + 3] = +tempString[3]
                 if (segsToPixels2[threshold][persDatas[threshold][x]]) {
                     segsToPixels2[threshold][persDatas[threshold][x]].push(x)
                 } else {
                     segsToPixels2[threshold][persDatas[threshold][x]] = [x]
                 }
             }
-            console.log(imageData)
-            var texture = new THREE.DataTexture(
-                imageData,
-                4104,
-                1856,
-                THREE.RedFormat,
-                THREE.IntType
-            )
+            // format RGBA
+            var texture = new THREE.DataTexture(imageData, 4104, 1856)
             texture.needsUpdate = true
             persTextures[threshold] = texture
             uniforms.persTexture.value = texture
@@ -184,7 +187,7 @@ var uniforms = {
 const meshFolder = gui.addFolder('Mesh Settings')
 const viewFolder = gui.addFolder('View Settings')
 meshFolder.add(params, 'blur', 0, 2, 1).onFinishChange(() => {
-    scene.remove(scene.children[0])
+    console.log('another object added ', `z${params.z}blur${params.blur}`)
     scene.add(meshes[`z${params.z}blur${params.blur}`])
 })
 meshFolder.add(params, 'z', 100, 500, 100).onFinishChange(() => {
@@ -403,13 +406,17 @@ const onMouseMove = (event: MouseEvent) => {
 var polyPoints: Array<number> = []
 const state = {
     BFS: true,
-    segmentation: false,
+    segmentation: true,
     semi: false,
     brushSelection: false,
     polygonSelection: false,
-    segEnabled: false,
+    segEnabled: true,
 }
 const onKeyPress = (event: KeyboardEvent) => {
+    fire = false
+    if (event.repeat) {
+        fire = true
+    }
     if (event.key == 'Escape') {
         camera.position.set(2000, 1000, 1000)
         controls = new OrbitControls(camera, renderer.domElement)
@@ -420,14 +427,18 @@ const onKeyPress = (event: KeyboardEvent) => {
         raycaster.setFromCamera(pointer, camera)
         const intersects = raycaster.intersectObjects(scene.children)
         console.log(intersects)
-        sessionData.numberofClick++
+        if (!fire) {
+            sessionData.numberofClick++
+        }
         var x = Math.trunc(intersects[0].point.x)
         var y = 1856 - Math.ceil(intersects[0].point.y)
         BFS(x, y)
     } else if (event.key == 'd' && state.BFS) {
         raycaster.setFromCamera(pointer, camera)
         const intersects = raycaster.intersectObjects(scene.children)
-        sessionData.numberofClick++
+        if (!fire) {
+            sessionData.numberofClick++
+        }
         var x = Math.trunc(intersects[0].point.x)
         var y = 1856 - Math.ceil(intersects[0].point.y)
         BFS2(x, y)
@@ -443,7 +454,10 @@ const onKeyPress = (event: KeyboardEvent) => {
             params.brushSize,
             params.brushSize
         )
-        sessionData.numberofUndo++
+        if (!fire) {
+            sessionData.numberofUndo++
+        }
+
         sessionData.annotatedPixelCount -= params.brushSize * params.brushSize
         annotationTexture.needsUpdate = true
         uniforms.annotationTexture.value = annotationTexture
@@ -460,7 +474,9 @@ const onKeyPress = (event: KeyboardEvent) => {
             params.brushSize,
             params.brushSize
         )
-        sessionData.numberofClick++
+        if (!fire) {
+            sessionData.numberofClick++
+        }
         sessionData.annotatedPixelCount += params.brushSize * params.brushSize
         annotationTexture.needsUpdate = true
         uniforms.annotationTexture.value = annotationTexture
@@ -477,7 +493,9 @@ const onKeyPress = (event: KeyboardEvent) => {
             params.brushSize,
             params.brushSize
         )
-        sessionData.numberofClick++
+        if (!fire) {
+            sessionData.numberofClick++
+        }
         sessionData.annotatedPixelCount += params.brushSize * params.brushSize
         annotationTexture.needsUpdate = true
         uniforms.annotationTexture.value = annotationTexture
@@ -490,7 +508,9 @@ const onKeyPress = (event: KeyboardEvent) => {
         polyPoints.push(x, y)
         context!.fillStyle = 'red'
         context!.fillRect(x - 2, y - 2, 4, 4)
-        sessionData.numberofClick++
+        if (!fire) {
+            sessionData.numberofClick++
+        }
         sessionData.annotatedPixelCount += 16 //follow this with the line selection to minimize the double counting
         annotationTexture.needsUpdate = true
     } else if (event.key == 'l' && state.polygonSelection) {
@@ -575,12 +595,15 @@ const onKeyPress = (event: KeyboardEvent) => {
         polyPoints = []
         annotationTexture.needsUpdate = true
     } else if (event.key == 'n' && state.segEnabled) {
+        console.log('n selected')
         raycaster.setFromCamera(pointer, camera)
         const intersects = raycaster.intersectObjects(scene.children)
         var x = Math.trunc(intersects[0].point.x)
         var y = Math.floor(intersects[0].point.y)
         context!.fillStyle = 'red'
-        sessionData.numberofClick++
+        if (!fire) {
+            sessionData.numberofClick++
+        }
         segSelect(x, y)
     } else if (event.key == 'b' && state.segEnabled) {
         raycaster.setFromCamera(pointer, camera)
@@ -594,7 +617,9 @@ const onKeyPress = (event: KeyboardEvent) => {
         for (var i = 0; i < recentFills.length; i += 2) {
             context!.clearRect(recentFills[i], recentFills[i + 1], 1, 1)
         }
-        sessionData.numberofReset++
+        if (!fire) {
+            sessionData.numberofReset++
+        }
         annotationTexture.needsUpdate = true
     }
 }

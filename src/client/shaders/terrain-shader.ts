@@ -19,7 +19,7 @@ void main(){
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
     // vPosition = gl_Position.xyz*vec3(0.5,0.5,0.5) + vec3(0.5,0.5,0.5);
   }
-`;
+`
 
 const _FS = `#version 300 es
 
@@ -52,7 +52,8 @@ void main(){
     vec3 color = sampleTexture(diffuseTexture, vPosition.xy).rgb;
     
     if (persShow > 0) {
-      float segID = sampleTexture(persTexture, vPosition.xy).r;
+      vec4 _segID = sampleTexture(persTexture, vPosition.xy).rgba;
+      float segID = _segID.x*1000.0 + _segID.y*100.0 + _segID.z*10.0 + _segID.w*1.0;
       if (persShow == 1 || persShow == 3) {
         color = 0.9 * color + 0.1 * texture(colormap, vec2(segID, 0)).rgb;
       }
@@ -79,5 +80,5 @@ void main(){
         out_FragColor = vec4(color, 1.0);
     }
 }
-`;
-export const terrainShader = { _VS, _FS };
+`
+export const terrainShader = { _VS, _FS }
