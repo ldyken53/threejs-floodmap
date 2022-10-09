@@ -107,12 +107,12 @@ async function getPersistence(threshold: number) {
             for (var x = 0; x < persDatas[threshold].length; x++) {
                 var segID = Math.floor((paddedSize * persDatas[threshold][x]) / response.data.max)
                 let tempString = segID.toString()
-                tempString.padStart(4 - tempString.length, '0')
-                const realId = Array.from(tempString).map(Number)
-                imageData[x * 4] = +tempString[0]
-                imageData[x * 4 + 1] = +tempString[1]
-                imageData[x * 4 + 2] = +tempString[2]
-                imageData[x * 4 + 3] = +tempString[3]
+                let maskedNumber = tempString.padStart(4, '0')
+                const realId = Array.from(maskedNumber).map(Number)
+                imageData[x * 4] = +realId[0]
+                imageData[x * 4 + 1] = +realId[1]
+                imageData[x * 4 + 2] = +realId[2]
+                imageData[x * 4 + 3] = +realId[3]
                 if (segsToPixels2[threshold][persDatas[threshold][x]]) {
                     segsToPixels2[threshold][persDatas[threshold][x]].push(x)
                 } else {
@@ -184,34 +184,36 @@ var uniforms = {
     annotation: { value: params.annotation },
     persShow: { value: params.persShow },
 }
-const meshFolder = gui.addFolder('Mesh Settings')
+// const meshFolder = gui.addFolder('Mesh Settings')
 const viewFolder = gui.addFolder('View Settings')
-meshFolder.add(params, 'blur', 0, 2, 1).onFinishChange(() => {
-    console.log('another object added ', `z${params.z}blur${params.blur}`)
-    scene.add(meshes[`z${params.z}blur${params.blur}`])
-})
-meshFolder.add(params, 'z', 100, 500, 100).onFinishChange(() => {
-    scene.remove(scene.children[0])
-    uniforms.z.value = params.z
-    scene.add(meshes[`z${params.z}blur${params.blur}`])
-})
+// meshFolder.add(params, 'blur', 0, 2, 1).onFinishChange(() => {
+//     console.log('another object added ', `z${params.z}blur${params.blur}`)
+//     scene.add(meshes[`z${params.z}blur${params.blur}`])
+// })
+// meshFolder.add(params, 'z', 100, 500, 100).onFinishChange(() => {
+//     scene.remove(scene.children[0])
+//     uniforms.z.value = params.z
+//     scene.add(meshes[`z${params.z}blur${params.blur}`])
+// })
+
 viewFolder.add(params, 'annotation', 0, 1, 1).onFinishChange(() => {
     uniforms.annotation.value = params.annotation
 })
-viewFolder.add(params, 'pers', 20, 50, 10).onFinishChange(() => {
-    if (persTextures[params.pers]) {
-        uniforms.persTexture.value = persTextures[params.pers]
-    } else {
-        getPersistence(params.pers)
-    }
-})
+// viewFolder.add(params, 'pers', 20, 50, 10).onFinishChange(() => {
+//     if (persTextures[params.pers]) {
+//         uniforms.persTexture.value = persTextures[params.pers]
+//     } else {
+//         getPersistence(params.pers)
+//     }
+// })
+
 viewFolder.add(params, 'persShow', 0, 3, 1).onFinishChange(() => {
     uniforms.persShow.value = params.persShow
 })
 viewFolder.add(params, 'brushSize', 1, 50, 1)
 
 viewFolder.open()
-meshFolder.open()
+// meshFolder.open()
 
 var recentFills: Array<number> = []
 var visitedFlood = new Map()
