@@ -5,7 +5,7 @@ interface sessionDataType {
     name: string
     sessionStart: Date | null
     sessionEnd: Date | null
-    'totalSessionTime_M:S:MS': string
+    'totalSessionTime_M:S': string
     wasCompleted: boolean
     annotatedPixelCount: number
     numberofClick: number
@@ -17,7 +17,7 @@ const sessionData: sessionDataType = {
     name: 'Pravin',
     sessionStart: null,
     sessionEnd: null,
-    'totalSessionTime_M:S:MS': '0:0:0',
+    'totalSessionTime_M:S': '0:0:0',
     wasCompleted: false,
     annotatedPixelCount: 0,
     numberofClick: 0,
