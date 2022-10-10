@@ -8,7 +8,7 @@ from vtkmodules.all import (
 import gc
 from vtkmodules.util.numpy_support import vtk_to_numpy
 import numpy as np
-# import cv2 as cv
+import cv2 as cv
 import json
 
 from topologytoolkit import (
@@ -43,7 +43,7 @@ tree.SetWithSegmentation(1)
 @app.route('/test', methods=['GET'])
 def test():
     response = {}
-    for i in range(10, 60, 10):
+    for i in range(20, 60, 10):
         simplify.SetPersistenceThreshold(i)
         simplify.Update()
         tree.Update()
