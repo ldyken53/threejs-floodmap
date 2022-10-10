@@ -26,7 +26,7 @@ const scene = new THREE.Scene()
 // const blurs = [0, 1, 2];
 // const zs = [100, 200, 300, 400, 500];
 const blurs = [0]
-const zs = [500]
+const zs = [0, 500]
 const pers = [20, 30, 40, 50]
 var meshes: { [key: string]: Mesh } = {}
 
@@ -93,37 +93,38 @@ var persDatas: {
     [key: number]: Array<number>
 } = {}
 var persTextures: { [key: number]: THREE.Texture } = {}
-async function getPersistence(threshold: number) {
+async function getPersistence() {
     axios
-        .get(`http://localhost:5000/test?threshold=${threshold}`)
+        .get(`http://localhost:5000/test`)
         .then((response) => {
             console.log(response.data)
-            persDatas[threshold] = response.data.array
-            var imageData = new Uint8Array(4 * persDatas[threshold].length)
-            segsToPixels2[threshold] = {}
-            for (var x = 0; x < persDatas[threshold].length; x++) {
-                var segID = Math.floor((255 * persDatas[threshold][x]) / response.data.max)
-                imageData[x * 4] = segID
-                imageData[x * 4 + 1] = segID
-                imageData[x * 4 + 2] = segID
-                imageData[x * 4 + 3] = 255
-                if (segsToPixels2[threshold][persDatas[threshold][x]]) {
-                    segsToPixels2[threshold][persDatas[threshold][x]].push(x)
-                } else {
-                    segsToPixels2[threshold][persDatas[threshold][x]] = [x]
+            pers.forEach((threshold) => {
+                persDatas[threshold] = response.data[threshold].array
+                var imageData = new Uint8Array(4 * persDatas[threshold].length)
+                segsToPixels2[threshold] = {}
+                for (var x = 0; x < persDatas[threshold].length; x++) {
+                    var segID = Math.floor((255 * persDatas[threshold][x]) / response.data[threshold].max)
+                    imageData[x * 4] = segID
+                    imageData[x * 4 + 1] = segID
+                    imageData[x * 4 + 2] = segID
+                    imageData[x * 4 + 3] = 255
+                    if (segsToPixels2[threshold][persDatas[threshold][x]]) {
+                        segsToPixels2[threshold][persDatas[threshold][x]].push(x)
+                    } else {
+                        segsToPixels2[threshold][persDatas[threshold][x]] = [x]
+                    }
                 }
-            }
-            console.log(imageData)
-            var texture = new THREE.DataTexture(imageData, 4104, 1856)
-            texture.needsUpdate = true
-            persTextures[threshold] = texture
-            uniforms.persTexture.value = texture
+                var texture = new THREE.DataTexture(imageData, 4104, 1856)
+                texture.needsUpdate = true
+                persTextures[threshold] = texture
+                uniforms.persTexture.value = texture
+            });
         })
         .catch((error) => {
             console.log(error)
         })
 }
-getPersistence(50)
+getPersistence()
 persLoader.load(
     './img/rainbow.png',
     function (texture) {
@@ -177,7 +178,7 @@ meshFolder.add(params, 'blur', 0, 2, 1).onFinishChange(() => {
     scene.remove(scene.children[0])
     scene.add(meshes[`z${params.z}blur${params.blur}`])
 })
-meshFolder.add(params, 'z', 100, 500, 100).onFinishChange(() => {
+meshFolder.add(params, 'z', 0, 500, 100).onFinishChange(() => {
     scene.remove(scene.children[0])
     uniforms.z.value = params.z
     scene.add(meshes[`z${params.z}blur${params.blur}`])
@@ -186,11 +187,7 @@ viewFolder.add(params, 'annotation', 0, 1, 1).onFinishChange(() => {
     uniforms.annotation.value = params.annotation
 })
 viewFolder.add(params, 'pers', 20, 50, 10).onFinishChange(() => {
-    if (persTextures[params.pers]) {
         uniforms.persTexture.value = persTextures[params.pers]
-    } else {
-        getPersistence(params.pers)
-    }
 })
 viewFolder.add(params, 'persShow', 0, 3, 1).onFinishChange(() => {
     uniforms.persShow.value = params.persShow
