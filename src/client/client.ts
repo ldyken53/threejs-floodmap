@@ -27,7 +27,7 @@ const scene = new THREE.Scene()
 // const blurs = [0, 1, 2];
 // const zs = [100, 200, 300, 400, 500];
 const blurs = [0]
-const zs = [500]
+const zs = [0, 500]
 const pers = [20, 30, 40, 50]
 var meshes: { [key: string]: Mesh } = {}
 let paddedSize: number = 0
@@ -98,41 +98,43 @@ var persDatas: {
 
 console.log(persDatas)
 var persTextures: { [key: number]: THREE.Texture } = {}
-async function getPersistence(threshold: number) {
+async function getPersistence() {
     axios
-        .get(`http://localhost:5000/test?threshold=${threshold}`)
+        .get(`http://localhost:5000/test`)
         .then((response) => {
-            persDatas[threshold] = response.data.array
-            maxPersValue = response.data.max
-            var imageData = new Uint8Array(4 * persDatas[threshold].length)
-            segsToPixels2[threshold] = {}
-            paddedSize = 255 * Math.floor(response.data.max / 255) + 255
-            for (var x = 0; x < persDatas[threshold].length; x++) {
-                var segID = Math.floor((paddedSize * persDatas[threshold][x]) / maxPersValue)
-                let tempString = segID.toString()
-                let maskedNumber = tempString.padStart(4, '0')
-                const realId = Array.from(maskedNumber).map(Number)
-                imageData[x * 4] = +realId[0]
-                imageData[x * 4 + 1] = +realId[1]
-                imageData[x * 4 + 2] = +realId[2]
-                imageData[x * 4 + 3] = +realId[3]
-                if (segsToPixels2[threshold][persDatas[threshold][x]]) {
-                    segsToPixels2[threshold][persDatas[threshold][x]].push(x)
-                } else {
-                    segsToPixels2[threshold][persDatas[threshold][x]] = [x]
+            console.log(response.data)
+            pers.forEach((threshold) => {
+                persDatas[threshold] = response.data[threshold].array
+                var maxPersValue = response.data[threshold].max
+                paddedSize = 255 * Math.floor(maxPersValue / 255) + 255
+                var imageData = new Uint8Array(4 * persDatas[threshold].length)
+                segsToPixels2[threshold] = {}
+                for (var x = 0; x < persDatas[threshold].length; x++) {
+                    var segID = Math.floor((paddedSize * persDatas[threshold][x]) / maxPersValue)
+                    let tempString = segID.toString()
+                    let maskedNumber = tempString.padStart(4, '0')
+                    const realId = Array.from(maskedNumber).map(Number)
+                    imageData[x * 4] = +realId[0]
+                    imageData[x * 4 + 1] = +realId[1]
+                    imageData[x * 4 + 2] = +realId[2]
+                    imageData[x * 4 + 3] = +realId[3]
+                    if (segsToPixels2[threshold][persDatas[threshold][x]]) {
+                        segsToPixels2[threshold][persDatas[threshold][x]].push(x)
+                    } else {
+                        segsToPixels2[threshold][persDatas[threshold][x]] = [x]
+                    }
                 }
-            }
-            // format RGBA
-            var texture = new THREE.DataTexture(imageData, 4104, 1856)
-            texture.needsUpdate = true
-            persTextures[threshold] = texture
-            uniforms.persTexture.value = texture
+                var texture = new THREE.DataTexture(imageData, 4104, 1856)
+                texture.needsUpdate = true
+                persTextures[threshold] = texture
+                uniforms.persTexture.value = texture
+            });
         })
         .catch((error) => {
             console.log(error)
         })
 }
-getPersistence(50)
+getPersistence()
 persLoader.load(
     './img/rainbow.png',
     function (texture) {
@@ -198,29 +200,24 @@ var uniforms = {
     hoverValue: { type: 'f', value: params.hoverId },
     guide: { value: params.guide },
 }
-// const meshFolder = gui.addFolder('Mesh Settings')
+const meshFolder = gui.addFolder('Mesh Settings')
 const viewFolder = gui.addFolder('View Settings')
-// meshFolder.add(params, 'blur', 0, 2, 1).onFinishChange(() => {
-//     console.log('another object added ', `z${params.z}blur${params.blur}`)
-//     scene.add(meshes[`z${params.z}blur${params.blur}`])
-// })
-// meshFolder.add(params, 'z', 100, 500, 100).onFinishChange(() => {
-//     scene.remove(scene.children[0])
-//     uniforms.z.value = params.z
-//     scene.add(meshes[`z${params.z}blur${params.blur}`])
-// })
 
+meshFolder.add(params, 'blur', 0, 2, 1).onFinishChange(() => {
+    scene.remove(scene.children[0])
+    scene.add(meshes[`z${params.z}blur${params.blur}`])
+})
+meshFolder.add(params, 'z', 0, 500, 100).onFinishChange(() => {
+    scene.remove(scene.children[0])
+    uniforms.z.value = params.z
+    scene.add(meshes[`z${params.z}blur${params.blur}`])
+})
 viewFolder.add(params, 'annotation', 0, 1, 1).onFinishChange(() => {
     uniforms.annotation.value = params.annotation
 })
-// viewFolder.add(params, 'pers', 20, 50, 10).onFinishChange(() => {
-//     if (persTextures[params.pers]) {
-//         uniforms.persTexture.value = persTextures[params.pers]
-//     } else {
-//         getPersistence(params.pers)
-//     }
-// })
-
+viewFolder.add(params, 'pers', 20, 50, 10).onFinishChange(() => {
+        uniforms.persTexture.value = persTextures[params.pers]
+})
 viewFolder.add(params, 'persShow', 0, 3, 1).onFinishChange(() => {
     uniforms.persShow.value = params.persShow
 })
