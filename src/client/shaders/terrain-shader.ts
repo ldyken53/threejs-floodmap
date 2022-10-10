@@ -19,7 +19,7 @@ void main(){
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
     // vPosition = gl_Position.xyz*vec3(0.5,0.5,0.5) + vec3(0.5,0.5,0.5);
   }
-`;
+`
 
 const _FS = `#version 300 es
 
@@ -36,6 +36,8 @@ uniform sampler2D persTexture;
 uniform sampler2D colormap;
 uniform int annotation;
 uniform int persShow;
+uniform float hoverValue;
+uniform int guide;
 uniform int segs;
 uniform int z;
 
@@ -50,27 +52,42 @@ vec4 sampleTexture(sampler2D sampleTex, vec2 coords) {
 
 void main(){
     vec3 color = sampleTexture(diffuseTexture, vPosition.xy).rgb;
-    
-    if (persShow > 0) {
-      float segID = sampleTexture(persTexture, vPosition.xy).r;
-      if (persShow == 1 || persShow == 3) {
-        color = 0.9 * color + 0.1 * texture(colormap, vec2(segID, 0)).rgb;
-      }
-      if (persShow > 1) {
-        const vec2 neighbors[4] = vec2[4](
-          // Diagonal neighbors
-          // vec2(-1, -1), vec2(1, -1), vec2(1, 1),vec2(-1, 1), 
-          // Cross neighbors
-          vec2(-1, 0), vec2(0, -1), vec2(0, 1), vec2(1, 0)
-        );
-        for (int i = 0; i < 8; i++) {
-          if (abs(sampleTexture(persTexture, vPosition.xy + neighbors[i]).r - segID) > 0.001) {
-            color = texture(colormap, vec2(segID, 0)).rgb;
-            break;
-          }
+    vec4 _segID = sampleTexture(persTexture, vPosition.xy).rgba;
+      float segID = _segID.x*1000.0 + _segID.y*100.0 + _segID.z*10.0 + _segID.w*1.0;
+      float originalSegID = floor(segID*255.0);
+      if(guide > 0){
+        if(originalSegID == hoverValue){
+          color = 0.3 * color + 0.7 * texture(colormap, vec2(segID, 0)).rgb;
         }
       }
-    }
+      else{
+        if (persShow > 0) {
+        
+            if (persShow == 1 || persShow == 3) {
+              color = 0.9 * color + 0.1 * texture(colormap, vec2(segID, 0)).rgb;
+            }
+    
+            if (persShow > 1) {
+              const vec2 neighbors[4] = vec2[4](
+                // Diagonal neighbors
+                // vec2(-1, -1), vec2(1, -1), vec2(1, 1),vec2(-1, 1), 
+                // Cross neighbors
+                vec2(-1, 0), vec2(0, -1), vec2(0, 1), vec2(1, 0)
+              );
+              for (int i = 0; i < 8; i++) {
+                if (abs(sampleTexture(persTexture, vPosition.xy + neighbors[i]).r - segID) > 0.001) {
+                  color = texture(colormap, vec2(segID, 0)).rgb;
+                  break;
+                }
+                else{
+                  color = texture(colormap, vec2(segID, 0)).rgb;
+                  break;
+                }
+              }
+            }    
+          }
+       }
+
 
     if (annotation == 1) {
         vec3 aColor = sampleTexture(annotationTexture, vPosition.xy).rgb;
@@ -79,5 +96,5 @@ void main(){
         out_FragColor = vec4(color, 1.0);
     }
 }
-`;
-export const terrainShader = { _VS, _FS };
+`
+export const terrainShader = { _VS, _FS }

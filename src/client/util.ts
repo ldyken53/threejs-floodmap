@@ -1,17 +1,28 @@
-type sessionDataType = {
+import { startUp } from './client'
+const pixelCount = 7617024
+
+interface sessionDataType {
     name: string
     sessionStart: Date | null
     sessionEnd: Date | null
-    totalSessionTime: number
+    'totalSessionTime_M:S:MS': string
     wasCompleted: boolean
+    annotatedPixelCount: number
+    numberofClick: number
+    numberofUndo: number
+    numberofReset: number
 }
 
 const sessionData: sessionDataType = {
     name: 'Pravin',
     sessionStart: null,
     sessionEnd: null,
-    totalSessionTime: 0,
+    'totalSessionTime_M:S:MS': '0:0:0',
     wasCompleted: false,
+    annotatedPixelCount: 0,
+    numberofClick: 0,
+    numberofUndo: 0,
+    numberofReset: 0,
 }
 
 function download(filename: string, text: string) {
@@ -24,6 +35,13 @@ function download(filename: string, text: string) {
     document.body.removeChild(element)
 }
 
+function convertToSecMins(millisecond: number) {
+    const minutes = Math.floor(millisecond / 60000)
+    const seconds = ((millisecond % 60000) / 1000).toFixed(0)
+    const milliseconds = (millisecond % 1000).toFixed(0)
+    return minutes + ':' + (+seconds < 10 ? '0' : '') + seconds + ':' + milliseconds
+}
+
 function resetCamera(controls: any) {
     controls.reset()
     return controls
@@ -31,18 +49,23 @@ function resetCamera(controls: any) {
 
 function startSession(event: Event) {
     event.preventDefault()
-    ;(event.target as HTMLTextAreaElement).style.display = 'none'
+    ;(event.target as HTMLButtonElement).style.display = 'none'
     sessionData.sessionStart = new Date()
+    startUp()
 }
 
 function endSession(event: Event) {
     event.preventDefault()
-    ;(event.target as HTMLTextAreaElement).style.display = 'none'
+    ;(event.target as HTMLButtonElement).style.display = 'none'
     sessionData.sessionEnd = new Date()
     sessionData.wasCompleted = false
-    sessionData.totalSessionTime = Math.abs(
+    let totalSessionTime = Math.abs(
         sessionData.sessionStart!.valueOf() - sessionData.sessionEnd!.valueOf()
     )
+    sessionData['totalSessionTime_M:S'] = convertToSecMins(totalSessionTime)
+    if (sessionData.annotatedPixelCount > 0.9 * pixelCount) {
+        sessionData.wasCompleted = true
+    }
 }
 
 function downloadSession(event: Event) {
@@ -55,6 +78,8 @@ function downloadSession(event: Event) {
 function hideModal() {
     ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'none'
     ;(document.getElementById('ui-menu') as HTMLElement).style.display = 'block'
+    let userId = (document.getElementById('studentId') as HTMLInputElement).value
+    sessionData.name = userId
 }
 
 function init() {
@@ -64,4 +89,9 @@ function init() {
     document.getElementById('exploration')?.addEventListener('click', hideModal)
 }
 
-export { resetCamera, startSession, endSession, init }
+function initVis() {
+    ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
+    ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
+}
+
+export { resetCamera, startSession, endSession, init, initVis, sessionData }

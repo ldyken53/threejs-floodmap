@@ -1,4 +1,6 @@
-* {
+*,
+*:before,
+*:after {
     box-sizing: border-box;
 }
 
@@ -48,8 +50,12 @@ button {
 
 #modal-wrapper {
     position: fixed;
-    top: 15%;
-    left: 35%;
+    display: none;
+    /* top: 15%;
+    left: 35%; */
+    width: 100%;
+    height: 100%;
+    text-align: center;
     background: rgba(1, 1, 1, 0.5);
     color: white;
     z-index: 99999;
@@ -59,7 +65,8 @@ button {
 }
 
 #modal-wrapper button {
-    right: 10px;
+    /* right: 10px; */
+    position: relative;
 }
 
 .modal-header {
@@ -76,4 +83,32 @@ button {
 }
 .modal-body {
     padding: 20px;
+}
+
+input[type='text'] {
+    padding: 10px;
+    margin: 10px;
+    border: 2px solid #ccc;
+    box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
+}
+
+#loader {
+    border-top: 16px solid rgb(243, 158, 0);
+    border-right: 16px solid green;
+    border-bottom: 16px solid rgb(55, 53, 180);
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+    position: absolute;
+    top: 45%;
+    left: 45%;
+}
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }

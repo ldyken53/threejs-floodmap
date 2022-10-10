@@ -26,6 +26,7 @@
     </head>
 
     <body>
+        <div id="loader"></div>
         <div id="ui-menu">
             <button class="session-terminal" id="download">DOWNLOAD</button>
             <button class="session-terminal" id="end">FINISH</button>
@@ -40,6 +41,14 @@
             <div class="modal-body">
                 <p>Please read and note these instruction if needed ! :D</p>
                 <hr />
+                <label for="studentId">Student Id:</label>
+                <input
+                    type="text"
+                    id="studentId"
+                    name="studentId"
+                    placeholder="Enter your student id"
+                />
+                <small></small>
                 <ul>
                     <li>Press <b>Escape</b> to reset the camera</li>
                     <li>Press <b>e</b> erase with brush</li>
