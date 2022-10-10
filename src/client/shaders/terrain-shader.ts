@@ -80,8 +80,7 @@ void main(){
                   break;
                 }
                 else{
-                  // float val = sampleTexture(persTexture, vPosition.xy + neighbors[i]).r;
-                  color = vec3(vPosition.xy, 1.0);
+                  color = texture(colormap, vec2(segID, 0)).rgb;
                   break;
                 }
               }

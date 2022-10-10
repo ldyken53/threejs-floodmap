@@ -221,7 +221,7 @@ viewFolder.add(params, 'annotation', 0, 1, 1).onFinishChange(() => {
 //     }
 // })
 
-viewFolder.add(params, 'persShow', 2, 3, 1).onFinishChange(() => {
+viewFolder.add(params, 'persShow', 0, 3, 1).onFinishChange(() => {
     uniforms.persShow.value = params.persShow
 })
 viewFolder.add(params, 'brushSize', 1, 50, 1)
@@ -701,7 +701,9 @@ satelliteLoader.load(
                     }
                 )
             })
-            initVis()
+            setTimeout(function () {
+                initVis()
+            }, 2000)
         })
     },
     undefined,

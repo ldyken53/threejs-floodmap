@@ -5,7 +5,7 @@ interface sessionDataType {
     name: string
     sessionStart: Date | null
     sessionEnd: Date | null
-    'totalSessionTime_M:S': string
+    'totalSessionTime_M:S:MS': string
     wasCompleted: boolean
     annotatedPixelCount: number
     numberofClick: number
@@ -17,7 +17,7 @@ const sessionData: sessionDataType = {
     name: 'Pravin',
     sessionStart: null,
     sessionEnd: null,
-    'totalSessionTime_M:S': '0:0',
+    'totalSessionTime_M:S:MS': '0:0:0',
     wasCompleted: false,
     annotatedPixelCount: 0,
     numberofClick: 0,
@@ -49,14 +49,14 @@ function resetCamera(controls: any) {
 
 function startSession(event: Event) {
     event.preventDefault()
-    ;(event.target as HTMLTextAreaElement).style.display = 'none'
+    ;(event.target as HTMLButtonElement).style.display = 'none'
     sessionData.sessionStart = new Date()
     startUp()
 }
 
 function endSession(event: Event) {
     event.preventDefault()
-    ;(event.target as HTMLTextAreaElement).style.display = 'none'
+    ;(event.target as HTMLButtonElement).style.display = 'none'
     sessionData.sessionEnd = new Date()
     sessionData.wasCompleted = false
     let totalSessionTime = Math.abs(
@@ -90,8 +90,8 @@ function init() {
 }
 
 function initVis() {
-    //hide loader
-    // show the Modal
+    ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
+    ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
 }
 
 export { resetCamera, startSession, endSession, init, initVis, sessionData }
