@@ -89,4 +89,9 @@ function init() {
     document.getElementById('exploration')?.addEventListener('click', hideModal)
 }
 
-export { resetCamera, startSession, endSession, init, sessionData }
+function initVis() {
+    //hide loader
+    // show the Modal
+}
+
+export { resetCamera, startSession, endSession, init, initVis, sessionData }

@@ -5,7 +5,7 @@ import { terrainShader } from './shaders/terrain-shader'
 import { GUI } from 'dat.gui'
 import { Mesh } from 'three'
 import axios from 'axios'
-import { init, sessionData } from './util'
+import { init, sessionData, initVis } from './util'
 import './styles/style.css'
 // import * as fs from 'fs'
 
@@ -30,6 +30,8 @@ const blurs = [0]
 const zs = [500]
 const pers = [20, 30, 40, 50]
 var meshes: { [key: string]: Mesh } = {}
+let paddedSize: number = 0
+let maxPersValue: number
 
 // var persToSegs : {[key: number]: number} = {
 //     20: 242,
@@ -101,11 +103,12 @@ async function getPersistence(threshold: number) {
         .get(`http://localhost:5000/test?threshold=${threshold}`)
         .then((response) => {
             persDatas[threshold] = response.data.array
+            maxPersValue = response.data.max
             var imageData = new Uint8Array(4 * persDatas[threshold].length)
             segsToPixels2[threshold] = {}
-            let paddedSize = 255 * Math.floor(response.data.max / 255) + 255
+            paddedSize = 255 * Math.floor(response.data.max / 255) + 255
             for (var x = 0; x < persDatas[threshold].length; x++) {
-                var segID = Math.floor((paddedSize * persDatas[threshold][x]) / response.data.max)
+                var segID = Math.floor((paddedSize * persDatas[threshold][x]) / maxPersValue)
                 let tempString = segID.toString()
                 let maskedNumber = tempString.padStart(4, '0')
                 const realId = Array.from(maskedNumber).map(Number)
@@ -172,7 +175,16 @@ var annotationTexture = new THREE.Texture(canvas)
 var context = canvas.getContext('2d')
 
 const gui = new GUI()
-var params = { blur: 0, z: 500, annotation: 1, brushSize: 5, pers: 50, persShow: 0 }
+var params = {
+    blur: 0,
+    z: 500,
+    annotation: 1,
+    brushSize: 5,
+    pers: 50,
+    persShow: 0,
+    hoverId: 0,
+    guide: 0,
+}
 // var persIndex = persToIndex[params.pers];
 var uniforms = {
     z: { value: params.z },
@@ -183,6 +195,8 @@ var uniforms = {
     pers: { value: params.pers },
     annotation: { value: params.annotation },
     persShow: { value: params.persShow },
+    hoverValue: { type: 'f', value: params.hoverId },
+    guide: { value: params.guide },
 }
 // const meshFolder = gui.addFolder('Mesh Settings')
 const viewFolder = gui.addFolder('View Settings')
@@ -207,7 +221,7 @@ viewFolder.add(params, 'annotation', 0, 1, 1).onFinishChange(() => {
 //     }
 // })
 
-viewFolder.add(params, 'persShow', 0, 3, 1).onFinishChange(() => {
+viewFolder.add(params, 'persShow', 2, 3, 1).onFinishChange(() => {
     uniforms.persShow.value = params.persShow
 })
 viewFolder.add(params, 'brushSize', 1, 50, 1)
@@ -385,6 +399,7 @@ function rfpart(x: number) {
     return 1 - fpart(x)
 }
 
+var guide = true
 var erase = false
 const pointer = new THREE.Vector2()
 const raycaster = new THREE.Raycaster()
@@ -393,13 +408,16 @@ const onMouseMove = (event: MouseEvent) => {
     // (-1 to +1) for both components
     pointer.x = (event.clientX / window.innerWidth) * 2 - 1
     pointer.y = -(event.clientY / window.innerHeight) * 2 + 1
-    if (erase) {
-        // raycaster.setFromCamera(pointer, camera);
-        // const intersects = raycaster.intersectObjects(scene.children);
-        // var point = intersects[0].point;
-        // var x = Math.trunc(point.x);
-        // var y = 1856 - Math.ceil(point.y);
-        // console.log(x, y);
+    if (guide) {
+        raycaster.setFromCamera(pointer, camera)
+        const intersects = raycaster.intersectObjects(scene.children)
+        var point = intersects[0].point
+        var x = Math.trunc(point.x)
+        var y = Math.ceil(point.y)
+        let localId = persDatas[params.pers][x + y * 4104]
+        params.hoverId = +Math.floor((paddedSize * localId) / maxPersValue).toFixed(1)
+        uniforms.hoverValue.value = params.hoverId
+        console.log(uniforms.hoverValue.value)
         // context!.clearRect(x - 2, y - 2, 5, 5);
         // annotationTexture.needsUpdate = true;
         // uniforms.annotationTexture.value = annotationTexture;
@@ -425,6 +443,11 @@ const onKeyPress = (event: KeyboardEvent) => {
         controls.target = new THREE.Vector3(2000, 1000, -2000)
     } else if (event.key == 'm') {
         ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
+    } else if (event.key == 'g') {
+        params.guide = 1
+        if (!fire) {
+            uniforms.guide.value = params.guide
+        }
     } else if (event.key == 'f' && state.BFS) {
         raycaster.setFromCamera(pointer, camera)
         const intersects = raycaster.intersectObjects(scene.children)
@@ -629,6 +652,10 @@ const onKeyUp = (event: KeyboardEvent) => {
     if (event.key == 'e') {
         erase = false
     }
+    if (event.key == 'g') {
+        params.guide = 0
+        uniforms.guide.value = params.guide
+    }
 }
 
 function startUp() {
@@ -674,6 +701,7 @@ satelliteLoader.load(
                     }
                 )
             })
+            initVis()
         })
     },
     undefined,
@@ -692,9 +720,8 @@ function onWindowResize() {
 
 function animate() {
     requestAnimationFrame(animate)
-
+    console.log(uniforms.hoverValue.value.toFixed(2))
     controls.update()
-
     render()
 }
 
