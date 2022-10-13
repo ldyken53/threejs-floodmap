@@ -62,7 +62,7 @@ function endSession(event: Event) {
     let totalSessionTime = Math.abs(
         sessionData.sessionStart!.valueOf() - sessionData.sessionEnd!.valueOf()
     )
-    sessionData['totalSessionTime_M:S'] = convertToSecMins(totalSessionTime)
+    sessionData['totalSessionTime_M:S:MS'] = convertToSecMins(totalSessionTime)
     if (sessionData.annotatedPixelCount > 0.9 * pixelCount) {
         sessionData.wasCompleted = true
     }

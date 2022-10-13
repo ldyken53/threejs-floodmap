@@ -68,19 +68,17 @@ void main(){
             }
     
             if (persShow > 1) {
-              const vec2 neighbors[4] = vec2[4](
+              const vec2 neighbors[12] = vec2[12](
                 // Diagonal neighbors
-                // vec2(-1, -1), vec2(1, -1), vec2(1, 1),vec2(-1, 1), 
+                vec2(-1, -1), vec2(1, -1), vec2(1, 1),vec2(-1, 1), 
                 // Cross neighbors
-                vec2(-1, 0), vec2(0, -1), vec2(0, 1), vec2(1, 0)
+                vec2(-1, 0), vec2(0, -1), vec2(0, 1), vec2(1, 0),
+                // Further cross neighbors
+                vec2(-2, 0), vec2(0, -2), vec2(0, 2), vec2(2, 0)
               );
-              for (int i = 0; i < 8; i++) {
+              for (int i = 0; i < 12; i++) {
                 if (abs(sampleTexture(persTexture, vPosition.xy + neighbors[i]).r - segID) > 0.001) {
-                  color = texture(colormap, vec2(segID, 0)).rgb;
-                  break;
-                }
-                else{
-                  color = texture(colormap, vec2(segID, 0)).rgb;
+                  color = texture(colormap, vec2(segID, 0)).rgb + vec3(1.0);
                   break;
                 }
               }

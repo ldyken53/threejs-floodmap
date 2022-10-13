@@ -10,7 +10,6 @@ import './styles/style.css'
 // import * as fs from 'fs'
 
 var data: number[] = []
-let fire: boolean = false
 var elevImage = new Image()
 elevImage.src = 'img/elevation.png'
 var elevateCanvas = document.getElementById('elevateCanvas') as HTMLCanvasElement
@@ -27,11 +26,10 @@ const scene = new THREE.Scene()
 // const blurs = [0, 1, 2];
 // const zs = [100, 200, 300, 400, 500];
 const blurs = [0]
-const zs = [500]
+const zs = [0, 500]
 const pers = [20, 30, 40, 50]
 var meshes: { [key: string]: Mesh } = {}
 let paddedSize: number = 0
-let maxPersValue: number
 
 // var persToSegs : {[key: number]: number} = {
 //     20: 242,
@@ -98,41 +96,44 @@ var persDatas: {
 
 console.log(persDatas)
 var persTextures: { [key: number]: THREE.Texture } = {}
-async function getPersistence(threshold: number) {
+var segsMax: {[key: number]: number} = {}
+async function getPersistence() {
     axios
-        .get(`http://localhost:5000/test?threshold=${threshold}`)
+        .get(`http://localhost:5000/test`)
         .then((response) => {
-            persDatas[threshold] = response.data.array
-            maxPersValue = response.data.max
-            var imageData = new Uint8Array(4 * persDatas[threshold].length)
-            segsToPixels2[threshold] = {}
-            paddedSize = 255 * Math.floor(response.data.max / 255) + 255
-            for (var x = 0; x < persDatas[threshold].length; x++) {
-                var segID = Math.floor((paddedSize * persDatas[threshold][x]) / maxPersValue)
-                let tempString = segID.toString()
-                let maskedNumber = tempString.padStart(4, '0')
-                const realId = Array.from(maskedNumber).map(Number)
-                imageData[x * 4] = +realId[0]
-                imageData[x * 4 + 1] = +realId[1]
-                imageData[x * 4 + 2] = +realId[2]
-                imageData[x * 4 + 3] = +realId[3]
-                if (segsToPixels2[threshold][persDatas[threshold][x]]) {
-                    segsToPixels2[threshold][persDatas[threshold][x]].push(x)
-                } else {
-                    segsToPixels2[threshold][persDatas[threshold][x]] = [x]
+            console.log(response.data)
+            pers.forEach((threshold) => {
+                persDatas[threshold] = response.data[threshold].array
+                segsMax[threshold] = response.data[threshold].max
+                paddedSize = 255 * Math.floor(segsMax[threshold] / 255) + 255
+                var imageData = new Uint8Array(4 * persDatas[threshold].length)
+                segsToPixels2[threshold] = {}
+                for (var x = 0; x < persDatas[threshold].length; x++) {
+                    var segID = Math.floor((paddedSize * persDatas[threshold][x]) / segsMax[threshold])
+                    let tempString = segID.toString()
+                    let maskedNumber = tempString.padStart(4, '0')
+                    const realId = Array.from(maskedNumber).map(Number)
+                    imageData[x * 4] = +realId[0]
+                    imageData[x * 4 + 1] = +realId[1]
+                    imageData[x * 4 + 2] = +realId[2]
+                    imageData[x * 4 + 3] = +realId[3]
+                    if (segsToPixels2[threshold][persDatas[threshold][x]]) {
+                        segsToPixels2[threshold][persDatas[threshold][x]].push(x)
+                    } else {
+                        segsToPixels2[threshold][persDatas[threshold][x]] = [x]
+                    }
                 }
-            }
-            // format RGBA
-            var texture = new THREE.DataTexture(imageData, 4104, 1856)
-            texture.needsUpdate = true
-            persTextures[threshold] = texture
-            uniforms.persTexture.value = texture
+                var texture = new THREE.DataTexture(imageData, 4104, 1856)
+                texture.needsUpdate = true
+                persTextures[threshold] = texture
+                uniforms.persTexture.value = texture
+            });
         })
         .catch((error) => {
             console.log(error)
         })
 }
-getPersistence(50)
+getPersistence()
 persLoader.load(
     './img/rainbow.png',
     function (texture) {
@@ -157,12 +158,6 @@ renderer.outputEncoding = THREE.sRGBEncoding
 renderer.setSize(window.innerWidth, window.innerHeight)
 renderer.shadowMap.enabled = true
 
-// enable extension
-var gl = renderer.getContext()
-var extension1 = gl.getExtension('OES_texture_float')
-if (!extension1) {
-    console.warn('float texture support extension does not available on this device')
-}
 document.body.appendChild(renderer.domElement)
 
 let controls = new OrbitControls(camera, renderer.domElement)
@@ -198,29 +193,24 @@ var uniforms = {
     hoverValue: { type: 'f', value: params.hoverId },
     guide: { value: params.guide },
 }
-// const meshFolder = gui.addFolder('Mesh Settings')
+const meshFolder = gui.addFolder('Mesh Settings')
 const viewFolder = gui.addFolder('View Settings')
-// meshFolder.add(params, 'blur', 0, 2, 1).onFinishChange(() => {
-//     console.log('another object added ', `z${params.z}blur${params.blur}`)
-//     scene.add(meshes[`z${params.z}blur${params.blur}`])
-// })
-// meshFolder.add(params, 'z', 100, 500, 100).onFinishChange(() => {
-//     scene.remove(scene.children[0])
-//     uniforms.z.value = params.z
-//     scene.add(meshes[`z${params.z}blur${params.blur}`])
-// })
 
+meshFolder.add(params, 'blur', 0, 2, 1).onFinishChange(() => {
+    scene.remove(scene.children[0])
+    scene.add(meshes[`z${params.z}blur${params.blur}`])
+})
+meshFolder.add(params, 'z', 0, 500, 100).onFinishChange(() => {
+    scene.remove(scene.children[0])
+    uniforms.z.value = params.z
+    scene.add(meshes[`z${params.z}blur${params.blur}`])
+})
 viewFolder.add(params, 'annotation', 0, 1, 1).onFinishChange(() => {
     uniforms.annotation.value = params.annotation
 })
-// viewFolder.add(params, 'pers', 20, 50, 10).onFinishChange(() => {
-//     if (persTextures[params.pers]) {
-//         uniforms.persTexture.value = persTextures[params.pers]
-//     } else {
-//         getPersistence(params.pers)
-//     }
-// })
-
+viewFolder.add(params, 'pers', 20, 50, 10).onFinishChange(() => {
+        uniforms.persTexture.value = persTextures[params.pers]
+})
 viewFolder.add(params, 'persShow', 0, 3, 1).onFinishChange(() => {
     uniforms.persShow.value = params.persShow
 })
@@ -399,8 +389,7 @@ function rfpart(x: number) {
     return 1 - fpart(x)
 }
 
-var guide = true
-var erase = false
+var guide = false
 const pointer = new THREE.Vector2()
 const raycaster = new THREE.Raycaster()
 const onMouseMove = (event: MouseEvent) => {
@@ -408,20 +397,20 @@ const onMouseMove = (event: MouseEvent) => {
     // (-1 to +1) for both components
     pointer.x = (event.clientX / window.innerWidth) * 2 - 1
     pointer.y = -(event.clientY / window.innerHeight) * 2 + 1
-    if (guide) {
-        raycaster.setFromCamera(pointer, camera)
-        const intersects = raycaster.intersectObjects(scene.children)
-        var point = intersects[0].point
-        var x = Math.trunc(point.x)
-        var y = Math.ceil(point.y)
-        let localId = persDatas[params.pers][x + y * 4104]
-        params.hoverId = +Math.floor((paddedSize * localId) / maxPersValue).toFixed(1)
-        uniforms.hoverValue.value = params.hoverId
-        console.log(uniforms.hoverValue.value)
-        // context!.clearRect(x - 2, y - 2, 5, 5);
-        // annotationTexture.needsUpdate = true;
-        // uniforms.annotationTexture.value = annotationTexture;
-    }
+    // if (guide) {
+    //     raycaster.setFromCamera(pointer, camera)
+    //     const intersects = raycaster.intersectObjects(scene.children)
+    //     var point = intersects[0].point
+    //     var x = Math.trunc(point.x)
+    //     var y = Math.ceil(point.y)
+    //     let localId = persDatas[params.pers][x + y * 4104]
+    //     params.hoverId = +Math.floor((paddedSize * localId) / segsMax[params.pers]).toFixed(1)
+    //     uniforms.hoverValue.value = params.hoverId
+    //     console.log(uniforms.hoverValue.value)
+    //     // context!.clearRect(x - 2, y - 2, 5, 5);
+    //     // annotationTexture.needsUpdate = true;
+    //     // uniforms.annotationTexture.value = annotationTexture;
+    // }
 }
 var polyPoints: Array<number> = []
 const state = {
@@ -433,9 +422,8 @@ const state = {
     segEnabled: true,
 }
 const onKeyPress = (event: KeyboardEvent) => {
-    fire = false
     if (event.repeat) {
-        fire = true
+        return
     }
     if (event.key == 'Escape') {
         camera.position.set(2000, 1000, 1000)
@@ -444,26 +432,27 @@ const onKeyPress = (event: KeyboardEvent) => {
     } else if (event.key == 'm') {
         ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
     } else if (event.key == 'g') {
+        raycaster.setFromCamera(pointer, camera)
+        const intersects = raycaster.intersectObjects(scene.children)
+        var point = intersects[0].point
+        var x = Math.trunc(point.x)
+        var y = Math.ceil(point.y)
+        let localId = persDatas[params.pers][x + y * 4104]
+        params.hoverId = +Math.floor((paddedSize * localId) / segsMax[params.pers]).toFixed(1)
+        uniforms.hoverValue.value = params.hoverId
         params.guide = 1
-        if (!fire) {
-            uniforms.guide.value = params.guide
-        }
+        guide = true
+        uniforms.guide.value = params.guide
     } else if (event.key == 'f' && state.BFS) {
         raycaster.setFromCamera(pointer, camera)
         const intersects = raycaster.intersectObjects(scene.children)
         console.log(intersects)
-        if (!fire) {
-            sessionData.numberofClick++
-        }
         var x = Math.trunc(intersects[0].point.x)
         var y = 1856 - Math.ceil(intersects[0].point.y)
         BFS(x, y)
     } else if (event.key == 'd' && state.BFS) {
         raycaster.setFromCamera(pointer, camera)
         const intersects = raycaster.intersectObjects(scene.children)
-        if (!fire) {
-            sessionData.numberofClick++
-        }
         var x = Math.trunc(intersects[0].point.x)
         var y = 1856 - Math.ceil(intersects[0].point.y)
         BFS2(x, y)
@@ -479,9 +468,6 @@ const onKeyPress = (event: KeyboardEvent) => {
             params.brushSize,
             params.brushSize
         )
-        if (!fire) {
-            sessionData.numberofUndo++
-        }
 
         sessionData.annotatedPixelCount -= params.brushSize * params.brushSize
         annotationTexture.needsUpdate = true
@@ -499,9 +485,6 @@ const onKeyPress = (event: KeyboardEvent) => {
             params.brushSize,
             params.brushSize
         )
-        if (!fire) {
-            sessionData.numberofClick++
-        }
         sessionData.annotatedPixelCount += params.brushSize * params.brushSize
         annotationTexture.needsUpdate = true
         uniforms.annotationTexture.value = annotationTexture
@@ -518,9 +501,6 @@ const onKeyPress = (event: KeyboardEvent) => {
             params.brushSize,
             params.brushSize
         )
-        if (!fire) {
-            sessionData.numberofClick++
-        }
         sessionData.annotatedPixelCount += params.brushSize * params.brushSize
         annotationTexture.needsUpdate = true
         uniforms.annotationTexture.value = annotationTexture
@@ -533,9 +513,6 @@ const onKeyPress = (event: KeyboardEvent) => {
         polyPoints.push(x, y)
         context!.fillStyle = 'red'
         context!.fillRect(x - 2, y - 2, 4, 4)
-        if (!fire) {
-            sessionData.numberofClick++
-        }
         sessionData.annotatedPixelCount += 16 //follow this with the line selection to minimize the double counting
         annotationTexture.needsUpdate = true
     } else if (event.key == 'l' && state.polygonSelection) {
@@ -626,9 +603,7 @@ const onKeyPress = (event: KeyboardEvent) => {
         var x = Math.trunc(intersects[0].point.x)
         var y = Math.floor(intersects[0].point.y)
         context!.fillStyle = 'red'
-        if (!fire) {
-            sessionData.numberofClick++
-        }
+
         segSelect(x, y)
     } else if (event.key == 'b' && state.segEnabled) {
         raycaster.setFromCamera(pointer, camera)
@@ -642,17 +617,12 @@ const onKeyPress = (event: KeyboardEvent) => {
         for (var i = 0; i < recentFills.length; i += 2) {
             context!.clearRect(recentFills[i], recentFills[i + 1], 1, 1)
         }
-        if (!fire) {
-            sessionData.numberofReset++
-        }
         annotationTexture.needsUpdate = true
     }
 }
 const onKeyUp = (event: KeyboardEvent) => {
-    if (event.key == 'e') {
-        erase = false
-    }
     if (event.key == 'g') {
+        guide = false
         params.guide = 0
         uniforms.guide.value = params.guide
     }
@@ -722,7 +692,6 @@ function onWindowResize() {
 
 function animate() {
     requestAnimationFrame(animate)
-    console.log(uniforms.hoverValue.value.toFixed(2))
     controls.update()
     render()
 }
