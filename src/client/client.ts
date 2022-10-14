@@ -5,7 +5,7 @@ import { terrainShader } from './shaders/terrain-shader'
 import { GUI } from 'dat.gui'
 import { Mesh } from 'three'
 import axios from 'axios'
-import { init, sessionData, initVis } from './util'
+import { init, sessionData, initVis, gameState } from './util'
 import './styles/style.css'
 // import * as fs from 'fs'
 
@@ -26,7 +26,7 @@ const scene = new THREE.Scene()
 // const blurs = [0, 1, 2];
 // const zs = [100, 200, 300, 400, 500];
 const blurs = [0]
-const zs = [0, 500]
+const zs = [500]
 const pers = [20, 30, 40, 50]
 var meshes: { [key: string]: Mesh } = {}
 let paddedSize: number = 0
@@ -96,7 +96,7 @@ var persDatas: {
 
 console.log(persDatas)
 var persTextures: { [key: number]: THREE.Texture } = {}
-var segsMax: {[key: number]: number} = {}
+var segsMax: { [key: number]: number } = {}
 async function getPersistence() {
     axios
         .get(`http://localhost:5000/test`)
@@ -109,7 +109,9 @@ async function getPersistence() {
                 var imageData = new Uint8Array(4 * persDatas[threshold].length)
                 segsToPixels2[threshold] = {}
                 for (var x = 0; x < persDatas[threshold].length; x++) {
-                    var segID = Math.floor((paddedSize * persDatas[threshold][x]) / segsMax[threshold])
+                    var segID = Math.floor(
+                        (paddedSize * persDatas[threshold][x]) / segsMax[threshold]
+                    )
                     let tempString = segID.toString()
                     let maskedNumber = tempString.padStart(4, '0')
                     const realId = Array.from(maskedNumber).map(Number)
@@ -127,7 +129,7 @@ async function getPersistence() {
                 texture.needsUpdate = true
                 persTextures[threshold] = texture
                 uniforms.persTexture.value = texture
-            });
+            })
         })
         .catch((error) => {
             console.log(error)
@@ -209,7 +211,7 @@ viewFolder.add(params, 'annotation', 0, 1, 1).onFinishChange(() => {
     uniforms.annotation.value = params.annotation
 })
 viewFolder.add(params, 'pers', 20, 50, 10).onFinishChange(() => {
-        uniforms.persTexture.value = persTextures[params.pers]
+    uniforms.persTexture.value = persTextures[params.pers]
 })
 viewFolder.add(params, 'persShow', 0, 3, 1).onFinishChange(() => {
     uniforms.persShow.value = params.persShow
@@ -449,12 +451,14 @@ const onKeyPress = (event: KeyboardEvent) => {
         console.log(intersects)
         var x = Math.trunc(intersects[0].point.x)
         var y = 1856 - Math.ceil(intersects[0].point.y)
+        logMyState('f', 'BFS', pointer, x, y)
         BFS(x, y)
     } else if (event.key == 'd' && state.BFS) {
         raycaster.setFromCamera(pointer, camera)
         const intersects = raycaster.intersectObjects(scene.children)
         var x = Math.trunc(intersects[0].point.x)
         var y = 1856 - Math.ceil(intersects[0].point.y)
+        logMyState('d', 'BFS2', pointer, x, y)
         BFS2(x, y)
     } else if (event.key == 'e' && state.brushSelection) {
         raycaster.setFromCamera(pointer, camera)
@@ -472,6 +476,7 @@ const onKeyPress = (event: KeyboardEvent) => {
         sessionData.annotatedPixelCount -= params.brushSize * params.brushSize
         annotationTexture.needsUpdate = true
         uniforms.annotationTexture.value = annotationTexture
+        logMyState('e', 'clear by brush', pointer, x, y, params.brushSize)
     } else if (event.key == 'r' && state.brushSelection) {
         raycaster.setFromCamera(pointer, camera)
         const intersects = raycaster.intersectObjects(scene.children)
@@ -486,6 +491,7 @@ const onKeyPress = (event: KeyboardEvent) => {
             params.brushSize
         )
         sessionData.annotatedPixelCount += params.brushSize * params.brushSize
+        logMyState('f', 'annotation by brush', pointer, x, y, params.brushSize)
         annotationTexture.needsUpdate = true
         uniforms.annotationTexture.value = annotationTexture
     } else if (event.key == 't' && state.brushSelection) {
@@ -503,6 +509,7 @@ const onKeyPress = (event: KeyboardEvent) => {
         )
         sessionData.annotatedPixelCount += params.brushSize * params.brushSize
         annotationTexture.needsUpdate = true
+        logMyState('t', 'annotation by brush', pointer, x, y, params.brushSize)
         uniforms.annotationTexture.value = annotationTexture
     } else if (event.key == 'p' && state.polygonSelection) {
         raycaster.setFromCamera(pointer, camera)
@@ -513,11 +520,13 @@ const onKeyPress = (event: KeyboardEvent) => {
         polyPoints.push(x, y)
         context!.fillStyle = 'red'
         context!.fillRect(x - 2, y - 2, 4, 4)
+        logMyState('p', 'annotation by Polygon (polypoint added)', pointer, x, y, params.brushSize)
         sessionData.annotatedPixelCount += 16 //follow this with the line selection to minimize the double counting
         annotationTexture.needsUpdate = true
     } else if (event.key == 'l' && state.polygonSelection) {
         context!.fillStyle = 'red'
         context!.beginPath()
+        logMyState('l', 'polygon fill', undefined, undefined, undefined, undefined, polyPoints)
         context!.moveTo(polyPoints[0], polyPoints[1])
         for (var i = 2; i < polyPoints.length; i += 2) {
             context!.lineTo(polyPoints[i], polyPoints[i + 1])
@@ -603,7 +612,7 @@ const onKeyPress = (event: KeyboardEvent) => {
         var x = Math.trunc(intersects[0].point.x)
         var y = Math.floor(intersects[0].point.y)
         context!.fillStyle = 'red'
-
+        logMyState('n', 'segmentation', pointer, x, y)
         segSelect(x, y)
     } else if (event.key == 'b' && state.segEnabled) {
         raycaster.setFromCamera(pointer, camera)
@@ -612,8 +621,10 @@ const onKeyPress = (event: KeyboardEvent) => {
         var y = Math.floor(intersects[0].point.y)
         context!.fillStyle = 'blue'
         sessionData.numberofClick++
+        logMyState('b', 'segmentation', pointer, x, y)
         segSelect(x, y)
     } else if (event.key == 'z') {
+        logMyState('z', 'reset all', undefined, undefined, undefined)
         for (var i = 0; i < recentFills.length; i += 2) {
             context!.clearRect(recentFills[i], recentFills[i + 1], 1, 1)
         }
@@ -693,6 +704,8 @@ function onWindowResize() {
 function animate() {
     requestAnimationFrame(animate)
     controls.update()
+    // let position = new THREE.Vector3()
+    // camera.getWorldPosition(position)
     render()
 }
 
@@ -700,6 +713,76 @@ function render() {
     renderer.render(scene, camera)
 }
 
+function logMyState(
+    key: string,
+    event: string,
+    pointer?: THREE.Vector2,
+    x?: number,
+    y?: number,
+    brushSize?: number,
+    linePoints?: Array<number>
+) {
+    let tempS: string = `${key} pressed in ${event}`
+
+    let stateData
+    if (brushSize != undefined) {
+        stateData = {
+            label: tempS,
+            clickPosition: pointer,
+            keyPressed: key,
+            x: x,
+            y: y,
+            aspectRatio: camera.aspect,
+            cameraPosition: camera.position.clone(),
+            time: new Date(),
+        }
+    }
+
+    if (linePoints != undefined) {
+        stateData = {
+            label: tempS,
+            aspectRatio: camera.aspect,
+            keyPressed: key,
+            cameraPosition: camera.position.clone(),
+            time: new Date(),
+            linePoints: linePoints,
+        }
+    } else {
+        stateData = {
+            label: tempS,
+            clickPosition: pointer,
+            keyPressed: key,
+            x: x,
+            y: y,
+            aspectRatio: camera.aspect,
+            cameraPosition: camera.position.clone(),
+            time: new Date(),
+            brushSize: brushSize,
+        }
+    }
+    gameState.push({ mouseEvent: stateData })
+}
+
+function startState() {
+    let startStateData = {
+        label: 'start',
+        aspectRatio: camera.aspect,
+        cameraPosition: camera.position.clone(),
+        time: new Date(),
+    }
+    gameState.push({ start: startStateData })
+}
+
+function getCameraLastStage() {
+    return {
+        position: camera.position.clone(),
+        lookAt: controls.target,
+    }
+}
+
+function addMouseEvent() {}
+
+startState()
 animate()
 
 export { startUp }

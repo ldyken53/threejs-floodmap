@@ -8,7 +8,7 @@ from vtkmodules.all import (
 import gc
 from vtkmodules.util.numpy_support import vtk_to_numpy
 import numpy as np
-import cv2 as cv
+# import cv2 as cv
 import json
 
 from topologytoolkit import (

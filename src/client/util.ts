@@ -1,3 +1,4 @@
+import { Camera } from 'three'
 import { startUp } from './client'
 const pixelCount = 7617024
 
@@ -5,7 +6,7 @@ interface sessionDataType {
     name: string
     sessionStart: Date | null
     sessionEnd: Date | null
-    'totalSessionTime_M:S': string
+    'totalSessionTime_M:S:MS': string
     wasCompleted: boolean
     annotatedPixelCount: number
     numberofClick: number
@@ -13,17 +14,38 @@ interface sessionDataType {
     numberofReset: number
 }
 
+interface gameEventType {
+    label: string
+    clickPosition?: THREE.Vector2
+    keyPressed?: string
+    brushSize?: number
+    x?: number
+    y?: number
+    linePoints?: Array<number>
+    aspectRatio: number
+    cameraPosition: THREE.Vector3
+    time: Date
+}
+
+interface gameStateType {
+    [key: string]: gameEventType
+}
+
 const sessionData: sessionDataType = {
     name: 'Pravin',
     sessionStart: null,
     sessionEnd: null,
-    'totalSessionTime_M:S': '0:0:0',
+    'totalSessionTime_M:S:MS': '0:0:0',
     wasCompleted: false,
     annotatedPixelCount: 0,
     numberofClick: 0,
     numberofUndo: 0,
     numberofReset: 0,
 }
+
+// vector.applyMatrix(camera.matrixWorld)
+
+const gameState: Array<gameStateType> = []
 
 function download(filename: string, text: string) {
     var element = document.createElement('a')
@@ -70,7 +92,7 @@ function endSession(event: Event) {
 
 function downloadSession(event: Event) {
     ;(document.getElementById('download') as HTMLElement).style.display = 'none'
-    const _data = JSON.stringify(sessionData)
+    const _data = JSON.stringify(gameState)
     const _fileName = 'session_' + sessionData.name + '.json'
     download(_fileName, _data)
 }
@@ -94,4 +116,4 @@ function initVis() {
     ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
 }
 
-export { resetCamera, startSession, endSession, init, initVis, sessionData }
+export { resetCamera, startSession, endSession, init, initVis, sessionData, gameState }
