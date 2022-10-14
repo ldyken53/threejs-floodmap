@@ -27,7 +27,7 @@ const scene = new THREE.Scene()
 // const zs = [100, 200, 300, 400, 500];
 const blurs = [0]
 const zs = [0, 500]
-const pers = [0.05, 0.1, 0.15, 0.2, 0.25]
+const pers = [0.05]
 var meshes: { [key: string]: Mesh } = {}
 let paddedSize: number = 0
 
@@ -127,7 +127,8 @@ async function getPersistence() {
                 var texture = new THREE.DataTexture(imageData, 4104, 1856)
                 texture.needsUpdate = true
                 persTextures[threshold] = texture
-                uniforms.persTexture.value = texture
+                if (threshold == Math.round(params.pers * 100) / 100)
+                    uniforms.persTexture.value = texture
             })
         })
         .catch((error) => {
@@ -237,7 +238,7 @@ function segSelect(x: number, y: number) {
 }
 
 const searchFunction = {
-    BFS_Hill: {
+    BFS_Down: {
         E: (x: number, y: number, value: number) => data[x + 1 + y * 4104] <= value,
         W: (x: number, y: number, value: number) => data[x - 1 + y * 4104] <= value,
         N: (x: number, y: number, value: number) => data[x + (y + 1) * 4104] <= value,
@@ -247,7 +248,7 @@ const searchFunction = {
         SW: (x: number, y: number, value: number) => data[x - 1 + (y - 1) * 4104] <= value,
         SE: (x: number, y: number, value: number) => data[x + 1 + (y - 1) * 4104] <= value,
     },
-    BFS_Down: {
+    BFS_Hill: {
         E: (x: number, y: number, value: number) => data[x + 1 + y * 4104] >= value,
         W: (x: number, y: number, value: number) => data[x - 1 + y * 4104] >= value,
         N: (x: number, y: number, value: number) => data[x + (y + 1) * 4104] >= value,
