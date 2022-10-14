@@ -27,7 +27,7 @@ const scene = new THREE.Scene()
 // const zs = [100, 200, 300, 400, 500];
 const blurs = [0]
 const zs = [0, 500]
-const pers = [0.05]
+const pers = [0.05, 0.1, 0.15, 0.2, 0.25]
 var meshes: { [key: string]: Mesh } = {}
 let paddedSize: number = 0
 
@@ -96,6 +96,7 @@ var persDatas: {
 
 var persTextures: { [key: number]: THREE.Texture } = {}
 var segsMax: { [key: number]: number } = {}
+var imageData : { [key: number]: Uint8Array } = {}
 async function getPersistence() {
     axios
         .get(`http://localhost:5000/test`)
@@ -105,7 +106,7 @@ async function getPersistence() {
                 persDatas[threshold] = response.data[threshold].array
                 segsMax[threshold] = response.data[threshold].max
                 paddedSize = 255 * Math.floor(segsMax[threshold] / 255) + 255
-                var imageData = new Uint8Array(4 * persDatas[threshold].length)
+                imageData[threshold] = new Uint8Array(4 * persDatas[threshold].length)
                 segsToPixels2[threshold] = {}
                 for (var x = 0; x < persDatas[threshold].length; x++) {
                     var segID = Math.floor(
@@ -114,21 +115,21 @@ async function getPersistence() {
                     let tempString = segID.toString()
                     let maskedNumber = tempString.padStart(4, '0')
                     const realId = Array.from(maskedNumber).map(Number)
-                    imageData[x * 4] = +realId[0]
-                    imageData[x * 4 + 1] = +realId[1]
-                    imageData[x * 4 + 2] = +realId[2]
-                    imageData[x * 4 + 3] = +realId[3]
+                    imageData[threshold][x * 4] = +realId[0]
+                    imageData[threshold][x * 4 + 1] = +realId[1]
+                    imageData[threshold][x * 4 + 2] = +realId[2]
+                    imageData[threshold][x * 4 + 3] = +realId[3]
                     if (segsToPixels2[threshold][persDatas[threshold][x]]) {
                         segsToPixels2[threshold][persDatas[threshold][x]].push(x)
                     } else {
                         segsToPixels2[threshold][persDatas[threshold][x]] = [x]
                     }
                 }
-                var texture = new THREE.DataTexture(imageData, 4104, 1856)
-                texture.needsUpdate = true
-                persTextures[threshold] = texture
-                if (threshold == Math.round(params.pers * 100) / 100)
-                    uniforms.persTexture.value = texture
+                persTextures[threshold] = new THREE.DataTexture(imageData[threshold], 4104, 1856)
+                persTextures[threshold].needsUpdate = true
+                if (threshold == Math.round(params.pers * 100) / 100) {
+                    uniforms.persTexture.value = persTextures[threshold]
+                }
             })
         })
         .catch((error) => {
@@ -382,9 +383,7 @@ function hoverHandler() {
     var x = Math.trunc(point.x)
     var y = Math.ceil(point.y)
     let localId = persDatas[Math.round(params.pers * 100) / 100][x + y * 4104]
-    console.log(localId)
     params.hoverId = +Math.floor((paddedSize * localId) / segsMax[Math.round(params.pers * 100) / 100]).toFixed(1)
-    console.log(params.hoverId)
     uniforms.hoverValue.value = params.hoverId
     params.guide = 1
     guide = true
