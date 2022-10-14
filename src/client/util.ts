@@ -47,6 +47,57 @@ const sessionData: sessionDataType = {
 
 const gameState: Array<gameStateType> = []
 
+function logMyState(
+    key: string,
+    event: string,
+    camera: THREE.PerspectiveCamera,
+    pointer?: THREE.Vector2,
+    x?: number,
+    y?: number,
+    brushSize?: number,
+    linePoints?: Array<number>
+) {
+    let tempS: string = `${key} pressed in ${event}`
+
+    let stateData
+    if (brushSize != undefined) {
+        stateData = {
+            label: tempS,
+            clickPosition: pointer,
+            keyPressed: key,
+            x: x,
+            y: y,
+            aspectRatio: camera.aspect,
+            cameraPosition: camera.position.clone(),
+            time: new Date(),
+        }
+    }
+
+    if (linePoints != undefined) {
+        stateData = {
+            label: tempS,
+            aspectRatio: camera.aspect,
+            keyPressed: key,
+            cameraPosition: camera.position.clone(),
+            time: new Date(),
+            linePoints: linePoints,
+        }
+    } else {
+        stateData = {
+            label: tempS,
+            clickPosition: pointer,
+            keyPressed: key,
+            x: x,
+            y: y,
+            aspectRatio: camera.aspect,
+            cameraPosition: camera.position.clone(),
+            time: new Date(),
+            brushSize: brushSize,
+        }
+    }
+    gameState.push({ mouseEvent: stateData })
+}
+
 function download(filename: string, text: string) {
     var element = document.createElement('a')
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text))
@@ -116,4 +167,4 @@ function initVis() {
     ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
 }
 
-export { resetCamera, startSession, endSession, init, initVis, sessionData, gameState }
+export { resetCamera, startSession, endSession, init, initVis, sessionData, gameState, logMyState }
