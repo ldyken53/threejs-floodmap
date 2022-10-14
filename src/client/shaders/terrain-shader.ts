@@ -37,6 +37,7 @@ uniform sampler2D colormap;
 uniform int annotation;
 uniform int persShow;
 uniform float hoverValue;
+uniform float mappedMaxValue;
 uniform int guide;
 uniform int z;
 
@@ -53,7 +54,7 @@ void main(){
     vec3 color = sampleTexture(diffuseTexture, vPosition.xy).rgb;
     vec4 _segID = sampleTexture(persTexture, vPosition.xy).rgba;
       float segID = _segID.x*1000.0 + _segID.y*100.0 + _segID.z*10.0 + _segID.w*1.0;
-      float originalSegID = floor(segID*255.0);
+      float originalSegID = floor(segID*mappedMaxValue);
       if(guide > 0){
         if(originalSegID == hoverValue){
           color = 0.3 * color + 0.7 * texture(colormap, vec2(segID, 0)).rgb;
