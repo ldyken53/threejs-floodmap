@@ -96,6 +96,7 @@ var persDatas: {
 
 var persTextures: { [key: number]: THREE.Texture } = {}
 var segsMax: { [key: number]: number } = {}
+var imageData : { [key: number]: Uint8Array } = {}
 async function getPersistence() {
     axios
         .get(`http://localhost:5000/test`)
@@ -134,10 +135,11 @@ async function getPersistence() {
                         segsToPixels2[threshold][persDatas[threshold][x]] = [x]
                     }
                 }
-                var texture = new THREE.DataTexture(imageData, 4104, 1856)
-                texture.needsUpdate = true
-                persTextures[threshold] = texture
-                uniforms.persTexture.value = texture
+                persTextures[threshold] = new THREE.DataTexture(imageData, 4104, 1856)
+                persTextures[threshold].needsUpdate = true
+                if (threshold == Math.round(params.pers * 100) / 100) {
+                    uniforms.persTexture.value = persTextures[threshold]
+                }
             })
         })
         .catch((error) => {
@@ -250,7 +252,7 @@ function segSelect(x: number, y: number) {
 }
 
 const searchFunction = {
-    BFS_Hill: {
+    BFS_Down: {
         E: (x: number, y: number, value: number) => data[x + 1 + y * 4104] <= value,
         W: (x: number, y: number, value: number) => data[x - 1 + y * 4104] <= value,
         N: (x: number, y: number, value: number) => data[x + (y + 1) * 4104] <= value,
@@ -260,7 +262,7 @@ const searchFunction = {
         SW: (x: number, y: number, value: number) => data[x - 1 + (y - 1) * 4104] <= value,
         SE: (x: number, y: number, value: number) => data[x + 1 + (y - 1) * 4104] <= value,
     },
-    BFS_Down: {
+    BFS_Hill: {
         E: (x: number, y: number, value: number) => data[x + 1 + y * 4104] >= value,
         W: (x: number, y: number, value: number) => data[x - 1 + y * 4104] >= value,
         N: (x: number, y: number, value: number) => data[x + (y + 1) * 4104] >= value,
