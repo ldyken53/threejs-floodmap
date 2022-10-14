@@ -1,4 +1,3 @@
-import { Camera } from 'three'
 import { startUp } from './client'
 const pixelCount = 7617024
 

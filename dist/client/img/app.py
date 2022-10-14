@@ -6,7 +6,6 @@ from vtkmodules.all import (
 import gc
 from vtkmodules.util.numpy_support import vtk_to_numpy
 import numpy as np
-import cv2 as cv
 import json
 
 from topologytoolkit import (
@@ -42,7 +41,7 @@ tree.SetWithSegmentation(1)
 @app.route('/test', methods=['GET'])
 def test():
     response = {}
-    ranges = [0.05, 0.1, 0.15, 0.2, 0.25]
+    ranges = [0.05, 0.1]
     for i in ranges:
         simplify.SetPersistenceThreshold(i)
         simplify.Update()
