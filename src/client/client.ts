@@ -27,7 +27,7 @@ const scene = new THREE.Scene()
 // const zs = [100, 200, 300, 400, 500];
 const blurs = [0]
 const zs = [0, 500]
-const pers = [20, 30, 40, 50]
+const pers = [0.05, 0.1, 0.15, 0.2, 0.25]
 var meshes: { [key: string]: Mesh } = {}
 let paddedSize: number = 0
 
@@ -94,7 +94,6 @@ var persDatas: {
     [key: number]: Array<number>
 } = {}
 
-console.log(persDatas)
 var persTextures: { [key: number]: THREE.Texture } = {}
 var segsMax: { [key: number]: number } = {}
 async function getPersistence() {
@@ -177,7 +176,7 @@ var params = {
     z: 500,
     annotation: 1,
     brushSize: 5,
-    pers: 50,
+    pers: 0.05,
     persShow: 0,
     hoverId: 0,
     guide: 0,
@@ -189,7 +188,6 @@ var uniforms = {
     annotationTexture: { type: 't', value: annotationTexture },
     persTexture: { type: 't', value: new THREE.Texture() },
     colormap: { type: 't', value: new THREE.Texture() },
-    pers: { value: params.pers },
     annotation: { value: params.annotation },
     persShow: { value: params.persShow },
     hoverValue: { type: 'f', value: params.hoverId },
@@ -210,8 +208,8 @@ meshFolder.add(params, 'z', 0, 500, 100).onFinishChange(() => {
 viewFolder.add(params, 'annotation', 0, 1, 1).onFinishChange(() => {
     uniforms.annotation.value = params.annotation
 })
-viewFolder.add(params, 'pers', 20, 50, 10).onFinishChange(() => {
-    uniforms.persTexture.value = persTextures[params.pers]
+viewFolder.add(params, 'pers', 0.05, 0.25, 0.05).onFinishChange(() => {
+    uniforms.persTexture.value = persTextures[Math.round(params.pers * 100) / 100]
 })
 viewFolder.add(params, 'persShow', 0, 3, 1).onFinishChange(() => {
     uniforms.persShow.value = params.persShow
@@ -225,8 +223,8 @@ var recentFills: Array<number> = []
 
 function segSelect(x: number, y: number) {
     recentFills = []
-    var value = persDatas[params.pers][x + y * 4104]
-    var pixels = segsToPixels2[params.pers][value]
+    var value = persDatas[Math.round(params.pers * 100) / 100][x + y * 4104]
+    var pixels = segsToPixels2[Math.round(params.pers * 100) / 100][value]
     for (var i = 0; i < pixels.length; i++) {
         var x = pixels[i] % 4104
         var y = 1855 - Math.floor(pixels[i] / 4104)
@@ -376,13 +374,16 @@ const state = {
 }
 
 function hoverHandler() {
+    console.log(Math.round(params.pers * 100) / 100)
     raycaster.setFromCamera(pointer, camera)
     const intersects = raycaster.intersectObjects(scene.children)
     var point = intersects[0].point
     var x = Math.trunc(point.x)
     var y = Math.ceil(point.y)
-    let localId = persDatas[params.pers][x + y * 4104]
-    params.hoverId = +Math.floor((paddedSize * localId) / segsMax[params.pers]).toFixed(1)
+    let localId = persDatas[Math.round(params.pers * 100) / 100][x + y * 4104]
+    console.log(localId)
+    params.hoverId = +Math.floor((paddedSize * localId) / segsMax[Math.round(params.pers * 100) / 100]).toFixed(1)
+    console.log(params.hoverId)
     uniforms.hoverValue.value = params.hoverId
     params.guide = 1
     guide = true

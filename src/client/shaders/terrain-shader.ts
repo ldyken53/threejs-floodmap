@@ -38,7 +38,6 @@ uniform int annotation;
 uniform int persShow;
 uniform float hoverValue;
 uniform int guide;
-uniform int segs;
 uniform int z;
 
 in vec3 vNormal;
@@ -77,7 +76,9 @@ void main(){
                 vec2(-2, 0), vec2(0, -2), vec2(0, 2), vec2(2, 0)
               );
               for (int i = 0; i < 12; i++) {
-                if (abs(sampleTexture(persTexture, vPosition.xy + neighbors[i]).r - segID) > 0.001) {
+                vec4 _segIDn = sampleTexture(persTexture, vPosition.xy + neighbors[i]).rgba;
+                float segIDn = _segIDn.x*1000.0 + _segIDn.y*100.0 + _segIDn.z*10.0 + _segID.w*1.0;
+                if (abs(segIDn - segID) > 0.001) {
                   color = texture(colormap, vec2(segID, 0)).rgb + vec3(1.0);
                   break;
                 }

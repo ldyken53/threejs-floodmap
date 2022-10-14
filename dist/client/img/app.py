@@ -1,14 +1,12 @@
 from flask import jsonify, Flask, render_template, request, url_for
 from vtkmodules.all import (
-    vtkPNGReader,
-    vtkPNGWriter,
-    vtkImageExtractComponents,
+    vtkTIFFReader,
 )
 
 import gc
 from vtkmodules.util.numpy_support import vtk_to_numpy
 import numpy as np
-# import cv2 as cv
+import cv2 as cv
 import json
 
 from topologytoolkit import (
@@ -17,23 +15,24 @@ from topologytoolkit import (
 )
 
 app = Flask(__name__)
-pread = vtkPNGReader()
-pread.SetFileName("./elevation.png")
+pread = vtkTIFFReader()
+pread.SetFileName("./elevation.tiff")
 
-extractComponent = vtkImageExtractComponents()
-extractComponent.SetInputConnection(pread.GetOutputPort())
-extractComponent.SetComponents(0)
-extractComponent.Update()
+# extractComponent = vtkImageExtractComponents()
+# extractComponent.SetInputConnection(pread.GetOutputPort())
+# extractComponent.SetComponents(0)
+# extractComponent.Update()
 
 simplify = ttkTopologicalSimplificationByPersistence()
-simplify.SetInputConnection(0, extractComponent.GetOutputPort())
-simplify.SetInputArrayToProcess(0, 0, 0, 0, "PNGImage")
+simplify.SetInputConnection(0, pread.GetOutputPort())
+simplify.SetInputArrayToProcess(0, 0, 0, 0, "Tiff Scalars")
+simplify.SetThresholdIsAbsolute(False)
 # simplify.SetPersistenceThreshold(50)
 # simplify.Update()
 
 tree = ttkFTMTree()
 tree.SetInputConnection(0, simplify.GetOutputPort())
-tree.SetInputArrayToProcess(0, 0, 0, 0, "PNGImage")
+tree.SetInputArrayToProcess(0, 0, 0, 0, "Tiff Scalars")
 tree.SetTreeType(2)
 tree.SetWithSegmentation(1)
 # tree.Update()
@@ -43,7 +42,8 @@ tree.SetWithSegmentation(1)
 @app.route('/test', methods=['GET'])
 def test():
     response = {}
-    for i in range(20, 60, 10):
+    ranges = [0.05, 0.1, 0.15, 0.2, 0.25]
+    for i in ranges:
         simplify.SetPersistenceThreshold(i)
         simplify.Update()
         tree.Update()
