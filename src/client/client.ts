@@ -5,7 +5,7 @@ import { terrainShader } from './shaders/terrain-shader'
 import { GUI } from 'dat.gui'
 import { Mesh } from 'three'
 import axios from 'axios'
-import { init, sessionData, initVis } from './util'
+import { init, sessionData, initVis, gameState, logMyState } from './util'
 import './styles/style.css'
 // import * as fs from 'fs'
 
@@ -96,7 +96,7 @@ var persDatas: {
 
 console.log(persDatas)
 var persTextures: { [key: number]: THREE.Texture } = {}
-var segsMax: {[key: number]: number} = {}
+var segsMax: { [key: number]: number } = {}
 async function getPersistence() {
     axios
         .get(`http://localhost:5000/test`)
@@ -109,7 +109,9 @@ async function getPersistence() {
                 var imageData = new Uint8Array(4 * persDatas[threshold].length)
                 segsToPixels2[threshold] = {}
                 for (var x = 0; x < persDatas[threshold].length; x++) {
-                    var segID = Math.floor((paddedSize * persDatas[threshold][x]) / segsMax[threshold])
+                    var segID = Math.floor(
+                        (paddedSize * persDatas[threshold][x]) / segsMax[threshold]
+                    )
                     let tempString = segID.toString()
                     let maskedNumber = tempString.padStart(4, '0')
                     const realId = Array.from(maskedNumber).map(Number)
@@ -127,7 +129,7 @@ async function getPersistence() {
                 texture.needsUpdate = true
                 persTextures[threshold] = texture
                 uniforms.persTexture.value = texture
-            });
+            })
         })
         .catch((error) => {
             console.log(error)
@@ -209,7 +211,7 @@ viewFolder.add(params, 'annotation', 0, 1, 1).onFinishChange(() => {
     uniforms.annotation.value = params.annotation
 })
 viewFolder.add(params, 'pers', 20, 50, 10).onFinishChange(() => {
-        uniforms.persTexture.value = persTextures[params.pers]
+    uniforms.persTexture.value = persTextures[params.pers]
 })
 viewFolder.add(params, 'persShow', 0, 3, 1).onFinishChange(() => {
     uniforms.persShow.value = params.persShow
@@ -220,85 +222,10 @@ viewFolder.open()
 // meshFolder.open()
 
 var recentFills: Array<number> = []
-var visitedFlood = new Map()
-function BFS(x: number, y: number) {
-    recentFills = []
-    context!.fillStyle = 'red'
-    // var visited = new Map();
-    var stack = []
-    visitedFlood.set(`${x}, ${y}`, 1)
-    stack.push(x, y)
-    while (stack.length > 0) {
-        y = stack.pop()!
-        x = stack.pop()!
-        recentFills.push(x, y)
-        context!.fillRect(x, y, 1, 1)
-        var value = data[x + y * 4104]
-        if (data[x + 1 + y * 4104] <= value) {
-            if (!visitedFlood.get(`${x + 1}, ${y}`)) {
-                sessionData.annotatedPixelCount++
-                visitedFlood.set(`${x + 1}, ${y}`, 1)
-                stack.push(x + 1, y)
-            }
-        }
-        if (data[x - 1 + y * 4104] <= value) {
-            if (!visitedFlood.get(`${x - 1}, ${y}`)) {
-                sessionData.annotatedPixelCount++
-                visitedFlood.set(`${x - 1}, ${y}`, 1)
-                stack.push(x - 1, y)
-            }
-        }
-        if (data[x + (y + 1) * 4104] <= value) {
-            if (!visitedFlood.get(`${x}, ${y + 1}`)) {
-                sessionData.annotatedPixelCount++
-                visitedFlood.set(`${x}, ${y + 1}`, 1)
-                stack.push(x, y + 1)
-            }
-        }
-        if (data[x + (y - 1) * 4104] <= value) {
-            if (!visitedFlood.get(`${x}, ${y - 1}`)) {
-                sessionData.annotatedPixelCount++
-                visitedFlood.set(`${x}, ${y - 1}`, 1)
-                stack.push(x, y - 1)
-            }
-        }
-        if (data[x + 1 + (y + 1) * 4104] <= value) {
-            if (!visitedFlood.get(`${x + 1}, ${y + 1}`)) {
-                sessionData.annotatedPixelCount++
-                visitedFlood.set(`${x + 1}, ${y + 1}`, 1)
-                stack.push(x + 1, y + 1)
-            }
-        }
-        if (data[x - 1 + (y + 1) * 4104] <= value) {
-            if (!visitedFlood.get(`${x - 1}, ${y + 1}`)) {
-                sessionData.annotatedPixelCount++
-                visitedFlood.set(`${x - 1}, ${y + 1}`, 1)
-                stack.push(x - 1, y + 1)
-            }
-        }
-        if (data[x - 1 + (y - 1) * 4104] <= value) {
-            if (!visitedFlood.get(`${x - 1}, ${y - 1}`)) {
-                sessionData.annotatedPixelCount++
-                visitedFlood.set(`${x - 1}, ${y - 1}`, 1)
-                stack.push(x - 1, y - 1)
-            }
-        }
-        if (data[x + 1 + (y - 1) * 4104] <= value) {
-            if (!visitedFlood.get(`${x + 1}, ${y - 1}`)) {
-                sessionData.annotatedPixelCount++
-                visitedFlood.set(`${x + 1}, ${y - 1}`, 1)
-                stack.push(x + 1, y - 1)
-            }
-        }
-    }
-    annotationTexture.needsUpdate = true
-    // uniforms.annotationTexture.value = annotationTexture;
-}
 
 function segSelect(x: number, y: number) {
     recentFills = []
     var value = persDatas[params.pers][x + y * 4104]
-    console.log(params.pers, value)
     var pixels = segsToPixels2[params.pers][value]
     for (var i = 0; i < pixels.length; i++) {
         var x = pixels[i] % 4104
@@ -310,67 +237,93 @@ function segSelect(x: number, y: number) {
     annotationTexture.needsUpdate = true
     // uniforms.annotationTexture.value = annotationTexture;
 }
-function BFS2(x: number, y: number) {
-    context!.fillStyle = 'blue'
+
+const searchFunction = {
+    BFS_Hill: {
+        E: (x: number, y: number, value: number) => data[x + 1 + y * 4104] <= value,
+        W: (x: number, y: number, value: number) => data[x - 1 + y * 4104] <= value,
+        N: (x: number, y: number, value: number) => data[x + (y + 1) * 4104] <= value,
+        S: (x: number, y: number, value: number) => data[x + (y - 1) * 4104] <= value,
+        EN: (x: number, y: number, value: number) => data[x + 1 + (y + 1) * 4104] <= value,
+        WN: (x: number, y: number, value: number) => data[x - 1 + (y + 1) * 4104] <= value,
+        SW: (x: number, y: number, value: number) => data[x - 1 + (y - 1) * 4104] <= value,
+        SE: (x: number, y: number, value: number) => data[x + 1 + (y - 1) * 4104] <= value,
+    },
+    BFS_Down: {
+        E: (x: number, y: number, value: number) => data[x + 1 + y * 4104] >= value,
+        W: (x: number, y: number, value: number) => data[x - 1 + y * 4104] >= value,
+        N: (x: number, y: number, value: number) => data[x + (y + 1) * 4104] >= value,
+        S: (x: number, y: number, value: number) => data[x + (y - 1) * 4104] >= value,
+        EN: (x: number, y: number, value: number) => data[x + 1 + (y + 1) * 4104] >= value,
+        WN: (x: number, y: number, value: number) => data[x - 1 + (y + 1) * 4104] >= value,
+        SW: (x: number, y: number, value: number) => data[x - 1 + (y - 1) * 4104] >= value,
+        SE: (x: number, y: number, value: number) => data[x + 1 + (y - 1) * 4104] >= value,
+    },
+}
+
+function BFS(x: number, y: number, direction: string, color: string) {
+    context!.fillStyle = color
     var visited = new Map()
     var stack = []
     visited.set(`${x}, ${y}`, 1)
     stack.push(x, y)
+    type ObjectKey = keyof typeof searchFunction
+    let _direction = direction as ObjectKey
     while (stack.length > 0) {
         y = stack.pop()!
         x = stack.pop()!
         context!.fillRect(x, y, 1, 1)
         var value = data[x + y * 4104]
-        if (data[x + 1 + y * 4104] >= value) {
+        if (searchFunction[_direction].E(x, y, value)) {
             if (!visited.get(`${x + 1}, ${y}`)) {
                 sessionData.annotatedPixelCount++
                 visited.set(`${x + 1}, ${y}`, 1)
                 stack.push(x + 1, y)
             }
         }
-        if (data[x - 1 + y * 4104] >= value) {
+        if (searchFunction[_direction].W(x, y, value)) {
             if (!visited.get(`${x - 1}, ${y}`)) {
                 sessionData.annotatedPixelCount++
                 visited.set(`${x - 1}, ${y}`, 1)
                 stack.push(x - 1, y)
             }
         }
-        if (data[x + (y + 1) * 4104] >= value) {
+        if (searchFunction[_direction].N(x, y, value)) {
             if (!visited.get(`${x}, ${y + 1}`)) {
                 sessionData.annotatedPixelCount++
                 visited.set(`${x}, ${y + 1}`, 1)
                 stack.push(x, y + 1)
             }
         }
-        if (data[x + (y - 1) * 4104] >= value) {
+        if (searchFunction[_direction].S(x, y, value)) {
             if (!visited.get(`${x}, ${y - 1}`)) {
                 sessionData.annotatedPixelCount++
                 visited.set(`${x}, ${y - 1}`, 1)
                 stack.push(x, y - 1)
             }
         }
-        if (data[x + 1 + (y + 1) * 4104] >= value) {
+        if (searchFunction[_direction].EN(x, y, value)) {
             if (!visited.get(`${x + 1}, ${y + 1}`)) {
                 sessionData.annotatedPixelCount++
                 visited.set(`${x + 1}, ${y + 1}`, 1)
                 stack.push(x + 1, y + 1)
             }
         }
-        if (data[x - 1 + (y + 1) * 4104] >= value) {
+        if (searchFunction[_direction].WN(x, y, value)) {
             if (!visited.get(`${x - 1}, ${y + 1}`)) {
                 sessionData.annotatedPixelCount++
                 visited.set(`${x - 1}, ${y + 1}`, 1)
                 stack.push(x - 1, y + 1)
             }
         }
-        if (data[x - 1 + (y - 1) * 4104] >= value) {
+        if (searchFunction[_direction].SW(x, y, value)) {
             if (!visited.get(`${x - 1}, ${y - 1}`)) {
                 sessionData.annotatedPixelCount++
                 visited.set(`${x - 1}, ${y - 1}`, 1)
                 stack.push(x - 1, y - 1)
             }
         }
-        if (data[x + 1 + (y - 1) * 4104] >= value) {
+        if (searchFunction[_direction].SE(x, y, value)) {
             if (!visited.get(`${x + 1}, ${y - 1}`)) {
                 sessionData.annotatedPixelCount++
                 visited.set(`${x + 1}, ${y - 1}`, 1)
@@ -421,6 +374,210 @@ const state = {
     polygonSelection: false,
     segEnabled: true,
 }
+
+function hoverHandler() {
+    raycaster.setFromCamera(pointer, camera)
+    const intersects = raycaster.intersectObjects(scene.children)
+    var point = intersects[0].point
+    var x = Math.trunc(point.x)
+    var y = Math.ceil(point.y)
+    let localId = persDatas[params.pers][x + y * 4104]
+    params.hoverId = +Math.floor((paddedSize * localId) / segsMax[params.pers]).toFixed(1)
+    uniforms.hoverValue.value = params.hoverId
+    params.guide = 1
+    guide = true
+    uniforms.guide.value = params.guide
+}
+
+function BFSHandler() {
+    raycaster.setFromCamera(pointer, camera)
+    const intersects = raycaster.intersectObjects(scene.children)
+    var x = Math.trunc(intersects[0].point.x)
+    var y = 1856 - Math.ceil(intersects[0].point.y)
+    logMyState('f', 'BFS', camera, pointer, x, y)
+    BFS(x, y, 'BFS_Down', 'red')
+}
+
+function BFS2Handler() {
+    raycaster.setFromCamera(pointer, camera)
+    const intersects = raycaster.intersectObjects(scene.children)
+    var x = Math.trunc(intersects[0].point.x)
+    var y = 1856 - Math.ceil(intersects[0].point.y)
+    logMyState('d', 'BFS2', camera, pointer, x, y)
+    BFS(x, y, 'BFS_Hill', 'blue')
+}
+
+function brushClearHandler() {
+    raycaster.setFromCamera(pointer, camera)
+    const intersects = raycaster.intersectObjects(scene.children)
+    var point = intersects[0].point
+    var x = Math.trunc(point.x)
+    var y = 1856 - Math.ceil(point.y)
+    context!.clearRect(
+        x - Math.floor(params.brushSize / 2),
+        y - Math.floor(params.brushSize / 2),
+        params.brushSize,
+        params.brushSize
+    )
+
+    sessionData.annotatedPixelCount -= params.brushSize * params.brushSize
+    annotationTexture.needsUpdate = true
+    uniforms.annotationTexture.value = annotationTexture
+    logMyState('e', 'clear by brush', camera, pointer, x, y, params.brushSize)
+}
+
+function brushAnnotationHandler(key: string, color: string) {
+    if (!color) {
+        console.error('no annotation without color, send color !!')
+        return
+    }
+    raycaster.setFromCamera(pointer, camera)
+    const intersects = raycaster.intersectObjects(scene.children)
+    var point = intersects[0].point
+    var x = Math.trunc(point.x)
+    var y = 1856 - Math.ceil(point.y)
+
+    context!.fillStyle = color
+    context!.fillRect(
+        x - Math.floor(params.brushSize / 2),
+        y - Math.floor(params.brushSize / 2),
+        params.brushSize,
+        params.brushSize
+    )
+    sessionData.annotatedPixelCount += params.brushSize * params.brushSize
+    annotationTexture.needsUpdate = true
+    uniforms.annotationTexture.value = annotationTexture
+    logMyState(key, 'annotation by brush', camera, pointer, x, y, params.brushSize)
+}
+
+function polygonSelectionHandler() {
+    raycaster.setFromCamera(pointer, camera)
+    const intersects = raycaster.intersectObjects(scene.children)
+    var point = intersects[0].point
+    var x = Math.trunc(point.x)
+    var y = 1856 - Math.ceil(point.y)
+    polyPoints.push(x, y)
+    context!.fillStyle = 'red'
+    context!.fillRect(x - 2, y - 2, 4, 4)
+    logMyState(
+        'p',
+        'annotation by Polygon (polypoint added)',
+        camera,
+        pointer,
+        x,
+        y,
+        params.brushSize
+    )
+    sessionData.annotatedPixelCount += 16 //follow this with the line selection to minimize the double counting
+    annotationTexture.needsUpdate = true
+}
+
+function polygonFillHandler() {
+    context!.fillStyle = 'red'
+    context!.beginPath()
+    logMyState('l', 'polygon fill', camera, undefined, undefined, undefined, undefined, polyPoints)
+    context!.moveTo(polyPoints[0], polyPoints[1])
+    for (var i = 2; i < polyPoints.length; i += 2) {
+        context!.lineTo(polyPoints[i], polyPoints[i + 1])
+    }
+    context!.closePath()
+    context!.fill()
+    sessionData.numberofClick++
+    var linePixels: Array<number> = []
+    for (var i = 0; i < polyPoints.length; i += 2) {
+        var x0 = polyPoints[i]
+        var y0 = polyPoints[i + 1]
+        var x1, y1
+        if (i + 2 == polyPoints.length) {
+            x1 = polyPoints[0]
+            y1 = polyPoints[1]
+        } else {
+            x1 = polyPoints[i + 2]
+            y1 = polyPoints[i + 3]
+        }
+        var steep: boolean = Math.abs(y1 - y0) > Math.abs(x1 - x0)
+        if (steep) {
+            ;[x0, y0] = [y0, x0]
+            ;[x1, y1] = [y1, x1]
+        }
+        if (x0 > x1) {
+            ;[x0, x1] = [x1, x0]
+            ;[y0, y1] = [y1, y0]
+        }
+        var dx = x1 - x0
+        var dy = y1 - y0
+        var gradient
+        if (dx == 0) {
+            gradient = 1
+        } else {
+            gradient = dy / dx
+        }
+        var xend = x0
+        var yend = y0
+        var xpxl1 = xend
+        var ypxl1 = yend
+        if (steep) {
+            linePixels.push(ypxl1, xpxl1)
+            linePixels.push(ypxl1 + 1, xpxl1)
+        } else {
+            linePixels.push(xpxl1, ypxl1)
+            linePixels.push(xpxl1, ypxl1 + 1)
+        }
+        var intery = yend + gradient
+        xend = x1
+        yend = y1
+        var xpxl2 = xend
+        var ypxl2 = yend
+        if (steep) {
+            linePixels.push(ypxl2, xpxl2)
+            linePixels.push(ypxl2 + 1, xpxl2)
+        } else {
+            linePixels.push(xpxl2, ypxl2)
+            linePixels.push(xpxl2, ypxl2 + 1)
+        }
+        if (steep) {
+            for (var x = xpxl1 + 1; x < xpxl2; x++) {
+                linePixels.push(Math.floor(intery), x)
+                linePixels.push(Math.floor(intery) + 1, x)
+                intery = intery + gradient
+            }
+        } else {
+            for (var x = xpxl1 + 1; x < xpxl2; x++) {
+                linePixels.push(x, Math.floor(intery))
+                linePixels.push(x, Math.floor(intery) + 1)
+                intery = intery + gradient
+            }
+        }
+    }
+    for (var i = 0; i < linePixels.length; i += 2) {
+        BFS(linePixels[i], linePixels[i + 1], 'BFS_Down', 'red')
+    }
+    polyPoints = []
+    annotationTexture.needsUpdate = true
+}
+
+function segAnnoationHandler(key: string, color: string) {
+    if (!color) {
+        console.error('no annotation without color, send color')
+        return
+    }
+    raycaster.setFromCamera(pointer, camera)
+    const intersects = raycaster.intersectObjects(scene.children)
+    var x = Math.trunc(intersects[0].point.x)
+    var y = Math.floor(intersects[0].point.y)
+    context!.fillStyle = color
+    logMyState(key, 'segmentation', camera, pointer, x, y)
+    segSelect(x, y)
+}
+
+function clearAllHandler() {
+    for (var i = 0; i < recentFills.length; i += 2) {
+        context!.clearRect(recentFills[i], recentFills[i + 1], 1, 1)
+    }
+    annotationTexture.needsUpdate = true
+    logMyState('z', 'reset all', camera, undefined, undefined, undefined)
+}
+
 const onKeyPress = (event: KeyboardEvent) => {
     if (event.repeat) {
         return
@@ -432,192 +589,27 @@ const onKeyPress = (event: KeyboardEvent) => {
     } else if (event.key == 'm') {
         ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
     } else if (event.key == 'g') {
-        raycaster.setFromCamera(pointer, camera)
-        const intersects = raycaster.intersectObjects(scene.children)
-        var point = intersects[0].point
-        var x = Math.trunc(point.x)
-        var y = Math.ceil(point.y)
-        let localId = persDatas[params.pers][x + y * 4104]
-        params.hoverId = +Math.floor((paddedSize * localId) / segsMax[params.pers]).toFixed(1)
-        uniforms.hoverValue.value = params.hoverId
-        params.guide = 1
-        guide = true
-        uniforms.guide.value = params.guide
+        hoverHandler()
     } else if (event.key == 'f' && state.BFS) {
-        raycaster.setFromCamera(pointer, camera)
-        const intersects = raycaster.intersectObjects(scene.children)
-        console.log(intersects)
-        var x = Math.trunc(intersects[0].point.x)
-        var y = 1856 - Math.ceil(intersects[0].point.y)
-        BFS(x, y)
+        BFSHandler()
     } else if (event.key == 'd' && state.BFS) {
-        raycaster.setFromCamera(pointer, camera)
-        const intersects = raycaster.intersectObjects(scene.children)
-        var x = Math.trunc(intersects[0].point.x)
-        var y = 1856 - Math.ceil(intersects[0].point.y)
-        BFS2(x, y)
+        BFS2Handler()
     } else if (event.key == 'e' && state.brushSelection) {
-        raycaster.setFromCamera(pointer, camera)
-        const intersects = raycaster.intersectObjects(scene.children)
-        var point = intersects[0].point
-        var x = Math.trunc(point.x)
-        var y = 1856 - Math.ceil(point.y)
-        context!.clearRect(
-            x - Math.floor(params.brushSize / 2),
-            y - Math.floor(params.brushSize / 2),
-            params.brushSize,
-            params.brushSize
-        )
-
-        sessionData.annotatedPixelCount -= params.brushSize * params.brushSize
-        annotationTexture.needsUpdate = true
-        uniforms.annotationTexture.value = annotationTexture
+        brushClearHandler()
     } else if (event.key == 'r' && state.brushSelection) {
-        raycaster.setFromCamera(pointer, camera)
-        const intersects = raycaster.intersectObjects(scene.children)
-        var point = intersects[0].point
-        var x = Math.trunc(point.x)
-        var y = 1856 - Math.ceil(point.y)
-        context!.fillStyle = 'red'
-        context!.fillRect(
-            x - Math.floor(params.brushSize / 2),
-            y - Math.floor(params.brushSize / 2),
-            params.brushSize,
-            params.brushSize
-        )
-        sessionData.annotatedPixelCount += params.brushSize * params.brushSize
-        annotationTexture.needsUpdate = true
-        uniforms.annotationTexture.value = annotationTexture
+        brushAnnotationHandler('r', 'red')
     } else if (event.key == 't' && state.brushSelection) {
-        raycaster.setFromCamera(pointer, camera)
-        const intersects = raycaster.intersectObjects(scene.children)
-        var point = intersects[0].point
-        var x = Math.trunc(point.x)
-        var y = 1856 - Math.ceil(point.y)
-        context!.fillStyle = 'blue'
-        context!.fillRect(
-            x - Math.floor(params.brushSize / 2),
-            y - Math.floor(params.brushSize / 2),
-            params.brushSize,
-            params.brushSize
-        )
-        sessionData.annotatedPixelCount += params.brushSize * params.brushSize
-        annotationTexture.needsUpdate = true
-        uniforms.annotationTexture.value = annotationTexture
+        brushAnnotationHandler('t', 'blue')
     } else if (event.key == 'p' && state.polygonSelection) {
-        raycaster.setFromCamera(pointer, camera)
-        const intersects = raycaster.intersectObjects(scene.children)
-        var point = intersects[0].point
-        var x = Math.trunc(point.x)
-        var y = 1856 - Math.ceil(point.y)
-        polyPoints.push(x, y)
-        context!.fillStyle = 'red'
-        context!.fillRect(x - 2, y - 2, 4, 4)
-        sessionData.annotatedPixelCount += 16 //follow this with the line selection to minimize the double counting
-        annotationTexture.needsUpdate = true
+        polygonSelectionHandler()
     } else if (event.key == 'l' && state.polygonSelection) {
-        context!.fillStyle = 'red'
-        context!.beginPath()
-        context!.moveTo(polyPoints[0], polyPoints[1])
-        for (var i = 2; i < polyPoints.length; i += 2) {
-            context!.lineTo(polyPoints[i], polyPoints[i + 1])
-        }
-        context!.closePath()
-        context!.fill()
-        sessionData.numberofClick++
-        var linePixels: Array<number> = []
-        for (var i = 0; i < polyPoints.length; i += 2) {
-            var x0 = polyPoints[i]
-            var y0 = polyPoints[i + 1]
-            var x1, y1
-            if (i + 2 == polyPoints.length) {
-                x1 = polyPoints[0]
-                y1 = polyPoints[1]
-            } else {
-                x1 = polyPoints[i + 2]
-                y1 = polyPoints[i + 3]
-            }
-            var steep: boolean = Math.abs(y1 - y0) > Math.abs(x1 - x0)
-            if (steep) {
-                ;[x0, y0] = [y0, x0]
-                ;[x1, y1] = [y1, x1]
-            }
-            if (x0 > x1) {
-                ;[x0, x1] = [x1, x0]
-                ;[y0, y1] = [y1, y0]
-            }
-            var dx = x1 - x0
-            var dy = y1 - y0
-            var gradient
-            if (dx == 0) {
-                gradient = 1
-            } else {
-                gradient = dy / dx
-            }
-            var xend = x0
-            var yend = y0
-            var xpxl1 = xend
-            var ypxl1 = yend
-            if (steep) {
-                linePixels.push(ypxl1, xpxl1)
-                linePixels.push(ypxl1 + 1, xpxl1)
-            } else {
-                linePixels.push(xpxl1, ypxl1)
-                linePixels.push(xpxl1, ypxl1 + 1)
-            }
-            var intery = yend + gradient
-            xend = x1
-            yend = y1
-            var xpxl2 = xend
-            var ypxl2 = yend
-            if (steep) {
-                linePixels.push(ypxl2, xpxl2)
-                linePixels.push(ypxl2 + 1, xpxl2)
-            } else {
-                linePixels.push(xpxl2, ypxl2)
-                linePixels.push(xpxl2, ypxl2 + 1)
-            }
-            if (steep) {
-                for (var x = xpxl1 + 1; x < xpxl2; x++) {
-                    linePixels.push(Math.floor(intery), x)
-                    linePixels.push(Math.floor(intery) + 1, x)
-                    intery = intery + gradient
-                }
-            } else {
-                for (var x = xpxl1 + 1; x < xpxl2; x++) {
-                    linePixels.push(x, Math.floor(intery))
-                    linePixels.push(x, Math.floor(intery) + 1)
-                    intery = intery + gradient
-                }
-            }
-        }
-        for (var i = 0; i < linePixels.length; i += 2) {
-            BFS(linePixels[i], linePixels[i + 1])
-        }
-        polyPoints = []
-        annotationTexture.needsUpdate = true
+        polygonFillHandler()
     } else if (event.key == 'n' && state.segEnabled) {
-        console.log('n selected')
-        raycaster.setFromCamera(pointer, camera)
-        const intersects = raycaster.intersectObjects(scene.children)
-        var x = Math.trunc(intersects[0].point.x)
-        var y = Math.floor(intersects[0].point.y)
-        context!.fillStyle = 'red'
-
-        segSelect(x, y)
+        segAnnoationHandler('n', 'red')
     } else if (event.key == 'b' && state.segEnabled) {
-        raycaster.setFromCamera(pointer, camera)
-        const intersects = raycaster.intersectObjects(scene.children)
-        var x = Math.trunc(intersects[0].point.x)
-        var y = Math.floor(intersects[0].point.y)
-        context!.fillStyle = 'blue'
-        sessionData.numberofClick++
-        segSelect(x, y)
+        segAnnoationHandler('b', 'blue')
     } else if (event.key == 'z') {
-        for (var i = 0; i < recentFills.length; i += 2) {
-            context!.clearRect(recentFills[i], recentFills[i + 1], 1, 1)
-        }
-        annotationTexture.needsUpdate = true
+        clearAllHandler()
     }
 }
 const onKeyUp = (event: KeyboardEvent) => {
@@ -693,6 +685,8 @@ function onWindowResize() {
 function animate() {
     requestAnimationFrame(animate)
     controls.update()
+    // let position = new THREE.Vector3()
+    // camera.getWorldPosition(position)
     render()
 }
 
@@ -700,6 +694,26 @@ function render() {
     renderer.render(scene, camera)
 }
 
+function startState() {
+    let startStateData = {
+        label: 'start',
+        aspectRatio: camera.aspect,
+        cameraPosition: camera.position.clone(),
+        time: new Date(),
+    }
+    gameState.push({ start: startStateData })
+}
+
+function getCameraLastStage() {
+    return {
+        position: camera.position.clone(),
+        lookAt: controls.target,
+    }
+}
+
+function addMouseEvent() {}
+
+startState()
 animate()
 
 export { startUp }
