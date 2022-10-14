@@ -27,9 +27,8 @@ const scene = new THREE.Scene()
 // const zs = [100, 200, 300, 400, 500];
 const blurs = [0]
 const zs = [500]
-const pers = [0.1]
+const pers = [0.05, 0.1, 0.15, 0.2, 0.25]
 var meshes: { [key: string]: Mesh } = {}
-let paddedSize: number = 0
 
 // var persToSegs : {[key: number]: number} = {
 //     20: 242,
@@ -96,7 +95,6 @@ var persDatas: {
 
 var persTextures: { [key: number]: THREE.Texture } = {}
 var segsMax: { [key: number]: number } = {}
-var imageData : { [key: number]: Uint8Array } = {}
 async function getPersistence() {
     axios
         .get(`http://localhost:5000/test`)
@@ -105,23 +103,10 @@ async function getPersistence() {
             pers.forEach((threshold) => {
                 persDatas[threshold] = response.data[threshold].array
                 segsMax[threshold] = response.data[threshold].max
-                let mappedMaxValue = 255
-                for (let i = 0; i < 50; i++) {
-                    if (segsMax[threshold] / (256 * i - 1) <= 1) {
-                        mappedMaxValue = 256 * i - 1
-                        paddedSize =
-                            mappedMaxValue * Math.floor(segsMax[threshold] / mappedMaxValue) +
-                            mappedMaxValue
-                    }
-                    params.mappedMaxValue = mappedMaxValue
-                    break
-                }
                 var imageData = new Uint8Array(4 * persDatas[threshold].length)
                 segsToPixels2[threshold] = {}
                 for (var x = 0; x < persDatas[threshold].length; x++) {
-                    var segID = Math.floor(
-                        (paddedSize * persDatas[threshold][x]) / segsMax[threshold]
-                    )
+                    var segID = persDatas[threshold][x]
                     let tempString = segID.toString()
                     let maskedNumber = tempString.padStart(4, '0')
                     const realId = Array.from(maskedNumber).map(Number)
@@ -129,16 +114,17 @@ async function getPersistence() {
                     imageData[x * 4 + 1] = +realId[1]
                     imageData[x * 4 + 2] = +realId[2]
                     imageData[x * 4 + 3] = +realId[3]
-                    if (segsToPixels2[threshold][persDatas[threshold][x]]) {
-                        segsToPixels2[threshold][persDatas[threshold][x]].push(x)
+                    if (segsToPixels2[threshold][segID]) {
+                        segsToPixels2[threshold][segID].push(x)
                     } else {
-                        segsToPixels2[threshold][persDatas[threshold][x]] = [x]
+                        segsToPixels2[threshold][segID] = [x]
                     }
                 }
                 persTextures[threshold] = new THREE.DataTexture(imageData, 4104, 1856)
                 persTextures[threshold].needsUpdate = true
                 if (threshold == Math.round(params.pers * 100) / 100) {
                     uniforms.persTexture.value = persTextures[threshold]
+                    uniforms.segsMax.value = segsMax[threshold]
                 }
             })
         })
@@ -188,9 +174,8 @@ var params = {
     z: 500,
     annotation: 1,
     brushSize: 5,
-    pers: 0.05,
+    pers: 0.1,
     persShow: 0,
-    hoverId: 0,
     mappedMaxValue: 255,
     guide: 0,
     max: 255,
@@ -203,9 +188,10 @@ var uniforms = {
     persTexture: { type: 't', value: new THREE.Texture() },
     colormap: { type: 't', value: new THREE.Texture() },
     annotation: { value: params.annotation },
+    segsMax: { type: 'f', value: 0 },
     persShow: { value: params.persShow },
     mappedMaxValue: { type: 'f', value: params.mappedMaxValue },
-    hoverValue: { type: 'f', value: params.hoverId },
+    hoverValue: { type: 'f', value: 0 },
     guide: { value: params.guide },
 }
 const meshFolder = gui.addFolder('Mesh Settings')
@@ -225,6 +211,7 @@ viewFolder.add(params, 'annotation', 0, 1, 1).onFinishChange(() => {
 })
 viewFolder.add(params, 'pers', 0.05, 0.25, 0.05).onFinishChange(() => {
     uniforms.persTexture.value = persTextures[Math.round(params.pers * 100) / 100]
+    uniforms.segsMax.value = segsMax[Math.round(params.pers * 100) / 100]
 })
 viewFolder.add(params, 'persShow', 0, 3, 1).onFinishChange(() => {
     uniforms.persShow.value = params.persShow
@@ -363,20 +350,6 @@ const onMouseMove = (event: MouseEvent) => {
     // (-1 to +1) for both components
     pointer.x = (event.clientX / window.innerWidth) * 2 - 1
     pointer.y = -(event.clientY / window.innerHeight) * 2 + 1
-    // if (guide) {
-    //     raycaster.setFromCamera(pointer, camera)
-    //     const intersects = raycaster.intersectObjects(scene.children)
-    //     var point = intersects[0].point
-    //     var x = Math.trunc(point.x)
-    //     var y = Math.ceil(point.y)
-    //     let localId = persDatas[params.pers][x + y * 4104]
-    //     params.hoverId = +Math.floor((paddedSize * localId) / segsMax[params.pers]).toFixed(1)
-    //     uniforms.hoverValue.value = params.hoverId
-    //     console.log(uniforms.hoverValue.value)
-    //     // context!.clearRect(x - 2, y - 2, 5, 5);
-    //     // annotationTexture.needsUpdate = true;
-    //     // uniforms.annotationTexture.value = annotationTexture;
-    // }
 }
 var polyPoints: Array<number> = []
 const state = {
@@ -397,13 +370,8 @@ function hoverHandler() {
     var y = Math.ceil(point.y)
     let localId = persDatas[Math.round(params.pers * 100) / 100][x + y * 4104]
     console.log(localId)
-    params.hoverId = +Math.floor(
-        (paddedSize * localId) / segsMax[Math.round(params.pers * 100) / 100]
-    ).toFixed(1)
-    console.log(params.hoverId)
-    uniforms.hoverValue.value = params.hoverId
+    uniforms.hoverValue.value = localId
     params.guide = 1
-    guide = true
     uniforms.guide.value = params.guide
 }
 
@@ -632,7 +600,6 @@ const onKeyPress = (event: KeyboardEvent) => {
 }
 const onKeyUp = (event: KeyboardEvent) => {
     if (event.key == 'g') {
-        guide = false
         params.guide = 0
         uniforms.guide.value = params.guide
     }
