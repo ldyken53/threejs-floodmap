@@ -684,6 +684,7 @@ function startState() {
         label: 'start',
         aspectRatio: camera.aspect,
         cameraPosition: camera.position.clone(),
+        targetPosition: controls.target.clone(),
         time: new Date(),
     }
     gameState.push({ start: startStateData })
@@ -701,4 +702,4 @@ function addMouseEvent() {}
 startState()
 animate()
 
-export { startUp }
+export { startUp, controls }

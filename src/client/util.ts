@@ -1,4 +1,5 @@
-import { startUp } from './client'
+import { MapControls } from 'three/examples/jsm/controls/OrbitControls'
+import { startUp, controls } from './client'
 const pixelCount = 7617024
 
 interface sessionDataType {
@@ -23,6 +24,7 @@ interface gameEventType {
     linePoints?: Array<number>
     aspectRatio: number
     cameraPosition: THREE.Vector3
+    targetPosition: THREE.Vector3
     time: Date
 }
 
@@ -68,6 +70,7 @@ function logMyState(
             y: y,
             aspectRatio: camera.aspect,
             cameraPosition: camera.position.clone(),
+            targetPosition: controls.target.clone(),
             time: new Date(),
         }
     }
@@ -78,6 +81,7 @@ function logMyState(
             aspectRatio: camera.aspect,
             keyPressed: key,
             cameraPosition: camera.position.clone(),
+            targetPosition: controls.target.clone(),
             time: new Date(),
             linePoints: linePoints,
         }
@@ -90,6 +94,7 @@ function logMyState(
             y: y,
             aspectRatio: camera.aspect,
             cameraPosition: camera.position.clone(),
+            targetPosition: controls.target.clone(),
             time: new Date(),
             brushSize: brushSize,
         }
