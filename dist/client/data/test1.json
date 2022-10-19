@@ -1,0 +1,2247 @@
+[
+    {
+        "start": {
+            "label": "start",
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999998, "z": 1000.0000000000002 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:11:39.264Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationblue",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "b",
+            "x": 2899,
+            "y": 851,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:11:56.361Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationblue",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "b",
+            "x": 2731,
+            "y": 658,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:11:57.030Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 2733,
+            "y": 723,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:11:57.968Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 2356,
+            "y": 757,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:11:58.569Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 2411,
+            "y": 480,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:11:59.133Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 2103,
+            "y": 470,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:11:59.497Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 2085,
+            "y": 326,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:11:59.995Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 2430,
+            "y": 330,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:00.503Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 2365,
+            "y": 167,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:01.017Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 2151,
+            "y": 170,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:01.564Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 2541,
+            "y": 130,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:02.082Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 1856,
+            "y": 602,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:03.164Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 1636,
+            "y": 473,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:03.642Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 1793,
+            "y": 235,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:04.300Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 1600,
+            "y": 150,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:04.898Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 1755,
+            "y": 299,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:05.427Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 1626,
+            "y": 388,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:06.084Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 1448,
+            "y": 333,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:06.628Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 1355,
+            "y": 596,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:07.239Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 1589,
+            "y": 693,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:07.875Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 1773,
+            "y": 737,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:08.549Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 2111,
+            "y": 922,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:09.268Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 2016,
+            "y": 971,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:09.766Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 2246,
+            "y": 1054,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:10.529Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 2566,
+            "y": 1111,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:11.196Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 3075,
+            "y": 1003,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:12.368Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 3497,
+            "y": 965,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:13.002Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 3763,
+            "y": 933,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:13.593Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 3848,
+            "y": 724,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:14.215Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 3534,
+            "y": 485,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:14.929Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 3230,
+            "y": 483,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:15.572Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 3003,
+            "y": 632,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:16.127Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 2883,
+            "y": 645,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:17.030Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 2429,
+            "y": 767,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:17.852Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 1002,
+            "y": 1235,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:18.504Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 811,
+            "y": 1281,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:19.266Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 664,
+            "y": 1294,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:19.770Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 370,
+            "y": 1350,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:20.363Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 311,
+            "y": 1258,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:20.906Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 318,
+            "y": 1223,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:21.474Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 408,
+            "y": 1192,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:22.095Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 517,
+            "y": 1164,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:22.771Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 1277,
+            "y": 1113,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:23.531Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 1389,
+            "y": 1349,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:24.007Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 1704,
+            "y": 1343,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:24.540Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 1755,
+            "y": 1398,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:25.124Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 1705,
+            "y": 1600,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:25.674Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 1518,
+            "y": 1677,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:26.201Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 1589,
+            "y": 1739,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:26.720Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 1865,
+            "y": 1802,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:27.216Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 2237,
+            "y": 1756,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:27.713Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 2269,
+            "y": 1632,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:28.233Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationblue",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "b",
+            "x": 2208,
+            "y": 1604,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:30.183Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationblue",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "b",
+            "x": 2587,
+            "y": 1511,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:30.686Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationblue",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "b",
+            "x": 2801,
+            "y": 1385,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:31.201Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationblue",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "b",
+            "x": 2575,
+            "y": 1371,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:31.724Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationblue",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "b",
+            "x": 2437,
+            "y": 1388,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:32.220Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationblue",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "b",
+            "x": 2018,
+            "y": 1234,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:32.815Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationblue",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "b",
+            "x": 1621,
+            "y": 1152,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:33.318Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationblue",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "b",
+            "x": 1419,
+            "y": 1073,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:33.810Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationblue",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "b",
+            "x": 995,
+            "y": 933,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:34.511Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationblue",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "b",
+            "x": 661,
+            "y": 899,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:35.358Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationblue",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "b",
+            "x": 446,
+            "y": 622,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:35.928Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationblue",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "b",
+            "x": 199,
+            "y": 440,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:36.465Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationblue",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "b",
+            "x": 514,
+            "y": 427,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:36.992Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationblue",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "b",
+            "x": 748,
+            "y": 268,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:37.720Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationblue",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "b",
+            "x": 849,
+            "y": 243,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:38.288Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationblue",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "b",
+            "x": 955,
+            "y": 244,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:38.788Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationblue",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "b",
+            "x": 666,
+            "y": 481,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:39.808Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationblue",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "b",
+            "x": 1522,
+            "y": 927,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:40.686Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 287,
+            "y": 411,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:43.041Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 266,
+            "y": 288,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:43.658Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Down",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "f",
+            "x": 266,
+            "y": 288,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:44.144Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Down",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "f",
+            "x": 352,
+            "y": 258,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:45.017Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Down",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "f",
+            "x": 488,
+            "y": 231,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:45.561Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Down",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "f",
+            "x": 728,
+            "y": 241,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:45.887Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Down",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "f",
+            "x": 894,
+            "y": 590,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:46.111Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Down",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "f",
+            "x": 861,
+            "y": 667,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:46.303Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Down",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "f",
+            "x": 989,
+            "y": 752,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:46.687Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Down",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "f",
+            "x": 988,
+            "y": 763,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:46.944Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Down",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "f",
+            "x": 993,
+            "y": 780,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:47.230Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Down",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "f",
+            "x": 958,
+            "y": 508,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:47.764Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Down",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "f",
+            "x": 1837,
+            "y": 1438,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:48.579Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Down",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "f",
+            "x": 1805,
+            "y": 1363,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:49.347Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Down",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "f",
+            "x": 2505,
+            "y": 1237,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:50.712Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Down",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "f",
+            "x": 2441,
+            "y": 1298,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:51.282Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Down",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "f",
+            "x": 2798,
+            "y": 1367,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:51.721Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Down",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "f",
+            "x": 2792,
+            "y": 1451,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:52.217Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Down",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "f",
+            "x": 3080,
+            "y": 1537,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:52.747Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Down",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "f",
+            "x": 3086,
+            "y": 1550,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:53.253Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Down",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "f",
+            "x": 3018,
+            "y": 1555,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:53.754Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Down",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "f",
+            "x": 2946,
+            "y": 1556,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:54.168Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Down",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "f",
+            "x": 3331,
+            "y": 1613,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:54.610Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Down",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "f",
+            "x": 3490,
+            "y": 1722,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:55.093Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 2722,
+            "y": 1456,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:12:59.896Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 2613,
+            "y": 1341,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:00.748Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 2593,
+            "y": 1238,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:01.209Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationred",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "n",
+            "x": 1537,
+            "y": 966,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:05.991Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "segmentationblue",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "b",
+            "x": 1675,
+            "y": 971,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:10.417Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Down",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "f",
+            "x": 1071,
+            "y": 597,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:12.135Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Down",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "f",
+            "x": 999,
+            "y": 588,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:12.709Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Down",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "f",
+            "x": 933,
+            "y": 576,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:13.232Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 891,
+            "y": 577,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:14.516Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 781,
+            "y": 446,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:14.975Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 709,
+            "y": 419,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:15.475Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 659,
+            "y": 394,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:15.729Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 664,
+            "y": 328,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:15.899Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 780,
+            "y": 175,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:16.369Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 860,
+            "y": 124,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:16.712Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 858,
+            "y": 178,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:16.978Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 968,
+            "y": 168,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:17.153Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 958,
+            "y": 215,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:17.345Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 1067,
+            "y": 192,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:17.589Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 2158,
+            "y": 1140,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:18.461Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 2145,
+            "y": 1143,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:18.703Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 2125,
+            "y": 1190,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:18.908Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 2400,
+            "y": 1238,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:19.356Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 2400,
+            "y": 1249,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:19.584Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 2350,
+            "y": 1229,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:19.844Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 2421,
+            "y": 1180,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:20.169Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 2532,
+            "y": 1198,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:20.762Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 2617,
+            "y": 1228,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:21.096Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 2638,
+            "y": 1259,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:21.424Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 2641,
+            "y": 1290,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:21.761Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 2936,
+            "y": 1364,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:22.537Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 2979,
+            "y": 1385,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:22.784Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 3093,
+            "y": 1430,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:23.044Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 3213,
+            "y": 1502,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:23.275Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 3306,
+            "y": 1543,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:23.489Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 3163,
+            "y": 1472,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:24.065Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 3145,
+            "y": 1450,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:24.276Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 3142,
+            "y": 1428,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:24.475Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 3229,
+            "y": 1445,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:24.736Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 3326,
+            "y": 1513,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:25.001Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 3358,
+            "y": 1542,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:25.220Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 3520,
+            "y": 1636,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:25.428Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 3594,
+            "y": 1652,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:25.619Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 3578,
+            "y": 1691,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:25.816Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 3563,
+            "y": 1723,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:26.012Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 3472,
+            "y": 1767,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:26.215Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 3377,
+            "y": 1740,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:26.383Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 3349,
+            "y": 1713,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:26.587Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 3322,
+            "y": 1691,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:26.777Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 3306,
+            "y": 1691,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:27.005Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 3025,
+            "y": 1710,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:27.325Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 3013,
+            "y": 1777,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:27.610Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 2991,
+            "y": 1783,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:27.822Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 2976,
+            "y": 1789,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:28.054Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 2953,
+            "y": 1792,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:28.281Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 2957,
+            "y": 1764,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:28.662Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 2665,
+            "y": 1610,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:28.928Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 2644,
+            "y": 1595,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:29.155Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 2587,
+            "y": 1555,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:29.412Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 2506,
+            "y": 1532,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:29.654Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 2489,
+            "y": 1505,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:29.863Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 2465,
+            "y": 1528,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:30.403Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 2450,
+            "y": 1519,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:30.992Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 2466,
+            "y": 1486,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:31.341Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 1286,
+            "y": 1659,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:32.561Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 1241,
+            "y": 1668,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:32.767Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 1072,
+            "y": 1725,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:33.009Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 967,
+            "y": 1771,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:33.270Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 1239,
+            "y": 1628,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:33.589Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 1351,
+            "y": 1617,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:33.854Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 1155,
+            "y": 1626,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:34.146Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 665,
+            "y": 1754,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:34.427Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 507,
+            "y": 1756,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:34.663Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 607,
+            "y": 1804,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:34.916Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 417,
+            "y": 1572,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:35.183Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 449,
+            "y": 1603,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:35.527Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 482,
+            "y": 1619,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:35.871Z"
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "BFS_Hill",
+            "clickPosition": { "x": 0.9005392450569203, "y": -0.9026548672566372 },
+            "keyPressed": "d",
+            "x": 516,
+            "y": 1655,
+            "aspectRatio": 1.8462389380530972,
+            "cameraPosition": { "x": 2000, "y": 999.9999999999994, "z": 1683.2129894644754 },
+            "targetPosition": { "x": 2000, "y": 1000, "z": -2000 },
+            "time": "2022-10-19T11:13:36.054Z"
+        }
+    }
+]
