@@ -5,11 +5,23 @@ import { terrainShader } from './shaders/terrain-shader'
 import { GUI } from 'dat.gui'
 import { Mesh } from 'three'
 import axios from 'axios'
-import { init, sessionData, initVis, gameState, logMyState } from './util'
+import {
+    init,
+    sessionData,
+    initVis,
+    gameState,
+    logMyState,
+    getLocalCordinate,
+    readstateFile,
+} from './util'
 import './styles/style.css'
+import { Console } from 'console'
 // import * as fs from 'fs'
-
+let Developer = true
+let overRideControl = false
 var data: number[] = []
+let _fetchData: any
+let mesh: THREE.Mesh
 var elevImage = new Image()
 elevImage.src = 'img/elevation.png'
 var elevateCanvas = document.getElementById('elevateCanvas') as HTMLCanvasElement
@@ -29,6 +41,51 @@ const blurs = [0]
 const zs = [500]
 const pers = [0.05, 0.1, 0.15, 0.2, 0.25]
 var meshes: { [key: string]: Mesh } = {}
+let eventFunction: any
+let _readstateFile: () => {}
+if (Developer) {
+    ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'none'
+    eventFunction = {
+        BFS_Down: (x: number, y: number) => BFSHandler(x, y),
+        BFS_Hill: (x: number, y: number) => BFS2Handler(x, y),
+        brushClear: (x: number, y: number) => brushClearHandler(x, y),
+        brushAnnotationred: (x: number, y: number) => brushAnnotationHandler('r', 'red', x, y),
+        brushAnnotationblue: (x: number, y: number) => brushAnnotationHandler('t', 'blue', x, y),
+        polygonSelector: (x: number, y: number) => polygonSelectionHandler(x, y),
+        polygonFill: (x: number, y: number) => polygonFillHandler(),
+        segmentationred: (x: number, y: number) => segAnnoationHandler('n', 'red', x, y),
+        segmentationblue: (x: number, y: number) => segAnnoationHandler('b', 'blue', x, y),
+        resetAll: (x: number, y: number) => clearAllHandler(),
+    }
+    _readstateFile = async () => {
+        const array = await readstateFile()
+        type eventKey = keyof typeof eventFunction
+        let startUp = array[0].start
+        let _cameraPosition = startUp.cameraPosition
+        let _target = startUp.targetPosition
+        camera.position.set(_cameraPosition.x, _cameraPosition.y, _cameraPosition.z)
+        controls.target.set(_target.x, _target.y, _target.z)
+        controls.update()
+        for (let i = 1, _length = array.length; i < _length; i++) {
+            let event = array[i].mouseEvent
+            let _cameraPosition = event.cameraPosition
+            let _target = event.targetPosition
+            camera.position.set(_cameraPosition.x, _cameraPosition.y, _cameraPosition.z)
+            controls.target.set(_target.x, _target.y, _target.z)
+            controls.update()
+            let x, y
+            if (event.x == undefined) {
+                x = 0
+                y = 0
+            } else {
+                x = event.x
+                y = event.y
+            }
+            let _action = event.label as eventKey
+            eventFunction[_action](x, y)
+        }
+    }
+}
 
 // var persToSegs : {[key: number]: number} = {
 //     20: 242,
@@ -127,6 +184,10 @@ async function getPersistence() {
                     uniforms.segsMax.value = segsMax[threshold]
                 }
             })
+
+            if (Developer) {
+                _readstateFile()
+            }
         })
         .catch((error) => {
             console.log(error)
@@ -152,7 +213,7 @@ persLoader.load(
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 5000)
 camera.position.set(2000, 1000, 1000)
 
-const renderer = new THREE.WebGLRenderer()
+const renderer = new THREE.WebGLRenderer({ preserveDrawingBuffer: true })
 renderer.outputEncoding = THREE.sRGBEncoding
 renderer.setSize(window.innerWidth, window.innerHeight)
 renderer.shadowMap.enabled = true
@@ -174,7 +235,7 @@ var params = {
     z: 500,
     annotation: 1,
     brushSize: 5,
-    pers: 0.1,
+    pers: 0.05,
     persShow: 0,
     mappedMaxValue: 255,
     guide: 0,
@@ -361,13 +422,17 @@ const state = {
     segEnabled: true,
 }
 
-function hoverHandler() {
-    console.log(Math.round(params.pers * 100) / 100)
+function performRayCasting() {
     raycaster.setFromCamera(pointer, camera)
     const intersects = raycaster.intersectObjects(scene.children)
     var point = intersects[0].point
     var x = Math.trunc(point.x)
     var y = Math.ceil(point.y)
+    return [x, y]
+}
+
+function hoverHandler() {
+    let [x, y] = performRayCasting()
     let localId = persDatas[Math.round(params.pers * 100) / 100][x + y * 4104]
     console.log(localId)
     uniforms.hoverValue.value = localId
@@ -375,30 +440,17 @@ function hoverHandler() {
     uniforms.guide.value = params.guide
 }
 
-function BFSHandler() {
-    raycaster.setFromCamera(pointer, camera)
-    const intersects = raycaster.intersectObjects(scene.children)
-    var x = Math.trunc(intersects[0].point.x)
-    var y = 1856 - Math.ceil(intersects[0].point.y)
-    logMyState('f', 'BFS', camera, pointer, x, y)
+function BFSHandler(x: number, y: number) {
+    logMyState('f', 'BFS_Down', camera, pointer, x, y)
     BFS(x, y, 'BFS_Down', 'red')
 }
 
-function BFS2Handler() {
-    raycaster.setFromCamera(pointer, camera)
-    const intersects = raycaster.intersectObjects(scene.children)
-    var x = Math.trunc(intersects[0].point.x)
-    var y = 1856 - Math.ceil(intersects[0].point.y)
-    logMyState('d', 'BFS2', camera, pointer, x, y)
+function BFS2Handler(x: number, y: number) {
+    logMyState('d', 'BFS_Hill', camera, pointer, x, y)
     BFS(x, y, 'BFS_Hill', 'blue')
 }
 
-function brushClearHandler() {
-    raycaster.setFromCamera(pointer, camera)
-    const intersects = raycaster.intersectObjects(scene.children)
-    var point = intersects[0].point
-    var x = Math.trunc(point.x)
-    var y = 1856 - Math.ceil(point.y)
+function brushClearHandler(x: number, y: number) {
     context!.clearRect(
         x - Math.floor(params.brushSize / 2),
         y - Math.floor(params.brushSize / 2),
@@ -409,19 +461,14 @@ function brushClearHandler() {
     sessionData.annotatedPixelCount -= params.brushSize * params.brushSize
     annotationTexture.needsUpdate = true
     uniforms.annotationTexture.value = annotationTexture
-    logMyState('e', 'clear by brush', camera, pointer, x, y, params.brushSize)
+    logMyState('e', 'brushClear', camera, pointer, x, y, params.brushSize)
 }
 
-function brushAnnotationHandler(key: string, color: string) {
+function brushAnnotationHandler(key: string, color: string, x: number, y: number) {
     if (!color) {
         console.error('no annotation without color, send color !!')
         return
     }
-    raycaster.setFromCamera(pointer, camera)
-    const intersects = raycaster.intersectObjects(scene.children)
-    var point = intersects[0].point
-    var x = Math.trunc(point.x)
-    var y = 1856 - Math.ceil(point.y)
 
     context!.fillStyle = color
     context!.fillRect(
@@ -433,27 +480,14 @@ function brushAnnotationHandler(key: string, color: string) {
     sessionData.annotatedPixelCount += params.brushSize * params.brushSize
     annotationTexture.needsUpdate = true
     uniforms.annotationTexture.value = annotationTexture
-    logMyState(key, 'annotation by brush', camera, pointer, x, y, params.brushSize)
+    logMyState(key, 'brushAnnotation' + color, camera, pointer, x, y, params.brushSize)
 }
 
-function polygonSelectionHandler() {
-    raycaster.setFromCamera(pointer, camera)
-    const intersects = raycaster.intersectObjects(scene.children)
-    var point = intersects[0].point
-    var x = Math.trunc(point.x)
-    var y = 1856 - Math.ceil(point.y)
+function polygonSelectionHandler(x: number, y: number) {
     polyPoints.push(x, y)
     context!.fillStyle = 'red'
     context!.fillRect(x - 2, y - 2, 4, 4)
-    logMyState(
-        'p',
-        'annotation by Polygon (polypoint added)',
-        camera,
-        pointer,
-        x,
-        y,
-        params.brushSize
-    )
+    logMyState('p', 'polygonSelector', camera, pointer, x, y, params.brushSize)
     sessionData.annotatedPixelCount += 16 //follow this with the line selection to minimize the double counting
     annotationTexture.needsUpdate = true
 }
@@ -461,7 +495,7 @@ function polygonSelectionHandler() {
 function polygonFillHandler() {
     context!.fillStyle = 'red'
     context!.beginPath()
-    logMyState('l', 'polygon fill', camera, undefined, undefined, undefined, undefined, polyPoints)
+    logMyState('l', 'polygonFill', camera, undefined, undefined, undefined, undefined, polyPoints)
     context!.moveTo(polyPoints[0], polyPoints[1])
     for (var i = 2; i < polyPoints.length; i += 2) {
         context!.lineTo(polyPoints[i], polyPoints[i + 1])
@@ -542,17 +576,13 @@ function polygonFillHandler() {
     annotationTexture.needsUpdate = true
 }
 
-function segAnnoationHandler(key: string, color: string) {
+function segAnnoationHandler(key: string, color: string, x: number, y: number) {
     if (!color) {
         console.error('no annotation without color, send color')
         return
     }
-    raycaster.setFromCamera(pointer, camera)
-    const intersects = raycaster.intersectObjects(scene.children)
-    var x = Math.trunc(intersects[0].point.x)
-    var y = Math.floor(intersects[0].point.y)
     context!.fillStyle = color
-    logMyState(key, 'segmentation', camera, pointer, x, y)
+    logMyState(key, 'segmentation' + color, camera, pointer, x, y)
     segSelect(x, y)
 }
 
@@ -561,7 +591,7 @@ function clearAllHandler() {
         context!.clearRect(recentFills[i], recentFills[i + 1], 1, 1)
     }
     annotationTexture.needsUpdate = true
-    logMyState('z', 'reset all', camera, undefined, undefined, undefined)
+    logMyState('z', 'resetAll', camera, undefined, undefined, undefined)
 }
 
 const onKeyPress = (event: KeyboardEvent) => {
@@ -577,23 +607,37 @@ const onKeyPress = (event: KeyboardEvent) => {
     } else if (event.key == 'g') {
         hoverHandler()
     } else if (event.key == 'f' && state.BFS) {
-        BFSHandler()
+        let [x, y] = performRayCasting()
+        y = 1856 - y
+        BFSHandler(x, y)
     } else if (event.key == 'd' && state.BFS) {
-        BFS2Handler()
+        let [x, y] = performRayCasting()
+        y = 1856 - y
+        BFS2Handler(x, y)
     } else if (event.key == 'e' && state.brushSelection) {
-        brushClearHandler()
+        let [x, y] = performRayCasting()
+        y = 1856 - y
+        brushClearHandler(x, y)
     } else if (event.key == 'r' && state.brushSelection) {
-        brushAnnotationHandler('r', 'red')
+        let [x, y] = performRayCasting()
+        y = 1856 - y
+        brushAnnotationHandler('r', 'red', x, y)
     } else if (event.key == 't' && state.brushSelection) {
-        brushAnnotationHandler('t', 'blue')
+        let [x, y] = performRayCasting()
+        y = 1856 - y
+        brushAnnotationHandler('t', 'blue', x, y)
     } else if (event.key == 'p' && state.polygonSelection) {
-        polygonSelectionHandler()
+        let [x, y] = performRayCasting()
+        y = 1856 - y
+        polygonSelectionHandler(x, y)
     } else if (event.key == 'l' && state.polygonSelection) {
         polygonFillHandler()
     } else if (event.key == 'n' && state.segEnabled) {
-        segAnnoationHandler('n', 'red')
+        let [x, y] = performRayCasting()
+        segAnnoationHandler('n', 'red', x, y)
     } else if (event.key == 'b' && state.segEnabled) {
-        segAnnoationHandler('b', 'blue')
+        let [x, y] = performRayCasting()
+        segAnnoationHandler('b', 'blue', x, y)
     } else if (event.key == 'z') {
         clearAllHandler()
     }
@@ -630,7 +674,7 @@ satelliteLoader.load(
                         geometry.computeBoundingBox()
                         geometry.computeVertexNormals()
 
-                        const mesh = new THREE.Mesh(geometry, meshMaterial)
+                        mesh = new THREE.Mesh(geometry, meshMaterial)
                         mesh.receiveShadow = true
                         mesh.castShadow = true
                         mesh.position.set(0, 0, -100)
@@ -649,7 +693,11 @@ satelliteLoader.load(
                 )
             })
             setTimeout(function () {
-                initVis()
+                ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
+                if (!Developer) {
+                    ;(document.getElementById('modal-wrapper') as HTMLElement).style.display =
+                        'block'
+                }
             }, 2000)
         })
     },
@@ -669,7 +717,9 @@ function onWindowResize() {
 
 function animate() {
     requestAnimationFrame(animate)
-    controls.update()
+    if (!Developer || overRideControl) {
+        controls.update()
+    }
     // let position = new THREE.Vector3()
     // camera.getWorldPosition(position)
     render()
@@ -684,6 +734,7 @@ function startState() {
         label: 'start',
         aspectRatio: camera.aspect,
         cameraPosition: camera.position.clone(),
+        targetPosition: controls.target.clone(),
         time: new Date(),
     }
     gameState.push({ start: startStateData })
@@ -701,4 +752,4 @@ function addMouseEvent() {}
 startState()
 animate()
 
-export { startUp }
+export { canvas, startUp, controls, mesh, pointer }

@@ -1,4 +1,7 @@
-import { startUp } from './client'
+import { MapControls } from 'three/examples/jsm/controls/OrbitControls'
+import { canvas, startUp, controls, mesh } from './client'
+// import * as fs from 'fs'
+
 const pixelCount = 7617024
 
 interface sessionDataType {
@@ -23,6 +26,7 @@ interface gameEventType {
     linePoints?: Array<number>
     aspectRatio: number
     cameraPosition: THREE.Vector3
+    targetPosition: THREE.Vector3
     time: Date
 }
 
@@ -31,7 +35,7 @@ interface gameStateType {
 }
 
 const sessionData: sessionDataType = {
-    name: 'Pravin',
+    name: 'anonymous',
     sessionStart: null,
     sessionEnd: null,
     'totalSessionTime_M:S:MS': '0:0:0',
@@ -46,6 +50,13 @@ const sessionData: sessionDataType = {
 
 const gameState: Array<gameStateType> = []
 
+async function readstateFile() {
+    let _fetchData: any
+    const response = await fetch('./data/test1.json')
+    _fetchData = await response.json()
+    return _fetchData
+}
+
 function logMyState(
     key: string,
     event: string,
@@ -56,7 +67,7 @@ function logMyState(
     brushSize?: number,
     linePoints?: Array<number>
 ) {
-    let tempS: string = `${key} pressed in ${event}`
+    let tempS: string = event
 
     let stateData
     if (brushSize != undefined) {
@@ -68,6 +79,7 @@ function logMyState(
             y: y,
             aspectRatio: camera.aspect,
             cameraPosition: camera.position.clone(),
+            targetPosition: controls.target.clone(),
             time: new Date(),
         }
     }
@@ -78,6 +90,7 @@ function logMyState(
             aspectRatio: camera.aspect,
             keyPressed: key,
             cameraPosition: camera.position.clone(),
+            targetPosition: controls.target.clone(),
             time: new Date(),
             linePoints: linePoints,
         }
@@ -90,6 +103,7 @@ function logMyState(
             y: y,
             aspectRatio: camera.aspect,
             cameraPosition: camera.position.clone(),
+            targetPosition: controls.target.clone(),
             time: new Date(),
             brushSize: brushSize,
         }
@@ -98,13 +112,22 @@ function logMyState(
 }
 
 function download(filename: string, text: string) {
+    let imageName = 'annotatedImg.png'
+    if (sessionData.name) {
+        imageName = 'annotatedImg_' + sessionData.name + '.png'
+    }
     var element = document.createElement('a')
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text))
     element.setAttribute('download', filename)
     element.style.display = 'none'
     document.body.appendChild(element)
     element.click()
-    document.body.removeChild(element)
+    var url = canvas.toDataURL()
+    var link = document.createElement('a')
+    link.setAttribute('href', url)
+    link.setAttribute('target', '_blank')
+    link.setAttribute('download', imageName)
+    link.click()
 }
 
 function convertToSecMins(millisecond: number) {
@@ -154,6 +177,12 @@ function hideModal() {
     sessionData.name = userId
 }
 
+function getLocalCordinate(_cordiante: THREE.Vector3) {
+    mesh.updateMatrixWorld()
+    const localPoint = mesh.worldToLocal(_cordiante)
+    return localPoint
+}
+
 function init() {
     document.getElementById('start')?.addEventListener('click', startSession)
     document.getElementById('end')?.addEventListener('click', endSession)
@@ -166,4 +195,15 @@ function initVis() {
     ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
 }
 
-export { resetCamera, startSession, endSession, init, initVis, sessionData, gameState, logMyState }
+export {
+    resetCamera,
+    startSession,
+    endSession,
+    init,
+    initVis,
+    sessionData,
+    gameState,
+    logMyState,
+    getLocalCordinate,
+    readstateFile,
+}
