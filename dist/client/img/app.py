@@ -11,6 +11,7 @@ import json
 from topologytoolkit import (
     ttkFTMTree,
     ttkTopologicalSimplificationByPersistence,
+    ttkScalarFieldSmoother
 )
 
 app = Flask(__name__)
@@ -22,8 +23,14 @@ pread.SetFileName("./elevation.tiff")
 # extractComponent.SetComponents(0)
 # extractComponent.Update()
 
+smoother = ttkScalarFieldSmoother()
+smoother.SetInputConnection(0, pread.GetOutputPort())
+smoother.SetInputArrayToProcess(0, 0, 0, 0, "Tiff Scalars")
+smoother.SetNumberOfIterations(5)
+smoother.Update()
+
 simplify = ttkTopologicalSimplificationByPersistence()
-simplify.SetInputConnection(0, pread.GetOutputPort())
+simplify.SetInputConnection(0, smoother.GetOutputPort())
 simplify.SetInputArrayToProcess(0, 0, 0, 0, "Tiff Scalars")
 simplify.SetThresholdIsAbsolute(False)
 # simplify.SetPersistenceThreshold(50)
@@ -41,7 +48,7 @@ tree.SetWithSegmentation(1)
 @app.route('/test', methods=['GET'])
 def test():
     response = {}
-    ranges = [0.06, 0.08, 0.1]
+    ranges = [0.02, 0.04, 0.06, 0.08, 0.1]
     for i in ranges:
         simplify.SetPersistenceThreshold(i)
         simplify.Update()

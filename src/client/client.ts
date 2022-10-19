@@ -39,7 +39,7 @@ const scene = new THREE.Scene()
 // const zs = [100, 200, 300, 400, 500];
 const blurs = [0]
 const zs = [0, 500]
-const pers = [0.06, 0.08, 0.1]
+const pers = [0.02, 0.04, 0.06, 0.08, 0.1]
 var meshes: { [key: string]: Mesh } = {}
 let eventFunction: any
 let _readstateFile: () => {}
@@ -157,13 +157,13 @@ async function getPersistence() {
         .get(`http://localhost:5000/test`)
         .then((response) => {
             console.log(response.data)
-            pers.forEach((threshold) => {
-                persDatas[threshold] = response.data[threshold].array
-                segsMax[threshold] = response.data[threshold].max
-                var imageData = new Uint8Array(4 * persDatas[threshold].length)
-                segsToPixels2[threshold] = {}
-                for (var x = 0; x < persDatas[threshold].length; x++) {
-                    var segID = persDatas[threshold][x]
+            for (var i = 0; i < pers.length; i++) {
+                persDatas[pers[i]] = response.data[pers[i]].array
+                segsMax[pers[i]] = response.data[pers[i]].max
+                var imageData = new Uint8Array(4 * persDatas[pers[i]].length)
+                segsToPixels2[pers[i]] = {}
+                for (var x = 0; x < persDatas[pers[i]].length; x++) {
+                    var segID = persDatas[pers[i]][x]
                     let tempString = segID.toString()
                     let maskedNumber = tempString.padStart(4, '0')
                     const realId = Array.from(maskedNumber).map(Number)
@@ -171,19 +171,19 @@ async function getPersistence() {
                     imageData[x * 4 + 1] = +realId[1]
                     imageData[x * 4 + 2] = +realId[2]
                     imageData[x * 4 + 3] = +realId[3]
-                    if (segsToPixels2[threshold][segID]) {
-                        segsToPixels2[threshold][segID].push(x)
+                    if (segsToPixels2[pers[i]][segID]) {
+                        segsToPixels2[pers[i]][segID].push(x)
                     } else {
-                        segsToPixels2[threshold][segID] = [x]
+                        segsToPixels2[pers[i]][segID] = [x]
                     }
                 }
-                persTextures[threshold] = new THREE.DataTexture(imageData, 4104, 1856)
-                persTextures[threshold].needsUpdate = true
-                if (threshold == Math.round(params.pers * 100) / 100) {
-                    uniforms.persTexture.value = persTextures[threshold]
-                    uniforms.segsMax.value = segsMax[threshold]
+                persTextures[pers[i]] = new THREE.DataTexture(imageData, 4104, 1856)
+                persTextures[pers[i]].needsUpdate = true
+                if (pers[i] == Math.round(params.pers * 100) / 100) {
+                    uniforms.persTexture.value = persTextures[pers[i]]
+                    uniforms.segsMax.value = segsMax[pers[i]]
                 }
-            })
+            }
 
             if (Developer) {
                 _readstateFile()
@@ -270,7 +270,7 @@ viewFolder.add(params, 'z', 0, 500, 500).onFinishChange(() => {
 viewFolder.add(params, 'annotation', 0, 1, 1).onFinishChange(() => {
     uniforms.annotation.value = params.annotation
 })
-viewFolder.add(params, 'pers', 0.06, 0.1, 0.02).onFinishChange(() => {
+viewFolder.add(params, 'pers', 0.02, 0.1, 0.02).onFinishChange(() => {
     uniforms.persTexture.value = persTextures[Math.round(params.pers * 100) / 100]
     uniforms.segsMax.value = segsMax[Math.round(params.pers * 100) / 100]
 })
