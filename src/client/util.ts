@@ -52,7 +52,7 @@ const gameState: Array<gameStateType> = []
 
 async function readstateFile() {
     let _fetchData: any
-    const response = await fetch('./data/test1.json')
+    const response = await fetch('./data/test2.json')
     _fetchData = await response.json()
     return _fetchData
 }
