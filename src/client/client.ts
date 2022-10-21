@@ -53,8 +53,8 @@ if (Developer) {
         brushAnnotationblue: (x: number, y: number) => brushAnnotationHandler('t', 'blue', x, y),
         polygonSelector: (x: number, y: number) => polygonSelectionHandler(x, y),
         polygonFill: (x: number, y: number) => polygonFillHandler(),
-        segmentationred: (x: number, y: number) => segAnnoationHandler('n', 'red', x, y),
-        segmentationblue: (x: number, y: number) => segAnnoationHandler('b', 'blue', x, y),
+        segmentationred: (x: number, y: number) => segAnnotationHandler('n', 'red', x, y),
+        segmentationblue: (x: number, y: number) => segAnnotationHandler('b', 'blue', x, y),
         resetAll: (x: number, y: number) => clearAllHandler(),
     }
     _readstateFile = async () => {
@@ -157,13 +157,13 @@ async function getPersistence() {
         .get(`http://localhost:5000/test`)
         .then((response) => {
             console.log(response.data)
-            pers.forEach((threshold) => {
-                persDatas[threshold] = response.data[threshold].array
-                segsMax[threshold] = response.data[threshold].max
-                var imageData = new Uint8Array(4 * persDatas[threshold].length)
-                segsToPixels2[threshold] = {}
-                for (var x = 0; x < persDatas[threshold].length; x++) {
-                    var segID = persDatas[threshold][x]
+            for (var i = 0; i < pers.length; i++) {
+                persDatas[pers[i]] = response.data[pers[i]].array
+                segsMax[pers[i]] = response.data[pers[i]].max
+                var imageData = new Uint8Array(4 * persDatas[pers[i]].length)
+                segsToPixels2[pers[i]] = {}
+                for (var x = 0; x < persDatas[pers[i]].length; x++) {
+                    var segID = persDatas[pers[i]][x]
                     let tempString = segID.toString()
                     let maskedNumber = tempString.padStart(4, '0')
                     const realId = Array.from(maskedNumber).map(Number)
@@ -171,19 +171,19 @@ async function getPersistence() {
                     imageData[x * 4 + 1] = +realId[1]
                     imageData[x * 4 + 2] = +realId[2]
                     imageData[x * 4 + 3] = +realId[3]
-                    if (segsToPixels2[threshold][segID]) {
-                        segsToPixels2[threshold][segID].push(x)
+                    if (segsToPixels2[pers[i]][segID]) {
+                        segsToPixels2[pers[i]][segID].push(x)
                     } else {
-                        segsToPixels2[threshold][segID] = [x]
+                        segsToPixels2[pers[i]][segID] = [x]
                     }
                 }
-                persTextures[threshold] = new THREE.DataTexture(imageData, 4104, 1856)
-                persTextures[threshold].needsUpdate = true
-                if (threshold == Math.round(params.pers * 100) / 100) {
-                    uniforms.persTexture.value = persTextures[threshold]
-                    uniforms.segsMax.value = segsMax[threshold]
+                persTextures[pers[i]] = new THREE.DataTexture(imageData, 4104, 1856)
+                persTextures[pers[i]].needsUpdate = true
+                if (pers[i] == Math.round(params.pers * 100) / 100) {
+                    uniforms.persTexture.value = persTextures[pers[i]]
+                    uniforms.segsMax.value = segsMax[pers[i]]
                 }
-            })
+            }
 
             if (Developer) {
                 _readstateFile()
@@ -235,7 +235,7 @@ var params = {
     z: 500,
     annotation: 1,
     brushSize: 5,
-    pers: 0.05,
+    pers: 0.06,
     persShow: 0,
     mappedMaxValue: 255,
     guide: 0,
@@ -258,11 +258,11 @@ var uniforms = {
 const meshFolder = gui.addFolder('Mesh Settings')
 const viewFolder = gui.addFolder('View Settings')
 
-meshFolder.add(params, 'blur', 0, 2, 1).onFinishChange(() => {
-    scene.remove(scene.children[0])
-    scene.add(meshes[`z${params.z}blur${params.blur}`])
-})
-meshFolder.add(params, 'z', 0, 500, 100).onFinishChange(() => {
+// meshFolder.add(params, 'blur', 0, 2, 1).onFinishChange(() => {
+//     scene.remove(scene.children[0])
+//     scene.add(meshes[`z${params.z}blur${params.blur}`])
+// })
+viewFolder.add(params, 'z', 0, 500, 500).onFinishChange(() => {
     scene.remove(scene.children[0])
     uniforms.z.value = params.z
     scene.add(meshes[`z${params.z}blur${params.blur}`])
@@ -270,7 +270,7 @@ meshFolder.add(params, 'z', 0, 500, 100).onFinishChange(() => {
 viewFolder.add(params, 'annotation', 0, 1, 1).onFinishChange(() => {
     uniforms.annotation.value = params.annotation
 })
-viewFolder.add(params, 'pers', 0.05, 0.25, 0.05).onFinishChange(() => {
+viewFolder.add(params, 'pers', 0.02, 0.1, 0.02).onFinishChange(() => {
     uniforms.persTexture.value = persTextures[Math.round(params.pers * 100) / 100]
     uniforms.segsMax.value = segsMax[Math.round(params.pers * 100) / 100]
 })
@@ -282,16 +282,16 @@ viewFolder.add(params, 'brushSize', 1, 50, 1)
 viewFolder.open()
 // meshFolder.open()
 
-var recentFills: Array<number> = []
+var recentFills: Array<Array<number>> = []
 
 function segSelect(x: number, y: number) {
-    recentFills = []
+    recentFills.push([])
     var value = persDatas[Math.round(params.pers * 100) / 100][x + y * 4104]
     var pixels = segsToPixels2[Math.round(params.pers * 100) / 100][value]
     for (var i = 0; i < pixels.length; i++) {
         var x = pixels[i] % 4104
         var y = 1855 - Math.floor(pixels[i] / 4104)
-        recentFills.push(x, y)
+        recentFills[recentFills.length - 1].push(x, y)
         context!.fillRect(x, y, 1, 1)
     }
     sessionData.annotatedPixelCount = sessionData.annotatedPixelCount + pixels.length
@@ -322,9 +322,9 @@ const searchFunction = {
     },
 }
 
+var visited = new Map()
 function BFS(x: number, y: number, direction: string, color: string) {
     context!.fillStyle = color
-    var visited = new Map()
     var stack = []
     visited.set(`${x}, ${y}`, 1)
     stack.push(x, y)
@@ -334,6 +334,7 @@ function BFS(x: number, y: number, direction: string, color: string) {
         y = stack.pop()!
         x = stack.pop()!
         context!.fillRect(x, y, 1, 1)
+        recentFills[recentFills.length - 1].push(x, y)
         var value = data[x + y * 4104]
         if (searchFunction[_direction].E(x, y, value)) {
             if (!visited.get(`${x + 1}, ${y}`)) {
@@ -418,7 +419,7 @@ const state = {
     segmentation: true,
     semi: false,
     brushSelection: false,
-    polygonSelection: false,
+    polygonSelection: true,
     segEnabled: true,
 }
 
@@ -442,11 +443,13 @@ function hoverHandler() {
 
 function BFSHandler(x: number, y: number) {
     logMyState('f', 'BFS_Down', camera, pointer, x, y)
+    recentFills.push([])
     BFS(x, y, 'BFS_Down', 'red')
 }
 
 function BFS2Handler(x: number, y: number) {
     logMyState('d', 'BFS_Hill', camera, pointer, x, y)
+    recentFills.push([])
     BFS(x, y, 'BFS_Hill', 'blue')
 }
 
@@ -484,6 +487,7 @@ function brushAnnotationHandler(key: string, color: string, x: number, y: number
 }
 
 function polygonSelectionHandler(x: number, y: number) {
+    console.log("t")
     polyPoints.push(x, y)
     context!.fillStyle = 'red'
     context!.fillRect(x - 2, y - 2, 4, 4)
@@ -569,6 +573,7 @@ function polygonFillHandler() {
             }
         }
     }
+    recentFills.push([])
     for (var i = 0; i < linePixels.length; i += 2) {
         BFS(linePixels[i], linePixels[i + 1], 'BFS_Down', 'red')
     }
@@ -576,7 +581,7 @@ function polygonFillHandler() {
     annotationTexture.needsUpdate = true
 }
 
-function segAnnoationHandler(key: string, color: string, x: number, y: number) {
+function segAnnotationHandler(key: string, color: string, x: number, y: number) {
     if (!color) {
         console.error('no annotation without color, send color')
         return
@@ -587,8 +592,9 @@ function segAnnoationHandler(key: string, color: string, x: number, y: number) {
 }
 
 function clearAllHandler() {
-    for (var i = 0; i < recentFills.length; i += 2) {
-        context!.clearRect(recentFills[i], recentFills[i + 1], 1, 1)
+    var lastPixels = recentFills.pop()!
+    for (var i = 0; i < lastPixels.length; i += 2) {
+        context!.clearRect(lastPixels[i], lastPixels[i + 1], 1, 1)
     }
     annotationTexture.needsUpdate = true
     logMyState('z', 'resetAll', camera, undefined, undefined, undefined)
@@ -634,10 +640,10 @@ const onKeyPress = (event: KeyboardEvent) => {
         polygonFillHandler()
     } else if (event.key == 'n' && state.segEnabled) {
         let [x, y] = performRayCasting()
-        segAnnoationHandler('n', 'red', x, y)
+        segAnnotationHandler('n', 'red', x, y)
     } else if (event.key == 'b' && state.segEnabled) {
         let [x, y] = performRayCasting()
-        segAnnoationHandler('b', 'blue', x, y)
+        segAnnotationHandler('b', 'blue', x, y)
     } else if (event.key == 'z') {
         clearAllHandler()
     }
