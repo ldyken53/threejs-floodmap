@@ -112,3 +112,35 @@ input[type='text'] {
         transform: rotate(360deg);
     }
 }
+
+#uploadForm {
+    /* display: none; */
+    height: 100vh;
+    text-align: center;
+}
+input[type='file'],
+input[type='submit'] {
+    display: none;
+}
+
+#submit {
+    background-color: #fa6400;
+    color: white;
+    border: none;
+    padding: 10px 10px;
+    width: 120px;
+    /* font-size: 16px; */
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.custom-upload-button {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+#uploadForm {
+    display: none;
+}

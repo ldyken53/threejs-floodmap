@@ -487,7 +487,7 @@ function brushAnnotationHandler(key: string, color: string, x: number, y: number
 }
 
 function polygonSelectionHandler(x: number, y: number) {
-    console.log("t")
+    console.log('t')
     polyPoints.push(x, y)
     context!.fillStyle = 'red'
     context!.fillRect(x - 2, y - 2, 4, 4)
@@ -659,6 +659,10 @@ function startUp() {
     window.addEventListener('mousemove', onMouseMove)
     window.addEventListener('keydown', onKeyPress)
     window.addEventListener('keyup', onKeyUp)
+    document.getElementById('cancel')?.addEventListener('click', () => {
+        ;(document.getElementById('uploadForm') as HTMLFormElement).style.display = 'none'
+        ;(document.getElementById('download') as HTMLElement).style.display = 'block'
+    })
 }
 
 const satelliteLoader = new THREE.TextureLoader()

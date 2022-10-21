@@ -168,6 +168,8 @@ function downloadSession(event: Event) {
     const _data = JSON.stringify(gameState)
     const _fileName = 'session_' + sessionData.name + '.json'
     download(_fileName, _data)
+    ;(document.getElementById('uploadForm') as HTMLFormElement).style.display = 'block'
+    
 }
 
 function hideModal() {

@@ -33,16 +33,27 @@
             <button class="session-terminal" id="start">START</button>
         </div>
 
-        <form enctype="multipart/form-data" method="post" name="fileinfo">
-            <p>Thank you for finishing the study</p>
+        <form enctype="multipart/form-data" method="post" id="uploadForm" name="fileinfo">
+            <h2>Thank you for finishing the study</h2>
+            <p style="font-style: italic">
+                If you clicked finish button accidently, go back by pressing <b>cancel</b> button
+                and continue your study, otherwise upload json file downloaded when you cliked
+                <b>Finish</b> button
+            </p>
             <p>
-                <label
-                    >JSON File to Upload:
+                <label class="custom-upload-button"
+                    >Upload JSON File:
                     <input type="file" id="fileInput" name="file" required />
                 </label>
             </p>
             <p>
-                <input type="submit" value="Stash the file!" />
+                <div style="display:inline-block; margin-top: 50px;">
+                <label class="custom-upload-button" id="submit">
+                    submit
+                    <input type="submit" value="Upload !" />
+                </label>
+                <button id="cancel">Cancel</button>
+            </div>
             </p>
         </form>
 
