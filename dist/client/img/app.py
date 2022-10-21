@@ -59,11 +59,8 @@ tree.SetWithSegmentation(1)
 @app.route('/test', methods=['GET'])
 def test():
     response = {}
-<<<<<<< HEAD
+
     ranges = [0.05]
-=======
-    ranges = [0.02, 0.04, 0.06, 0.08, 0.1]
->>>>>>> 24af5a413d389127c2c22028a3daa73019fbe6f5
     for i in ranges:
         simplify.SetPersistenceThreshold(i)
         simplify.Update()
@@ -81,9 +78,9 @@ def stateUpload():
     file = request.files.get("file")
     fileName = secure_filename(file.filename)
     destination = "/".join([target, fileName])
-    print(destination)
     file.save(destination)
-    return "successfully uploaded"
+    resp = jsonify(success=True)
+    return resp
     
 if __name__ == '__main__':
    app.run()

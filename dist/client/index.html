@@ -32,9 +32,11 @@
             <button class="session-terminal" id="end">FINISH</button>
             <button class="session-terminal" id="start">START</button>
         </div>
-
-        <form enctype="multipart/form-data" method="post" id="uploadForm" name="fileinfo">
+        <div id="uploadForm" >
+            <h3 id="upload-message"></h3>
+            <img src="./img/giphy.gif">
             <h2>Thank you for finishing the study</h2>
+            <form enctype="multipart/form-data" method="post" name="fileinfo">
             <p style="font-style: italic">
                 If you clicked finish button accidently, go back by pressing <b>cancel</b> button
                 and continue your study, otherwise upload json file downloaded when you cliked
@@ -43,11 +45,12 @@
             <p>
                 <label class="custom-upload-button"
                     >Upload JSON File:
-                    <input type="file" id="fileInput" name="file" required />
+                    <input type="file" id="fileInput" name="file"  />
                 </label>
             </p>
+            <p id="uploadState" style="color: red"></p>
             <p>
-                <div style="display:inline-block; margin-top: 50px;">
+                <div style="display:inline-block; margin-top: 50px; font-style: italic;">
                 <label class="custom-upload-button" id="submit">
                     submit
                     <input type="submit" value="Upload !" />
@@ -56,7 +59,8 @@
             </div>
             </p>
         </form>
-
+        </div>
+ 
         <div id="modal-wrapper">
             <div class="modal-header">
                 <h2>Instructions and Guide:</h2>
@@ -92,11 +96,17 @@
         <script type="module" src="bundle.js"></script>
         <script>
             const form = document.forms.namedItem('fileinfo')
+            const formWrapper = document.getElementById("uploadForm")
             form.addEventListener('submit', async (event) => {
                 event.preventDefault()
                 let formData = new FormData(form)
-                formData.append('firstName', 'John')
-                let file1 = document.getElementById('fileInput').files[0]
+                let files = document.getElementById('fileInput').files
+                if(files.length  == 0){
+                    document.getElementById("uploadState").innerHTML = "Please select JSON file before uploading"
+                    console.log("select file")
+                    return;
+                }
+                file1 = files[0]
                 for (const [key, value] of formData.entries()) {
                     console.log(key, value)
                 }
@@ -104,7 +114,14 @@
                     method: 'POST',
                     body: formData,
                 })
-                let _response = await response.json()
+                if(!response.ok){
+                    form.style.display="block"
+                    document.getElementById("upload-message").innerHTML = "Upload was not successfull, please try again"
+                }
+
+                _response = await response.json()
+                form.style.display="none"
+                document.getElementById("upload-message").innerHTML = "Thank you for taking part in this study, Your data has been saved, You can close this tab in browser"
             })
         </script>
     </body>
