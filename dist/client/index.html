@@ -33,6 +33,19 @@
             <button class="session-terminal" id="start">START</button>
         </div>
 
+        <form enctype="multipart/form-data" method="post" name="fileinfo">
+            <p>Thank you for finishing the study</p>
+            <p>
+                <label
+                    >JSON File to Upload:
+                    <input type="file" id="fileInput" name="file" required />
+                </label>
+            </p>
+            <p>
+                <input type="submit" value="Stash the file!" />
+            </p>
+        </form>
+
         <div id="modal-wrapper">
             <div class="modal-header">
                 <h2>Instructions and Guide:</h2>
@@ -66,5 +79,22 @@
             </div>
         </div>
         <script type="module" src="bundle.js"></script>
+        <script>
+            const form = document.forms.namedItem('fileinfo')
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault()
+                let formData = new FormData(form)
+                formData.append('firstName', 'John')
+                let file1 = document.getElementById('fileInput').files[0]
+                for (const [key, value] of formData.entries()) {
+                    console.log(key, value)
+                }
+                let response = await fetch('http://127.0.0.1:5000/stateUpload', {
+                    method: 'POST',
+                    body: formData,
+                })
+                let _response = await response.json()
+            })
+        </script>
     </body>
 </html>

@@ -17,7 +17,7 @@ import {
 import './styles/style.css'
 import { Console } from 'console'
 // import * as fs from 'fs'
-let Developer = true
+let Developer = false
 let overRideControl = false
 var data: number[] = []
 let _fetchData: any
@@ -39,7 +39,7 @@ const scene = new THREE.Scene()
 // const zs = [100, 200, 300, 400, 500];
 const blurs = [0]
 const zs = [500]
-const pers = [0.05, 0.1, 0.15, 0.2, 0.25]
+const pers = [0.05]
 var meshes: { [key: string]: Mesh } = {}
 let eventFunction: any
 let _readstateFile: () => {}

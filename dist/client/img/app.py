@@ -1,4 +1,8 @@
+# from crypt import methods
 from flask import jsonify, Flask, render_template, request, url_for
+from werkzeug.utils import secure_filename
+import os
+
 from vtkmodules.all import (
     vtkTIFFReader,
 )
@@ -13,9 +17,16 @@ from topologytoolkit import (
     ttkTopologicalSimplificationByPersistence,
 )
 
+
 app = Flask(__name__)
+app.config["UPLOAD_FOLDER"] = "static/files"
+
+APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+target = os.path.join(APP_ROOT, app.config["UPLOAD_FOLDER"])
+
 pread = vtkTIFFReader()
 pread.SetFileName("./elevation.tiff")
+
 
 # extractComponent = vtkImageExtractComponents()
 # extractComponent.SetInputConnection(pread.GetOutputPort())
@@ -41,7 +52,7 @@ tree.SetWithSegmentation(1)
 @app.route('/test', methods=['GET'])
 def test():
     response = {}
-    ranges = [0.05, 0.1, 0.15, 0.2, 0.25]
+    ranges = [0.05]
     for i in ranges:
         simplify.SetPersistenceThreshold(i)
         simplify.Update()
@@ -53,5 +64,15 @@ def test():
     payload.headers.add('Access-Control-Allow-Origin', '*')
     return payload
 
+@app.route("/stateUpload", methods=[ "POST"])
+def stateUpload():
+    # _data = request.form.to_dict(flat=False)
+    file = request.files.get("file")
+    fileName = secure_filename(file.filename)
+    destination = "/".join([target, fileName])
+    print(destination)
+    file.save(destination)
+    return "successfully uploaded"
+    
 if __name__ == '__main__':
    app.run()
