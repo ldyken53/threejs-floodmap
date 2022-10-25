@@ -39,7 +39,8 @@ const scene = new THREE.Scene()
 // const zs = [100, 200, 300, 400, 500];
 const blurs = [0]
 const zs = [0, 500]
-const pers = [0.02, 0.04, 0.06, 0.08, 0.1]
+// const pers = [0.02, 0.04, 0.06, 0.08, 0.1]
+const pers = [0.06]
 var meshes: { [key: string]: Mesh } = {}
 let eventFunction: any
 let _readstateFile: () => {}
@@ -157,6 +158,7 @@ async function getPersistence() {
         .get(`http://localhost:5000/test`)
         .then((response) => {
             console.log(response.data)
+            console.time("process")
             for (var i = 0; i < pers.length; i++) {
                 persDatas[pers[i]] = response.data[pers[i]].array
                 segsMax[pers[i]] = response.data[pers[i]].max
@@ -184,6 +186,7 @@ async function getPersistence() {
                     uniforms.segsMax.value = segsMax[pers[i]]
                 }
             }
+            console.timeEnd("process")
 
             if (Developer) {
                 _readstateFile()
@@ -296,7 +299,12 @@ function segSelect(x: number, y: number) {
     }
     sessionData.annotatedPixelCount = sessionData.annotatedPixelCount + pixels.length
     annotationTexture.needsUpdate = true
-    // uniforms.annotationTexture.value = annotationTexture;
+}
+
+function connectedSegSelect(x: number, y: number, color: string) {
+    recentFills.push([])
+    visited = new Map()
+    BFS(x, y, "BFS_Segment", color)
 }
 
 const searchFunction = {
@@ -320,6 +328,28 @@ const searchFunction = {
         SW: (x: number, y: number, value: number) => data[x - 1 + (y - 1) * 4104] >= value,
         SE: (x: number, y: number, value: number) => data[x + 1 + (y - 1) * 4104] >= value,
     },
+    BFS_Segment: {
+        E: (x: number, y: number, value: number) => persDatas[Math.round(params.pers * 100) / 100][x + 1 + y * 4104] == value,
+        W: (x: number, y: number, value: number) => persDatas[Math.round(params.pers * 100) / 100][x - 1 + y * 4104] == value,
+        N: (x: number, y: number, value: number) => persDatas[Math.round(params.pers * 100) / 100][x + (y + 1) * 4104] == value,
+        S: (x: number, y: number, value: number) => persDatas[Math.round(params.pers * 100) / 100][x + (y - 1) * 4104] == value,
+        EN: (x: number, y: number, value: number) => persDatas[Math.round(params.pers * 100) / 100][x + 1 + (y + 1) * 4104] == value,
+        WN: (x: number, y: number, value: number) => persDatas[Math.round(params.pers * 100) / 100][x - 1 + (y + 1) * 4104] == value,
+        SW: (x: number, y: number, value: number) => persDatas[Math.round(params.pers * 100) / 100][x - 1 + (y - 1) * 4104] == value,
+        SE: (x: number, y: number, value: number) => persDatas[Math.round(params.pers * 100) / 100][x + 1 + (y - 1) * 4104] == value,
+    }
+}
+
+const valueFunction = {
+    BFS_Down: (x: number, y: number) => data[x + y * 4104],
+    BFS_Hill: (x: number, y: number) => data[x + y * 4104],
+    BFS_Segment: (x: number, y: number) => persDatas[Math.round(params.pers * 100) / 100][x + y * 4104],
+}
+
+const fillFunction = {
+    BFS_Down: (x: number, y: number) => [x, y],
+    BFS_Hill: (x: number, y: number) => [x, y],
+    BFS_Segment: (x: number, y: number) => [x, 1855 - y],
 }
 
 var visited = new Map()
@@ -333,9 +363,10 @@ function BFS(x: number, y: number, direction: string, color: string) {
     while (stack.length > 0) {
         y = stack.pop()!
         x = stack.pop()!
-        context!.fillRect(x, y, 1, 1)
-        recentFills[recentFills.length - 1].push(x, y)
-        var value = data[x + y * 4104]
+        let [fillX, fillY] = fillFunction[_direction](x, y)
+        context!.fillRect(fillX, fillY, 1, 1)
+        recentFills[recentFills.length - 1].push(fillX, fillY)
+        var value = valueFunction[_direction](x, y)
         if (searchFunction[_direction].E(x, y, value)) {
             if (!visited.get(`${x + 1}, ${y}`)) {
                 sessionData.annotatedPixelCount++
@@ -443,12 +474,14 @@ function hoverHandler() {
 
 function BFSHandler(x: number, y: number) {
     logMyState('f', 'BFS_Down', camera, pointer, x, y)
+    visited = new Map()
     recentFills.push([])
     BFS(x, y, 'BFS_Down', 'red')
 }
 
 function BFS2Handler(x: number, y: number) {
     logMyState('d', 'BFS_Hill', camera, pointer, x, y)
+    visited = new Map()
     recentFills.push([])
     BFS(x, y, 'BFS_Hill', 'blue')
 }
@@ -574,6 +607,7 @@ function polygonFillHandler() {
         }
     }
     recentFills.push([])
+    visited = new Map()
     for (var i = 0; i < linePixels.length; i += 2) {
         BFS(linePixels[i], linePixels[i + 1], 'BFS_Down', 'red')
     }
@@ -589,6 +623,15 @@ function segAnnotationHandler(key: string, color: string, x: number, y: number) 
     context!.fillStyle = color
     logMyState(key, 'segmentation' + color, camera, pointer, x, y)
     segSelect(x, y)
+}
+
+function connectedSegAnnotationHandler(key: string, color: string, x: number, y: number) {
+    if (!color) {
+        console.error('no annotation without color, send color')
+        return
+    }
+    logMyState(key, 'connectedsegmentation' + color, camera, pointer, x, y)
+    connectedSegSelect(x, y, color)
 }
 
 function clearAllHandler() {
@@ -644,6 +687,9 @@ const onKeyPress = (event: KeyboardEvent) => {
     } else if (event.key == 'b' && state.segEnabled) {
         let [x, y] = performRayCasting()
         segAnnotationHandler('b', 'blue', x, y)
+    } else if (event.key == 'o' && state.segEnabled) {
+        let [x, y] = performRayCasting()
+        connectedSegAnnotationHandler('o', 'red', x, y)
     } else if (event.key == 'z') {
         clearAllHandler()
     }
