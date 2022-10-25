@@ -286,8 +286,10 @@ viewFolder.open()
 // meshFolder.open()
 
 var recentFills: Array<Array<number>> = []
+var recentPolys: Array<Array<number>> = []
 
 function segSelect(x: number, y: number) {
+    recentPolys.push([])
     recentFills.push([])
     var value = persDatas[Math.round(params.pers * 100) / 100][x + y * 4104]
     var pixels = segsToPixels2[Math.round(params.pers * 100) / 100][value]
@@ -303,6 +305,7 @@ function segSelect(x: number, y: number) {
 
 function connectedSegSelect(x: number, y: number, color: string) {
     recentFills.push([])
+    recentPolys.push([])
     visited = new Map()
     BFS(x, y, "BFS_Segment", color)
 }
@@ -476,6 +479,7 @@ function BFSHandler(x: number, y: number) {
     logMyState('f', 'BFS_Down', camera, pointer, x, y)
     visited = new Map()
     recentFills.push([])
+    recentPolys.push([])
     BFS(x, y, 'BFS_Down', 'red')
 }
 
@@ -483,6 +487,7 @@ function BFS2Handler(x: number, y: number) {
     logMyState('d', 'BFS_Hill', camera, pointer, x, y)
     visited = new Map()
     recentFills.push([])
+    recentPolys.push([])
     BFS(x, y, 'BFS_Hill', 'blue')
 }
 
@@ -533,6 +538,7 @@ function polygonFillHandler() {
     context!.fillStyle = 'red'
     context!.beginPath()
     logMyState('l', 'polygonFill', camera, undefined, undefined, undefined, undefined, polyPoints)
+    recentPolys.push(polyPoints)
     context!.moveTo(polyPoints[0], polyPoints[1])
     for (var i = 2; i < polyPoints.length; i += 2) {
         context!.lineTo(polyPoints[i], polyPoints[i + 1])
@@ -638,6 +644,16 @@ function clearAllHandler() {
     var lastPixels = recentFills.pop()!
     for (var i = 0; i < lastPixels.length; i += 2) {
         context!.clearRect(lastPixels[i], lastPixels[i + 1], 1, 1)
+    }
+    var lastPoly = recentPolys.pop()!
+    if (lastPoly[0]) {
+        context!.moveTo(lastPoly[0], lastPoly[1])
+        for (var i = 2; i < lastPoly.length; i += 2) {
+            context!.lineTo(lastPoly[i], lastPoly[i + 1])
+        }
+        context!.closePath()
+        context!.fillStyle = "rgba(1, 1, 1, 1)"
+        context!.fill()
     }
     annotationTexture.needsUpdate = true
     logMyState('z', 'resetAll', camera, undefined, undefined, undefined)
