@@ -14,9 +14,10 @@ import {
     getLocalCordinate,
     readstateFile,
 } from './util'
+import {
+    terrainDimensions
+} from './constants'
 import './styles/style.css'
-import { Console } from 'console'
-// import * as fs from 'fs'
 let Developer = false
 let overRideControl = false
 var data: number[] = []
@@ -33,6 +34,10 @@ elevImage.onload = function () {
         data.push(tempData[i])
     }
 }
+// fs.readFile("img/elevation.tiff", (err, data) => {
+//     var tif = tiff.decode(data)
+//     console.log(tif)
+// })
 window.onload = init
 const scene = new THREE.Scene()
 // const blurs = [0, 1, 2];
@@ -240,9 +245,7 @@ var params = {
     brushSize: 5,
     pers: 0.06,
     persShow: 0,
-    mappedMaxValue: 255,
     guide: 0,
-    max: 255,
 }
 // var persIndex = persToIndex[params.pers];
 var uniforms = {
@@ -254,7 +257,6 @@ var uniforms = {
     annotation: { value: params.annotation },
     segsMax: { type: 'f', value: 0 },
     persShow: { value: params.persShow },
-    mappedMaxValue: { type: 'f', value: params.mappedMaxValue },
     hoverValue: { type: 'f', value: 0 },
     guide: { value: params.guide },
 }
@@ -725,7 +727,7 @@ function startUp() {
 
 const satelliteLoader = new THREE.TextureLoader()
 satelliteLoader.load(
-    './img/satelliteblur0.png',
+    './img/Region_1_RGB.png',
     function (texture) {
         uniforms.diffuseTexture.value = texture
         const meshMaterial = new THREE.RawShaderMaterial({

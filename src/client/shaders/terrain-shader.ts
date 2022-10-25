@@ -57,7 +57,7 @@ void main(){
       if(guide > 0){
         if(abs(segID - hoverValue) < 0.1){
           //  color = 0.3 * color + 0.7 * texture(colormap, vec2(segID / segsMax, 0)).rgb;
-          color = 0.3 * color + 0.7 * vec3(1, 0, 0);
+          color = 0.7 * color + 0.3 * vec3(1, 0, 0);
         }
       }
       else{
