@@ -49,7 +49,7 @@ tree.SetWithSegmentation(1)
 def test():
     response = {}
     # ranges = [0.02, 0.04, 0.06, 0.08, 0.1]
-    ranges = [0.06]
+    ranges = [0.02]
     for i in ranges:
         simplify.SetPersistenceThreshold(i)
         simplify.Update()

@@ -23,13 +23,19 @@ import * as tiff from "tiff"
 let Developer = false
 let overRideControl = false
 var data: Float32Array
+if (window.location.hash) {
+    var region = window.location.hash[window.location.hash.search('region') + 7]
+    console.log(region)
+} else {
+    var region = '1';
+}
+const regionDimensions = terrainDimensions[region]
 let _fetchData: any
 let mesh: THREE.Mesh
 var elevImage = new Image()
 elevImage.src = 'img/elevation.png'
 var elevateCanvas = document.getElementById('elevateCanvas') as HTMLCanvasElement
-var ctx = elevateCanvas.getContext('2d')!
-fetch("img/elevation.tiff").then((res) => res.arrayBuffer().then(function(arr) {
+fetch(`img/elevation${region}.tiff`).then((res) => res.arrayBuffer().then(function(arr) {
     var tif = tiff.decode(arr)
     data = tif[0].data as Float32Array;
 }));
@@ -176,7 +182,7 @@ async function getPersistence() {
                         segsToPixels2[pers[i]][segID] = [x]
                     }
                 }
-                persTextures[pers[i]] = new THREE.DataTexture(imageData, 4104, 1856)
+                persTextures[pers[i]] = new THREE.DataTexture(imageData, regionDimensions[0], regionDimensions[1])
                 persTextures[pers[i]].needsUpdate = true
                 if (pers[i] == Math.round(params.pers * 100) / 100) {
                     uniforms.persTexture.value = persTextures[pers[i]]
@@ -211,7 +217,7 @@ persLoader.load(
 // scene.add( ambient );
 
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 5000)
-camera.position.set(2000, 1000, 1000)
+camera.position.set(regionDimensions[0] / 2, regionDimensions[1] / 2, 1000)
 
 const renderer = new THREE.WebGLRenderer({ preserveDrawingBuffer: true })
 renderer.outputEncoding = THREE.sRGBEncoding
@@ -221,18 +227,18 @@ renderer.shadowMap.enabled = true
 document.body.appendChild(renderer.domElement)
 
 let controls = new OrbitControls(camera, renderer.domElement)
-controls.target = new THREE.Vector3(2000, 1000, -2000)
+controls.target = new THREE.Vector3(regionDimensions[0] / 2, regionDimensions[1] / 2, -2000)
 
 var canvas = document.createElement('canvas')
-canvas.width = 4104
-canvas.height = 1856
+canvas.width = regionDimensions[0]
+canvas.height = regionDimensions[1]
 var annotationTexture = new THREE.Texture(canvas)
 var context = canvas.getContext('2d')
 
 const gui = new GUI()
 var params = {
     blur: 0,
-    z: 500,
+    dimension: 3,
     annotation: 1,
     brushSize: 5,
     pers: 0.06,
@@ -240,8 +246,12 @@ var params = {
     guide: 0,
 }
 // var persIndex = persToIndex[params.pers];
+var dimensionToZ : {[key: number]: number} = {
+    2: 0,
+    3: 500
+}
 var uniforms = {
-    z: { value: params.z },
+    z: { value: dimensionToZ[params.dimension] },
     diffuseTexture: { type: 't', value: new THREE.Texture() },
     annotationTexture: { type: 't', value: annotationTexture },
     persTexture: { type: 't', value: new THREE.Texture() },
@@ -251,18 +261,14 @@ var uniforms = {
     persShow: { value: params.persShow },
     hoverValue: { type: 'f', value: 0 },
     guide: { value: params.guide },
+    dimensions: { type: 'vec2', value: regionDimensions }
 }
-const meshFolder = gui.addFolder('Mesh Settings')
 const viewFolder = gui.addFolder('View Settings')
 
-// meshFolder.add(params, 'blur', 0, 2, 1).onFinishChange(() => {
-//     scene.remove(scene.children[0])
-//     scene.add(meshes[`z${params.z}blur${params.blur}`])
-// })
-viewFolder.add(params, 'z', 0, 500, 500).onFinishChange(() => {
+viewFolder.add(params, 'dimension', 2, 3, 1).onFinishChange(() => {
     scene.remove(scene.children[0])
-    uniforms.z.value = params.z
-    scene.add(meshes[`z${params.z}blur${params.blur}`])
+    uniforms.z.value = dimensionToZ[params.dimension]
+    scene.add(meshes[params.dimension])
 })
 viewFolder.add(params, 'annotation', 0, 1, 1).onFinishChange(() => {
     uniforms.annotation.value = params.annotation
@@ -276,36 +282,36 @@ viewFolder.add(params, 'persShow', 0, 3, 1).onFinishChange(() => {
 })
 viewFolder.add(params, 'brushSize', 1, 50, 1)
 viewFolder.add({ x: () => {
-    camera.position.set(2000, 1000, 2000)
-    controls.target = new THREE.Vector3(2000, 1000, -2000)
+    camera.position.set(regionDimensions[0] / 2, regionDimensions[1] / 2, 2000)
+    controls.target = new THREE.Vector3(regionDimensions[0] / 2, regionDimensions[1] / 2, -2000)
 }}, "x").name("Camera to Birds Eye View")
 viewFolder.add({x: () => {
-    camera.position.set(-500, 1000, 200)
+    camera.position.set(-500, regionDimensions[1] / 2, 500)
     camera.up.set(0, 0, 1)
     controls.dispose()
     controls = new OrbitControls(camera, renderer.domElement)
-    controls.target = new THREE.Vector3(2000, 1000, 0)
+    controls.target = new THREE.Vector3(regionDimensions[0] / 2, regionDimensions[1] / 2, -1000)
 }}, "x").name("Camera to Left View")
 viewFolder.add({x: () => {
-    camera.position.set(4500, 1000, 200)
+    camera.position.set(regionDimensions[0] + 500, regionDimensions[1] / 2, 500)
     camera.up.set(0, 0, 1)
     controls.dispose()
     controls = new OrbitControls(camera, renderer.domElement)
-    controls.target = new THREE.Vector3(2000, 1000, 0)
+    controls.target = new THREE.Vector3(regionDimensions[0] / 2, regionDimensions[1] / 2, -1000)
 }}, "x").name("Camera to Right View")
 viewFolder.add({x: () => {
-    camera.position.set(2000, 2500, 200)
+    camera.position.set(regionDimensions[0] / 2, regionDimensions[1] + 500, 500)
     camera.up.set(0, 0, 1)
     controls.dispose()
     controls = new OrbitControls(camera, renderer.domElement)
-    controls.target = new THREE.Vector3(2000, 1000, 0)
+    controls.target = new THREE.Vector3(regionDimensions[0] / 2, regionDimensions[1] / 2, -1000)
 }}, "x").name("Camera to Top View")
 viewFolder.add({x: () => {
-    camera.position.set(2000, -500, 200)
+    camera.position.set(regionDimensions[0] / 2, -500, 500)
     camera.up.set(0, 0, 1)
     controls.dispose()
     controls = new OrbitControls(camera, renderer.domElement)
-    controls.target = new THREE.Vector3(2000, 1000, 0)
+    controls.target = new THREE.Vector3(regionDimensions[0] / 2, regionDimensions[1] / 2, -1000)
 }}, "x").name("Camera to Bottom View")
 
 
@@ -318,11 +324,11 @@ var recentPolys: Array<Array<number>> = []
 function segSelect(x: number, y: number) {
     recentPolys.push([])
     recentFills.push([])
-    var value = persDatas[Math.round(params.pers * 100) / 100][x + y * 4104]
+    var value = persDatas[Math.round(params.pers * 100) / 100][x + y * regionDimensions[0]]
     var pixels = segsToPixels2[Math.round(params.pers * 100) / 100][value]
     for (var i = 0; i < pixels.length; i++) {
-        var x = pixels[i] % 4104
-        var y = 1855 - Math.floor(pixels[i] / 4104)
+        var x = pixels[i] % regionDimensions[0]
+        var y = (regionDimensions[1] - 1) - Math.floor(pixels[i] / regionDimensions[0])
         recentFills[recentFills.length - 1].push(x, y)
         context!.fillRect(x, y, 1, 1)
     }
@@ -339,47 +345,47 @@ function connectedSegSelect(x: number, y: number, color: string) {
 
 const searchFunction = {
     BFS_Down: {
-        E: (x: number, y: number, value: number) => data[x + 1 + y * 4104] <= value,
-        W: (x: number, y: number, value: number) => data[x - 1 + y * 4104] <= value,
-        N: (x: number, y: number, value: number) => data[x + (y + 1) * 4104] <= value,
-        S: (x: number, y: number, value: number) => data[x + (y - 1) * 4104] <= value,
-        EN: (x: number, y: number, value: number) => data[x + 1 + (y + 1) * 4104] <= value,
-        WN: (x: number, y: number, value: number) => data[x - 1 + (y + 1) * 4104] <= value,
-        SW: (x: number, y: number, value: number) => data[x - 1 + (y - 1) * 4104] <= value,
-        SE: (x: number, y: number, value: number) => data[x + 1 + (y - 1) * 4104] <= value,
+        E: (x: number, y: number, value: number) => data[x + 1 + y * regionDimensions[0]] <= value,
+        W: (x: number, y: number, value: number) => data[x - 1 + y * regionDimensions[0]] <= value,
+        N: (x: number, y: number, value: number) => data[x + (y + 1) * regionDimensions[0]] <= value,
+        S: (x: number, y: number, value: number) => data[x + (y - 1) * regionDimensions[0]] <= value,
+        EN: (x: number, y: number, value: number) => data[x + 1 + (y + 1) * regionDimensions[0]] <= value,
+        WN: (x: number, y: number, value: number) => data[x - 1 + (y + 1) * regionDimensions[0]] <= value,
+        SW: (x: number, y: number, value: number) => data[x - 1 + (y - 1) * regionDimensions[0]] <= value,
+        SE: (x: number, y: number, value: number) => data[x + 1 + (y - 1) * regionDimensions[0]] <= value,
     },
     BFS_Hill: {
-        E: (x: number, y: number, value: number) => data[x + 1 + y * 4104] >= value,
-        W: (x: number, y: number, value: number) => data[x - 1 + y * 4104] >= value,
-        N: (x: number, y: number, value: number) => data[x + (y + 1) * 4104] >= value,
-        S: (x: number, y: number, value: number) => data[x + (y - 1) * 4104] >= value,
-        EN: (x: number, y: number, value: number) => data[x + 1 + (y + 1) * 4104] >= value,
-        WN: (x: number, y: number, value: number) => data[x - 1 + (y + 1) * 4104] >= value,
-        SW: (x: number, y: number, value: number) => data[x - 1 + (y - 1) * 4104] >= value,
-        SE: (x: number, y: number, value: number) => data[x + 1 + (y - 1) * 4104] >= value,
+        E: (x: number, y: number, value: number) => data[x + 1 + y * regionDimensions[0]] >= value,
+        W: (x: number, y: number, value: number) => data[x - 1 + y * regionDimensions[0]] >= value,
+        N: (x: number, y: number, value: number) => data[x + (y + 1) * regionDimensions[0]] >= value,
+        S: (x: number, y: number, value: number) => data[x + (y - 1) * regionDimensions[0]] >= value,
+        EN: (x: number, y: number, value: number) => data[x + 1 + (y + 1) * regionDimensions[0]] >= value,
+        WN: (x: number, y: number, value: number) => data[x - 1 + (y + 1) * regionDimensions[0]] >= value,
+        SW: (x: number, y: number, value: number) => data[x - 1 + (y - 1) * regionDimensions[0]] >= value,
+        SE: (x: number, y: number, value: number) => data[x + 1 + (y - 1) * regionDimensions[0]] >= value,
     },
     BFS_Segment: {
-        E: (x: number, y: number, value: number) => persDatas[Math.round(params.pers * 100) / 100][x + 1 + y * 4104] == value,
-        W: (x: number, y: number, value: number) => persDatas[Math.round(params.pers * 100) / 100][x - 1 + y * 4104] == value,
-        N: (x: number, y: number, value: number) => persDatas[Math.round(params.pers * 100) / 100][x + (y + 1) * 4104] == value,
-        S: (x: number, y: number, value: number) => persDatas[Math.round(params.pers * 100) / 100][x + (y - 1) * 4104] == value,
-        EN: (x: number, y: number, value: number) => persDatas[Math.round(params.pers * 100) / 100][x + 1 + (y + 1) * 4104] == value,
-        WN: (x: number, y: number, value: number) => persDatas[Math.round(params.pers * 100) / 100][x - 1 + (y + 1) * 4104] == value,
-        SW: (x: number, y: number, value: number) => persDatas[Math.round(params.pers * 100) / 100][x - 1 + (y - 1) * 4104] == value,
-        SE: (x: number, y: number, value: number) => persDatas[Math.round(params.pers * 100) / 100][x + 1 + (y - 1) * 4104] == value,
+        E: (x: number, y: number, value: number) => persDatas[Math.round(params.pers * 100) / 100][x + 1 + y * regionDimensions[0]] == value,
+        W: (x: number, y: number, value: number) => persDatas[Math.round(params.pers * 100) / 100][x - 1 + y * regionDimensions[0]] == value,
+        N: (x: number, y: number, value: number) => persDatas[Math.round(params.pers * 100) / 100][x + (y + 1) * regionDimensions[0]] == value,
+        S: (x: number, y: number, value: number) => persDatas[Math.round(params.pers * 100) / 100][x + (y - 1) * regionDimensions[0]] == value,
+        EN: (x: number, y: number, value: number) => persDatas[Math.round(params.pers * 100) / 100][x + 1 + (y + 1) * regionDimensions[0]] == value,
+        WN: (x: number, y: number, value: number) => persDatas[Math.round(params.pers * 100) / 100][x - 1 + (y + 1) * regionDimensions[0]] == value,
+        SW: (x: number, y: number, value: number) => persDatas[Math.round(params.pers * 100) / 100][x - 1 + (y - 1) * regionDimensions[0]] == value,
+        SE: (x: number, y: number, value: number) => persDatas[Math.round(params.pers * 100) / 100][x + 1 + (y - 1) * regionDimensions[0]] == value,
     }
 }
 
 const valueFunction = {
-    BFS_Down: (x: number, y: number) => data[x + y * 4104],
-    BFS_Hill: (x: number, y: number) => data[x + y * 4104],
-    BFS_Segment: (x: number, y: number) => persDatas[Math.round(params.pers * 100) / 100][x + y * 4104],
+    BFS_Down: (x: number, y: number) => data[x + y * regionDimensions[0]],
+    BFS_Hill: (x: number, y: number) => data[x + y * regionDimensions[0]],
+    BFS_Segment: (x: number, y: number) => persDatas[Math.round(params.pers * 100) / 100][x + y * regionDimensions[0]],
 }
 
 const fillFunction = {
-    BFS_Down: (x: number, y: number) => [x, 1855 - y],
-    BFS_Hill: (x: number, y: number) => [x, 1855 - y],
-    BFS_Segment: (x: number, y: number) => [x, 1855 - y],
+    BFS_Down: (x: number, y: number) => [x, (regionDimensions[1] - 1) - y],
+    BFS_Hill: (x: number, y: number) => [x, (regionDimensions[1] - 1) - y],
+    BFS_Segment: (x: number, y: number) => [x, (regionDimensions[1] - 1) - y],
 }
 
 var visited = new Map()
@@ -495,7 +501,7 @@ function performRayCasting() {
 
 function hoverHandler() {
     let [x, y] = performRayCasting()
-    let localId = persDatas[Math.round(params.pers * 100) / 100][x + y * 4104]
+    let localId = persDatas[Math.round(params.pers * 100) / 100][x + y * regionDimensions[0]]
     console.log(localId)
     uniforms.hoverValue.value = localId
     params.guide = 1
@@ -554,7 +560,7 @@ function brushAnnotationHandler(key: string, color: string, x: number, y: number
 function polygonSelectionHandler(x: number, y: number) {
     polyPoints.push(x, y)
     context!.fillStyle = 'red'
-    context!.fillRect(x - 2, 1855 - y - 2, 4, 4)
+    context!.fillRect(x - 2, (regionDimensions[1] - 1) - y - 2, 4, 4)
     logMyState('p', 'polygonSelector', camera, pointer, x, y, params.brushSize)
     sessionData.annotatedPixelCount += 16 //follow this with the line selection to minimize the double counting
     annotationTexture.needsUpdate = true
@@ -565,10 +571,10 @@ function polygonFillHandler() {
     context!.beginPath()
     logMyState('l', 'polygonFill', camera, undefined, undefined, undefined, undefined, polyPoints)
     recentPolys.push(polyPoints)
-    context!.moveTo(polyPoints[0], 1855 - polyPoints[1])
+    context!.moveTo(polyPoints[0], (regionDimensions[1] - 1) - polyPoints[1])
     for (var i = 2; i < polyPoints.length; i += 2) {
-        context!.lineTo(polyPoints[i], 1855 - polyPoints[i + 1])
-        context!.clearRect(polyPoints[i] - 2, 1855 - polyPoints[i + 1] - 2, 4, 4)
+        context!.lineTo(polyPoints[i], (regionDimensions[1] - 1) - polyPoints[i + 1])
+        context!.clearRect(polyPoints[i] - 2, (regionDimensions[1] - 1) - polyPoints[i + 1] - 2, 4, 4)
     }
     context!.closePath()
     context!.fill()
@@ -674,9 +680,9 @@ function clearAllHandler() {
     }
     var lastPoly = recentPolys.pop()!
     if (lastPoly[0]) {
-        context!.moveTo(lastPoly[0], 1855 - lastPoly[1])
+        context!.moveTo(lastPoly[0], (regionDimensions[1] - 1) - lastPoly[1])
         for (var i = 2; i < lastPoly.length; i += 2) {
-            context!.lineTo(lastPoly[i], 1855 - lastPoly[i + 1])
+            context!.lineTo(lastPoly[i], (regionDimensions[1] - 1) - lastPoly[i + 1])
         }
         context!.closePath()
         context!.globalCompositeOperation = "destination-out"
@@ -705,27 +711,27 @@ const onKeyPress = (event: KeyboardEvent) => {
         hoverHandler()
     } else if (event.key == 'f' && state.BFS) {
         let [x, y] = performRayCasting()
-        // y = 1856 - y
+        // y = regionDimensions[1] - y
         BFSHandler(x, y)
     } else if (event.key == 'd' && state.BFS) {
         let [x, y] = performRayCasting()
-        // y = 1856 - y
+        // y = regionDimensions[1] - y
         BFS2Handler(x, y)
     } else if (event.key == 'e' && state.brushSelection) {
         let [x, y] = performRayCasting()
-        y = 1856 - y
+        y = regionDimensions[1] - y
         brushClearHandler(x, y)
     } else if (event.key == 'r' && state.brushSelection) {
         let [x, y] = performRayCasting()
-        y = 1856 - y
+        y = regionDimensions[1] - y
         brushAnnotationHandler('r', 'red', x, y)
     } else if (event.key == 't' && state.brushSelection) {
         let [x, y] = performRayCasting()
-        y = 1856 - y
+        y = regionDimensions[1] - y
         brushAnnotationHandler('t', 'blue', x, y)
     } else if (event.key == 'p' && state.polygonSelection) {
         let [x, y] = performRayCasting()
-        // y = 1856 - y
+        // y = regionDimensions[1] - y
         polygonSelectionHandler(x, y)
     } else if (event.key == 'l' && state.polygonSelection) {
         polygonFillHandler()
@@ -757,7 +763,7 @@ function startUp() {
 
 const satelliteLoader = new THREE.TextureLoader()
 satelliteLoader.load(
-    './img/Region_1_RGB.png',
+    `./img/Region_${region}_RGB.png`,
     function (texture) {
         uniforms.diffuseTexture.value = texture
         const meshMaterial = new THREE.RawShaderMaterial({
@@ -765,33 +771,31 @@ satelliteLoader.load(
             vertexShader: terrainShader._VS,
             fragmentShader: terrainShader._FS,
         })
-        const terrainLoader = new STLLoader()
-        blurs.forEach((blur) => {
-            zs.forEach((z) => {
-                terrainLoader.load(
-                    `stl/elev${z}blur${blur}.stl`,
-                    function (geometry) {
-                        geometry.computeBoundingBox()
-                        geometry.computeVertexNormals()
+        const terrainLoader = new STLLoader();
+        [2, 3].forEach((x) => {
+            terrainLoader.load(
+                `stl/${x}Dregion${region}.stl`,
+                function (geometry) {
+                    geometry.computeBoundingBox()
+                    geometry.computeVertexNormals()
 
-                        mesh = new THREE.Mesh(geometry, meshMaterial)
-                        mesh.receiveShadow = true
-                        mesh.castShadow = true
-                        mesh.position.set(0, 0, -100)
-                        meshes[`z${z}blur${blur}`] = mesh
-                        if (blur == 0 && z == 500) {
-                            scene.add(mesh)
-                            console.log(scene)
-                        }
-                    },
-                    (xhr) => {
-                        // console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
-                    },
-                    (error) => {
-                        console.log(error)
+                    mesh = new THREE.Mesh(geometry, meshMaterial)
+                    mesh.receiveShadow = true
+                    mesh.castShadow = true
+                    mesh.position.set(0, 0, -100)
+                    meshes[x] = mesh
+                    if (x == 3) {
+                        scene.add(mesh)
+                        console.log(scene)
                     }
-                )
-            })
+                },
+                (xhr) => {
+                    // console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
+                },
+                (error) => {
+                    console.log(error)
+                }
+            )
             setTimeout(function () {
                 ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
                 if (!Developer) {

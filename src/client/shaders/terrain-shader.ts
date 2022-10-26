@@ -40,6 +40,7 @@ uniform float hoverValue;
 uniform float segsMax;
 uniform int guide;
 uniform int z;
+uniform vec2 dimensions;
 
 in vec3 vNormal;
 in vec3 vPosition;
@@ -47,7 +48,7 @@ in vec3 vPosition;
 out vec4 out_FragColor;
 
 vec4 sampleTexture(sampler2D sampleTex, vec2 coords) {
-  return texture(sampleTex, coords / vec2(4104.0, 1856.0));
+  return texture(sampleTex, coords / dimensions);
 }
 
 void main(){
