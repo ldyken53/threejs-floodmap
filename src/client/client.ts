@@ -18,26 +18,21 @@ import {
     terrainDimensions
 } from './constants'
 import './styles/style.css'
+import * as tiff from "tiff"
+
 let Developer = false
 let overRideControl = false
-var data: number[] = []
+var data: Float32Array
 let _fetchData: any
 let mesh: THREE.Mesh
 var elevImage = new Image()
 elevImage.src = 'img/elevation.png'
 var elevateCanvas = document.getElementById('elevateCanvas') as HTMLCanvasElement
 var ctx = elevateCanvas.getContext('2d')!
-elevImage.onload = function () {
-    ctx.drawImage(elevImage, 0, 0)
-    var tempData = Array.from(ctx.getImageData(0, 0, elevImage.width, elevImage.height).data)
-    for (var i = 0; i < tempData.length; i += 4) {
-        data.push(tempData[i])
-    }
-}
-// fs.readFile("img/elevation.tiff", (err, data) => {
-//     var tif = tiff.decode(data)
-//     console.log(tif)
-// })
+fetch("img/elevation.tiff").then((res) => res.arrayBuffer().then(function(arr) {
+    var tif = tiff.decode(arr)
+    data = tif[0].data as Float32Array;
+}));
 window.onload = init
 const scene = new THREE.Scene()
 // const blurs = [0, 1, 2];
@@ -171,13 +166,13 @@ async function getPersistence() {
                 segsToPixels2[pers[i]] = {}
                 for (var x = 0; x < persDatas[pers[i]].length; x++) {
                     var segID = persDatas[pers[i]][x]
-                    let tempString = segID.toString()
-                    let maskedNumber = tempString.padStart(4, '0')
-                    const realId = Array.from(maskedNumber).map(Number)
-                    imageData[x * 4] = +realId[0]
-                    imageData[x * 4 + 1] = +realId[1]
-                    imageData[x * 4 + 2] = +realId[2]
-                    imageData[x * 4 + 3] = +realId[3]
+                    // let tempString = segID.toString()
+                    // let maskedNumber = tempString.padStart(4, '0')
+                    // const realId = Array.from(maskedNumber).map(Number)
+                    // imageData[x * 4] = +realId[0]
+                    // imageData[x * 4 + 1] = +realId[1]
+                    // imageData[x * 4 + 2] = +realId[2]
+                    // imageData[x * 4 + 3] = +realId[3]
                     if (segsToPixels2[pers[i]][segID]) {
                         segsToPixels2[pers[i]][segID].push(x)
                     } else {
@@ -352,8 +347,8 @@ const valueFunction = {
 }
 
 const fillFunction = {
-    BFS_Down: (x: number, y: number) => [x, y],
-    BFS_Hill: (x: number, y: number) => [x, y],
+    BFS_Down: (x: number, y: number) => [x, 1855 - y],
+    BFS_Hill: (x: number, y: number) => [x, 1855 - y],
     BFS_Segment: (x: number, y: number) => [x, 1855 - y],
 }
 
@@ -527,10 +522,9 @@ function brushAnnotationHandler(key: string, color: string, x: number, y: number
 }
 
 function polygonSelectionHandler(x: number, y: number) {
-    console.log("t")
     polyPoints.push(x, y)
     context!.fillStyle = 'red'
-    context!.fillRect(x - 2, y - 2, 4, 4)
+    context!.fillRect(x - 2, 1855 - y - 2, 4, 4)
     logMyState('p', 'polygonSelector', camera, pointer, x, y, params.brushSize)
     sessionData.annotatedPixelCount += 16 //follow this with the line selection to minimize the double counting
     annotationTexture.needsUpdate = true
@@ -541,9 +535,10 @@ function polygonFillHandler() {
     context!.beginPath()
     logMyState('l', 'polygonFill', camera, undefined, undefined, undefined, undefined, polyPoints)
     recentPolys.push(polyPoints)
-    context!.moveTo(polyPoints[0], polyPoints[1])
+    context!.moveTo(polyPoints[0], 1855 - polyPoints[1])
     for (var i = 2; i < polyPoints.length; i += 2) {
-        context!.lineTo(polyPoints[i], polyPoints[i + 1])
+        context!.lineTo(polyPoints[i], 1855 - polyPoints[i + 1])
+        context!.clearRect(polyPoints[i] - 2, 1855 - polyPoints[i + 1] - 2, 4, 4)
     }
     context!.closePath()
     context!.fill()
@@ -649,12 +644,17 @@ function clearAllHandler() {
     }
     var lastPoly = recentPolys.pop()!
     if (lastPoly[0]) {
-        context!.moveTo(lastPoly[0], lastPoly[1])
+        context!.moveTo(lastPoly[0], 1855 - lastPoly[1])
         for (var i = 2; i < lastPoly.length; i += 2) {
-            context!.lineTo(lastPoly[i], lastPoly[i + 1])
+            context!.lineTo(lastPoly[i], 1855 - lastPoly[i + 1])
         }
         context!.closePath()
-        context!.fillStyle = "rgba(1, 1, 1, 1)"
+        context!.globalCompositeOperation = "destination-out"
+        context!.fillStyle = 'blue'
+        context!.fill()
+        // second pass, the actual painting, with the desired color
+        context!.globalCompositeOperation = "source-over"
+        context!.fillStyle='rgba(0,0,0,0)'
         context!.fill()
     }
     annotationTexture.needsUpdate = true
@@ -675,11 +675,11 @@ const onKeyPress = (event: KeyboardEvent) => {
         hoverHandler()
     } else if (event.key == 'f' && state.BFS) {
         let [x, y] = performRayCasting()
-        y = 1856 - y
+        // y = 1856 - y
         BFSHandler(x, y)
     } else if (event.key == 'd' && state.BFS) {
         let [x, y] = performRayCasting()
-        y = 1856 - y
+        // y = 1856 - y
         BFS2Handler(x, y)
     } else if (event.key == 'e' && state.brushSelection) {
         let [x, y] = performRayCasting()
@@ -695,7 +695,7 @@ const onKeyPress = (event: KeyboardEvent) => {
         brushAnnotationHandler('t', 'blue', x, y)
     } else if (event.key == 'p' && state.polygonSelection) {
         let [x, y] = performRayCasting()
-        y = 1856 - y
+        // y = 1856 - y
         polygonSelectionHandler(x, y)
     } else if (event.key == 'l' && state.polygonSelection) {
         polygonFillHandler()
