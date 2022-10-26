@@ -38,9 +38,9 @@ const scene = new THREE.Scene()
 // const blurs = [0, 1, 2];
 // const zs = [100, 200, 300, 400, 500];
 const blurs = [0]
-const zs = [0, 500]
+const zs = [500]
 // const pers = [0.02, 0.04, 0.06, 0.08, 0.1]
-const pers = [0.06]
+const pers = [0.02]
 var meshes: { [key: string]: Mesh } = {}
 let eventFunction: any
 let _readstateFile: () => {}
@@ -166,13 +166,10 @@ async function getPersistence() {
                 segsToPixels2[pers[i]] = {}
                 for (var x = 0; x < persDatas[pers[i]].length; x++) {
                     var segID = persDatas[pers[i]][x]
-                    // let tempString = segID.toString()
-                    // let maskedNumber = tempString.padStart(4, '0')
-                    // const realId = Array.from(maskedNumber).map(Number)
-                    // imageData[x * 4] = +realId[0]
-                    // imageData[x * 4 + 1] = +realId[1]
-                    // imageData[x * 4 + 2] = +realId[2]
-                    // imageData[x * 4 + 3] = +realId[3]
+                    imageData[x * 4] = Math.floor(segID / 1000)
+                    imageData[x * 4 + 1] = Math.floor(segID % 1000 / 100)
+                    imageData[x * 4 + 2] = Math.floor(segID % 100 / 10)
+                    imageData[x * 4 + 3] = segID % 10
                     if (segsToPixels2[pers[i]][segID]) {
                         segsToPixels2[pers[i]][segID].push(x)
                     } else {
