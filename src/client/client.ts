@@ -275,6 +275,39 @@ viewFolder.add(params, 'persShow', 0, 3, 1).onFinishChange(() => {
     uniforms.persShow.value = params.persShow
 })
 viewFolder.add(params, 'brushSize', 1, 50, 1)
+viewFolder.add({ x: () => {
+    camera.position.set(2000, 1000, 2000)
+    controls.target = new THREE.Vector3(2000, 1000, -2000)
+}}, "x").name("Camera to Birds Eye View")
+viewFolder.add({x: () => {
+    camera.position.set(-500, 1000, 200)
+    camera.up.set(0, 0, 1)
+    controls.dispose()
+    controls = new OrbitControls(camera, renderer.domElement)
+    controls.target = new THREE.Vector3(2000, 1000, 0)
+}}, "x").name("Camera to Left View")
+viewFolder.add({x: () => {
+    camera.position.set(4500, 1000, 200)
+    camera.up.set(0, 0, 1)
+    controls.dispose()
+    controls = new OrbitControls(camera, renderer.domElement)
+    controls.target = new THREE.Vector3(2000, 1000, 0)
+}}, "x").name("Camera to Right View")
+viewFolder.add({x: () => {
+    camera.position.set(2000, 2500, 200)
+    camera.up.set(0, 0, 1)
+    controls.dispose()
+    controls = new OrbitControls(camera, renderer.domElement)
+    controls.target = new THREE.Vector3(2000, 1000, 0)
+}}, "x").name("Camera to Top View")
+viewFolder.add({x: () => {
+    camera.position.set(2000, -500, 200)
+    camera.up.set(0, 0, 1)
+    controls.dispose()
+    controls = new OrbitControls(camera, renderer.domElement)
+    controls.target = new THREE.Vector3(2000, 1000, 0)
+}}, "x").name("Camera to Bottom View")
+
 
 viewFolder.open()
 // meshFolder.open()
@@ -662,11 +695,11 @@ const onKeyPress = (event: KeyboardEvent) => {
     if (event.repeat) {
         return
     }
-    if (event.key == 'Escape') {
-        camera.position.set(2000, 1000, 1000)
-        controls = new OrbitControls(camera, renderer.domElement)
-        controls.target = new THREE.Vector3(2000, 1000, -2000)
-    } else if (event.key == 'm') {
+    // if (event.key == 'Escape') {
+    //     camera.position.set(2000, 1000, 1000)
+    //     controls.target = new THREE.Vector3(2000, 1000, -2000)
+    // } else 
+    if (event.key == 'm') {
         ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
     } else if (event.key == 'g') {
         hoverHandler()
@@ -813,8 +846,6 @@ function getCameraLastStage() {
         lookAt: controls.target,
     }
 }
-
-function addMouseEvent() {}
 
 startState()
 animate()
