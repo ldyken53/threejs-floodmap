@@ -16,7 +16,7 @@ from topologytoolkit import (
 
 app = Flask(__name__)
 pread = vtkTIFFReader()
-pread.SetFileName("./elevation.tiff")
+pread.SetFileName("./elevation1.tiff")
 
 # extractComponent = vtkImageExtractComponents()
 # extractComponent.SetInputConnection(pread.GetOutputPort())

@@ -32,9 +32,6 @@ if (window.location.hash) {
 const regionDimensions = terrainDimensions[region]
 let _fetchData: any
 let mesh: THREE.Mesh
-var elevImage = new Image()
-elevImage.src = 'img/elevation.png'
-var elevateCanvas = document.getElementById('elevateCanvas') as HTMLCanvasElement
 fetch(`img/elevation${region}.tiff`).then((res) => res.arrayBuffer().then(function(arr) {
     var tif = tiff.decode(arr)
     data = tif[0].data as Float32Array;
@@ -43,10 +40,9 @@ window.onload = init
 const scene = new THREE.Scene()
 // const blurs = [0, 1, 2];
 // const zs = [100, 200, 300, 400, 500];
-const blurs = [0]
-const zs = [500]
-// const pers = [0.02, 0.04, 0.06, 0.08, 0.1]
-const pers = [0.02]
+
+const pers = [0.02, 0.04, 0.06, 0.08, 0.1]
+// const pers = [0.06]
 var meshes: { [key: string]: Mesh } = {}
 let eventFunction: any
 let _readstateFile: () => {}
@@ -154,24 +150,30 @@ var segsToPixels2: {
     }
 } = {}
 var persDatas: {
-    [key: number]: Array<number>
+    [key: number]: Int16Array
 } = {}
 
 var persTextures: { [key: number]: THREE.Texture } = {}
 var segsMax: { [key: number]: number } = {}
 async function getPersistence() {
-    axios
-        .get(`http://localhost:5000/test`)
-        .then((response) => {
-            console.log(response.data)
-            console.time("process")
-            for (var i = 0; i < pers.length; i++) {
-                persDatas[pers[i]] = response.data[pers[i]].array
-                segsMax[pers[i]] = response.data[pers[i]].max
+    // axios
+    //     .get(`http://localhost:5000/test`)
+    console.time("process")
+    for (var i = 0; i < pers.length; i++) {
+        await fetch(`img/segmentation_region${region}_pers${pers[i]}`)
+            .then((r) => r.arrayBuffer())
+            .then((response) => {
+                persDatas[pers[i]] = new Int16Array(response)
+                // segsMax[pers[i]] = response.data[pers[i]].max
+                // persDatas[pers[i]] = response.data[pers[i]].array
+                var max = 0;
                 var imageData = new Uint8Array(4 * persDatas[pers[i]].length)
                 segsToPixels2[pers[i]] = {}
                 for (var x = 0; x < persDatas[pers[i]].length; x++) {
                     var segID = persDatas[pers[i]][x]
+                    if (segID > max) {
+                        max = segID
+                    }
                     imageData[x * 4] = Math.floor(segID / 1000)
                     imageData[x * 4 + 1] = Math.floor(segID % 1000 / 100)
                     imageData[x * 4 + 2] = Math.floor(segID % 100 / 10)
@@ -182,6 +184,7 @@ async function getPersistence() {
                         segsToPixels2[pers[i]][segID] = [x]
                     }
                 }
+                segsMax[pers[i]] = max;
                 persTextures[pers[i]] = new THREE.DataTexture(imageData, regionDimensions[0], regionDimensions[1])
                 persTextures[pers[i]].needsUpdate = true
                 if (pers[i] == Math.round(params.pers * 100) / 100) {
@@ -189,15 +192,15 @@ async function getPersistence() {
                     uniforms.segsMax.value = segsMax[pers[i]]
                 }
             }
-            console.timeEnd("process")
-
-            if (Developer) {
-                _readstateFile()
-            }
-        })
-        .catch((error) => {
+        ).catch((error) => {
             console.log(error)
         })
+    }
+    console.timeEnd("process")
+
+    if (Developer) {
+        _readstateFile()
+    }
 }
 getPersistence()
 persLoader.load(
