@@ -56,8 +56,11 @@ if (Developer) {
         brushAnnotationblue: (x: number, y: number) => brushAnnotationHandler('t', 'blue', x, y),
         polygonSelector: (x: number, y: number) => polygonSelectionHandler(x, y),
         polygonFill: (x: number, y: number) => polygonFillHandler(),
-        segmentationred: (x: number, y: number) => segAnnotationHandler('n', 'red', x, y),
-        segmentationblue: (x: number, y: number) => segAnnotationHandler('b', 'blue', x, y),
+        polygonFill2: (x: number, y: number) => polygonFill2Handler(),
+        segmentationred: (x: number, y: number) => segAnnotationHandler('s', 'red', x, y),
+        segmentationblue: (x: number, y: number) => segAnnotationHandler('s', 'blue', x, y),
+        connectedsegmentationred: (x: number, y: number) => connectedSegAnnotationHandler('d', 'red', x, y),
+        connectedsegmentationblue: (x: number, y: number) => connectedSegAnnotationHandler('d', 'blue', x, y),
         resetAll: (x: number, y: number) => clearAllHandler(),
     }
     _readstateFile = async () => {
@@ -238,52 +241,72 @@ canvas.height = regionDimensions[1]
 var annotationTexture = new THREE.Texture(canvas)
 var context = canvas.getContext('2d')
 
-const gui = new GUI()
+const gui = new GUI({width: window.innerWidth / 5})
 var params = {
     blur: 0,
-    dimension: 3,
-    annotation: 1,
+    dimension: true,
+    annotation: true,
     brushSize: 5,
     pers: 0.06,
-    persShow: 0,
+    persShow: false,
     guide: 0,
+    flood: true,
+    dry: false,
 }
 // var persIndex = persToIndex[params.pers];
-var dimensionToZ : {[key: number]: number} = {
-    2: 0,
-    3: 500
-}
+
 var uniforms = {
-    z: { value: dimensionToZ[params.dimension] },
+    z: { value: 500 },
     diffuseTexture: { type: 't', value: new THREE.Texture() },
     annotationTexture: { type: 't', value: annotationTexture },
     persTexture: { type: 't', value: new THREE.Texture() },
     colormap: { type: 't', value: new THREE.Texture() },
-    annotation: { value: params.annotation },
+    annotation: { value: 1 },
     segsMax: { type: 'f', value: 0 },
-    persShow: { value: params.persShow },
+    persShow: { value: 0 },
     hoverValue: { type: 'f', value: 0 },
     guide: { value: params.guide },
     dimensions: { type: 'vec2', value: regionDimensions }
 }
-const viewFolder = gui.addFolder('View Settings')
-
-viewFolder.add(params, 'dimension', 2, 3, 1).onFinishChange(() => {
+const viewFolder = gui.addFolder('Settings')
+viewFolder.add(params, 'flood').onChange(() => {
+    params.dry = !params.flood
+    viewFolder.updateDisplay()
+}).name("Annotate Flood")
+viewFolder.add(params, 'dry').onChange(() => {
+    params.flood = !params.dry
+    viewFolder.updateDisplay()
+}).name("Annotate Dry Area")
+viewFolder.add(params, 'dimension').onChange(() => {
     scene.remove(scene.children[0])
-    uniforms.z.value = dimensionToZ[params.dimension]
-    scene.add(meshes[params.dimension])
-})
-viewFolder.add(params, 'annotation', 0, 1, 1).onFinishChange(() => {
-    uniforms.annotation.value = params.annotation
-})
+    if (params.dimension) {
+        uniforms.z.value = 500
+        scene.add(meshes[3])
+    } else {
+        uniforms.z.value = 0
+        scene.add(meshes[2])
+    }
+
+}).name("3D View")
+viewFolder.add(params, 'annotation').onChange(() => {
+    if (params.annotation) {
+        uniforms.annotation.value = 1
+    } else {
+        uniforms.annotation.value = 0
+    }
+}).name("Show Annotation")
 viewFolder.add(params, 'pers', 0.02, 0.1, 0.02).onFinishChange(() => {
     uniforms.persTexture.value = persTextures[Math.round(params.pers * 100) / 100]
     uniforms.segsMax.value = segsMax[Math.round(params.pers * 100) / 100]
-})
-viewFolder.add(params, 'persShow', 0, 3, 1).onFinishChange(() => {
-    uniforms.persShow.value = params.persShow
-})
-viewFolder.add(params, 'brushSize', 1, 50, 1)
+}).name("Segmentation Detail")
+viewFolder.add(params, 'persShow').onChange(() => {
+    if (params.persShow) {
+        uniforms.persShow.value = 2
+    } else {
+        uniforms.persShow.value = 0
+    }
+}).name("Show Borders")
+// viewFolder.add(params, 'brushSize', 1, 50, 1)
 viewFolder.add({ x: () => {
     camera.position.set(regionDimensions[0] / 2, regionDimensions[1] / 2, 2000)
     controls.target = new THREE.Vector3(regionDimensions[0] / 2, regionDimensions[1] / 2, -2000)
@@ -487,7 +510,6 @@ var polyPoints: Array<number> = []
 const state = {
     BFS: true,
     segmentation: true,
-    semi: false,
     brushSelection: false,
     polygonSelection: true,
     segEnabled: true,
@@ -520,7 +542,7 @@ function BFSHandler(x: number, y: number) {
 }
 
 function BFS2Handler(x: number, y: number) {
-    logMyState('d', 'BFS_Hill', camera, pointer, x, y)
+    logMyState('f', 'BFS_Hill', camera, pointer, x, y)
     visited = new Map()
     recentFills.push([])
     recentPolys.push([])
@@ -572,7 +594,7 @@ function polygonSelectionHandler(x: number, y: number) {
 function polygonFillHandler() {
     context!.fillStyle = 'red'
     context!.beginPath()
-    logMyState('l', 'polygonFill', camera, undefined, undefined, undefined, undefined, polyPoints)
+    logMyState('o', 'polygonFill', camera, undefined, undefined, undefined, undefined, polyPoints)
     recentPolys.push(polyPoints)
     context!.moveTo(polyPoints[0], (regionDimensions[1] - 1) - polyPoints[1])
     for (var i = 2; i < polyPoints.length; i += 2) {
@@ -657,6 +679,94 @@ function polygonFillHandler() {
     annotationTexture.needsUpdate = true
 }
 
+function polygonFill2Handler() {
+    context!.fillStyle = 'blue'
+    context!.beginPath()
+    logMyState('o', 'polygonFill2', camera, undefined, undefined, undefined, undefined, polyPoints)
+    recentPolys.push(polyPoints)
+    context!.moveTo(polyPoints[0], (regionDimensions[1] - 1) - polyPoints[1])
+    for (var i = 2; i < polyPoints.length; i += 2) {
+        context!.lineTo(polyPoints[i], (regionDimensions[1] - 1) - polyPoints[i + 1])
+        context!.clearRect(polyPoints[i] - 2, (regionDimensions[1] - 1) - polyPoints[i + 1] - 2, 4, 4)
+    }
+    context!.closePath()
+    context!.fill()
+    sessionData.numberofClick++
+    var linePixels: Array<number> = []
+    for (var i = 0; i < polyPoints.length; i += 2) {
+        var x0 = polyPoints[i]
+        var y0 = polyPoints[i + 1]
+        var x1, y1
+        if (i + 2 == polyPoints.length) {
+            x1 = polyPoints[0]
+            y1 = polyPoints[1]
+        } else {
+            x1 = polyPoints[i + 2]
+            y1 = polyPoints[i + 3]
+        }
+        var steep: boolean = Math.abs(y1 - y0) > Math.abs(x1 - x0)
+        if (steep) {
+            ;[x0, y0] = [y0, x0]
+            ;[x1, y1] = [y1, x1]
+        }
+        if (x0 > x1) {
+            ;[x0, x1] = [x1, x0]
+            ;[y0, y1] = [y1, y0]
+        }
+        var dx = x1 - x0
+        var dy = y1 - y0
+        var gradient
+        if (dx == 0) {
+            gradient = 1
+        } else {
+            gradient = dy / dx
+        }
+        var xend = x0
+        var yend = y0
+        var xpxl1 = xend
+        var ypxl1 = yend
+        if (steep) {
+            linePixels.push(ypxl1, xpxl1)
+            linePixels.push(ypxl1 + 1, xpxl1)
+        } else {
+            linePixels.push(xpxl1, ypxl1)
+            linePixels.push(xpxl1, ypxl1 + 1)
+        }
+        var intery = yend + gradient
+        xend = x1
+        yend = y1
+        var xpxl2 = xend
+        var ypxl2 = yend
+        if (steep) {
+            linePixels.push(ypxl2, xpxl2)
+            linePixels.push(ypxl2 + 1, xpxl2)
+        } else {
+            linePixels.push(xpxl2, ypxl2)
+            linePixels.push(xpxl2, ypxl2 + 1)
+        }
+        if (steep) {
+            for (var x = xpxl1 + 1; x < xpxl2; x++) {
+                linePixels.push(Math.floor(intery), x)
+                linePixels.push(Math.floor(intery) + 1, x)
+                intery = intery + gradient
+            }
+        } else {
+            for (var x = xpxl1 + 1; x < xpxl2; x++) {
+                linePixels.push(x, Math.floor(intery))
+                linePixels.push(x, Math.floor(intery) + 1)
+                intery = intery + gradient
+            }
+        }
+    }
+    recentFills.push([])
+    visited = new Map()
+    for (var i = 0; i < linePixels.length; i += 2) {
+        BFS(linePixels[i], linePixels[i + 1], 'BFS_Hill', 'blue')
+    }
+    polyPoints = []
+    annotationTexture.needsUpdate = true
+}
+
 function segAnnotationHandler(key: string, color: string, x: number, y: number) {
     if (!color) {
         console.error('no annotation without color, send color')
@@ -714,12 +824,11 @@ const onKeyPress = (event: KeyboardEvent) => {
         hoverHandler()
     } else if (event.key == 'f' && state.BFS) {
         let [x, y] = performRayCasting()
-        // y = regionDimensions[1] - y
-        BFSHandler(x, y)
-    } else if (event.key == 'd' && state.BFS) {
-        let [x, y] = performRayCasting()
-        // y = regionDimensions[1] - y
-        BFS2Handler(x, y)
+        if (params.flood) {
+            BFSHandler(x, y)
+        } else {
+            BFS2Handler(x, y)
+        }
     } else if (event.key == 'e' && state.brushSelection) {
         let [x, y] = performRayCasting()
         y = regionDimensions[1] - y
@@ -736,17 +845,26 @@ const onKeyPress = (event: KeyboardEvent) => {
         let [x, y] = performRayCasting()
         // y = regionDimensions[1] - y
         polygonSelectionHandler(x, y)
-    } else if (event.key == 'l' && state.polygonSelection) {
-        polygonFillHandler()
-    } else if (event.key == 'n' && state.segEnabled) {
+    } else if (event.key == 'o' && state.polygonSelection) {
+        if (params.flood) {
+            polygonFillHandler()
+        } else {
+            polygonFill2Handler()
+        }
+    } else if (event.key == 's' && state.segEnabled) {
         let [x, y] = performRayCasting()
-        segAnnotationHandler('n', 'red', x, y)
-    } else if (event.key == 'b' && state.segEnabled) {
+        if (params.flood) {
+            segAnnotationHandler('s', 'red', x, y)
+        } else {
+            segAnnotationHandler('s', 'blue', x, y)
+        }
+    } else if (event.key == 'd' && state.segEnabled) {
         let [x, y] = performRayCasting()
-        segAnnotationHandler('b', 'blue', x, y)
-    } else if (event.key == 'o' && state.segEnabled) {
-        let [x, y] = performRayCasting()
-        connectedSegAnnotationHandler('o', 'red', x, y)
+        if (params.flood) {
+            connectedSegAnnotationHandler('d', 'red', x, y)
+        } else {
+            connectedSegAnnotationHandler('d', 'blue', x, y)
+        }   
     } else if (event.key == 'z') {
         clearAllHandler()
     }
@@ -819,6 +937,7 @@ function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight
     camera.updateProjectionMatrix()
     renderer.setSize(window.innerWidth, window.innerHeight)
+    gui.width = window.innerWidth / 5
     render()
 }
 
