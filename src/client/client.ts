@@ -232,7 +232,7 @@ persLoader.load(
 // scene.add( ambient );
 
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 5000)
-camera.position.set(regionDimensions[0] / 2, regionDimensions[1] / 2, 4000)
+camera.position.set(regionDimensions[0] / 2, regionDimensions[1] / 2, 2000)
 
 const renderer = new THREE.WebGLRenderer({ preserveDrawingBuffer: true })
 renderer.outputEncoding = THREE.sRGBEncoding
@@ -1018,8 +1018,8 @@ satelliteLoader.load(
             terrainLoader.load(
                 `stl/${x}Dregion${region}.stl`,
                 function (geometry) {
-                    geometry.computeBoundingBox()
-                    geometry.computeVertexNormals()
+                    // geometry.computeBoundingBox()
+                    // geometry.computeVertexNormals()
 
                     mesh = new THREE.Mesh(geometry, meshMaterial)
                     mesh.receiveShadow = true
