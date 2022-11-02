@@ -1,8 +1,26 @@
+import { update } from '@tweenjs/tween.js'
+import { Camera, Raycaster, Scene } from 'three'
 import { MapControls } from 'three/examples/jsm/controls/OrbitControls'
-import { canvas, startUp, controls, mesh } from './client'
+import {
+    canvas,
+    startUp,
+    controls,
+    mesh,
+    pointer,
+    renderer,
+    camera,
+    TWEEN,
+    raycaster,
+    scene,
+    params,
+    uniforms,
+} from './client'
 // import * as fs from 'fs'
 
 const pixelCount = 7617024
+let button1: HTMLButtonElement, button2: HTMLButtonElement
+type ObjectKeyParams = keyof typeof params
+type ObjectKeyUniforms = keyof typeof uniforms
 
 interface sessionDataType {
     name: string
@@ -168,6 +186,7 @@ function downloadSession(event: Event) {
     const _data = JSON.stringify(gameState)
     const _fileName = 'session_' + sessionData.name + '.json'
     download(_fileName, _data)
+    ;(document.getElementById('uploadForm') as HTMLFormElement).style.display = 'block'
 }
 
 function hideModal() {
@@ -183,11 +202,105 @@ function getLocalCordinate(_cordiante: THREE.Vector3) {
     return localPoint
 }
 
+function doubleClickHandler(event: MouseEvent) {
+    event.preventDefault()
+    let ndcX = (event.clientX / renderer.domElement.clientWidth) * 2 - 1
+    let ndcY = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1
+    raycaster.setFromCamera({ x: ndcX, y: ndcY }, camera)
+    const intersection = raycaster.intersectObjects(scene.children, true)
+    if (intersection.length > 0) {
+        const point = intersection[0].point //this is not local cordinate point rather world cordinate
+        new TWEEN.Tween(controls.target)
+            .to(
+                {
+                    x: point.x,
+                    y: point.y,
+                    z: point.z,
+                },
+                1000
+            )
+            .easing(TWEEN.Easing.Cubic.Out)
+            .onUpdate(() => {
+                controls.update()
+            })
+            .start()
+
+        new TWEEN.Tween(camera.position)
+            .to(
+                {
+                    x: point.x,
+                    y: point.y,
+                    z: point.z + 1000,
+                },
+                1000
+            )
+            .easing(TWEEN.Easing.Cubic.Out)
+            .onUpdate(() => {
+                camera.updateProjectionMatrix()
+            })
+            .start()
+    }
+}
+
+function toggleAnnoation() {
+    let ULelement = document.getElementsByTagName('ul')[2]
+    if (ULelement) {
+        var li = document.createElement('li')
+        li.classList.add('cr', 'customList')
+        let span = document.createElement('span')
+        span.classList.add('property-name')
+        span.innerHTML = 'Annotate'
+        li.appendChild(span)
+        let div = document.createElement('div')
+        div.classList.add('btn-group', 'btn-group-toggle')
+        button1 = document.createElement('button')
+        button1.classList.add('ci', 'btn', 'active')
+        button1.setAttribute('data-myid', 'flood')
+        button1.innerHTML = 'FLOOD'
+        button2 = document.createElement('button')
+        button2.classList.add('ci', 'btn')
+        button2.setAttribute('data-myid', 'dry')
+        button2.innerHTML = 'DRY'
+        div.appendChild(button1)
+        div.appendChild(button2)
+        li.appendChild(div)
+        ULelement.prepend(li)
+        button1.addEventListener('click', setActiveButton)
+        button2.addEventListener('click', setActiveButton)
+    }
+}
+
+function updateUniform(input: any) {
+    input.forEach((element: any, index: number) => {
+        uniforms[element as ObjectKeyUniforms].value = params[element as ObjectKeyParams] as any
+    })
+}
+
+function setActiveButton(event: MouseEvent) {
+    event.preventDefault()
+    button1.classList.remove('active')
+    button2.classList.remove('active')
+    ;(event.target as HTMLButtonElement).classList.add('active')
+    type ObjectKeyParams = keyof typeof params
+    let myId = (event.target as HTMLButtonElement).dataset.myid as ObjectKeyParams
+    params['dry'] = false
+    params['flood'] = false
+    // params[myId] = true
+    if (myId == 'flood') {
+        params['flood'] = true
+    } else {
+        params['dry'] = true
+    }
+    updateUniform(['dry', 'flood'])
+}
+
 function init() {
     document.getElementById('start')?.addEventListener('click', startSession)
     document.getElementById('end')?.addEventListener('click', endSession)
     document.getElementById('download')?.addEventListener('click', downloadSession)
     document.getElementById('exploration')?.addEventListener('click', hideModal)
+    toggleAnnoation()
+    renderer.domElement.addEventListener('dblclick', doubleClickHandler, true)
 }
 
 function initVis() {
@@ -206,4 +319,5 @@ export {
     logMyState,
     getLocalCordinate,
     readstateFile,
+    toggleAnnoation,
 }

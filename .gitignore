@@ -1,2 +1,7 @@
 node_modules
+<<<<<<< HEAD
+dist/client/stl
+dist/client/img/static/files
+=======
 dist/client/img/__pycache__
+>>>>>>> a9480332ad811ca61167be82f26339462a5990ec

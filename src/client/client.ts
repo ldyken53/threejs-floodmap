@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader'
+import * as TWEEN from '@tweenjs/tween.js'
 import { terrainShader } from './shaders/terrain-shader'
 import { GUI } from 'dat.gui'
 import { Mesh } from 'three'
@@ -13,12 +14,11 @@ import {
     logMyState,
     getLocalCordinate,
     readstateFile,
+    toggleAnnoation,
 } from './util'
-import {
-    terrainDimensions
-} from './constants'
+import { terrainDimensions } from './constants'
 import './styles/style.css'
-import * as tiff from "tiff"
+import * as tiff from 'tiff'
 
 let Developer = false
 let overRideControl = false
@@ -27,16 +27,19 @@ if (window.location.hash) {
     var region = window.location.hash[window.location.hash.search('region') + 7]
     console.log(region)
 } else {
-    var region = '1';
+    var region = '1'
 }
 const regionDimensions = terrainDimensions[region]
 let _fetchData: any
 let mesh: THREE.Mesh
-fetch(`img/elevation${region}.tiff`).then((res) => res.arrayBuffer().then(function(arr) {
-    var tif = tiff.decode(arr)
-    data = tif[0].data as Float32Array;
-}));
+fetch(`img/elevation${region}.tiff`).then((res) =>
+    res.arrayBuffer().then(function (arr) {
+        var tif = tiff.decode(arr)
+        data = tif[0].data as Float32Array
+    })
+)
 window.onload = init
+
 const scene = new THREE.Scene()
 // const blurs = [0, 1, 2];
 // const zs = [100, 200, 300, 400, 500];
@@ -52,15 +55,17 @@ if (Developer) {
         BFS_Down: (x: number, y: number) => BFSHandler(x, y),
         BFS_Hill: (x: number, y: number) => BFS2Handler(x, y),
         brushClear: (x: number, y: number) => brushClearHandler(x, y),
-        brushAnnotationred: (x: number, y: number) => brushAnnotationHandler('r', 'red', x, y),
-        brushAnnotationblue: (x: number, y: number) => brushAnnotationHandler('t', 'blue', x, y),
+        // brushAnnotationred: (x: number, y: number) => brushAnnotationHandler('r', 'red', x, y),
+        brushAnnotation: (x: number, y: number) => brushAnnotationHandler('t', x, y),
         polygonSelector: (x: number, y: number) => polygonSelectionHandler(x, y),
         polygonFill: (x: number, y: number) => polygonFillHandler(),
         polygonFill2: (x: number, y: number) => polygonFill2Handler(),
         segmentationred: (x: number, y: number) => segAnnotationHandler('s', 'red', x, y),
         segmentationblue: (x: number, y: number) => segAnnotationHandler('s', 'blue', x, y),
-        connectedsegmentationred: (x: number, y: number) => connectedSegAnnotationHandler('d', 'red', x, y),
-        connectedsegmentationblue: (x: number, y: number) => connectedSegAnnotationHandler('d', 'blue', x, y),
+        connectedsegmentationred: (x: number, y: number) =>
+            connectedSegAnnotationHandler('d', 'red', x, y),
+        connectedsegmentationblue: (x: number, y: number) =>
+            connectedSegAnnotationHandler('d', 'blue', x, y),
         resetAll: (x: number, y: number) => clearAllHandler(),
     }
     _readstateFile = async () => {
@@ -161,7 +166,7 @@ var segsMax: { [key: number]: number } = {}
 async function getPersistence() {
     // axios
     //     .get(`http://localhost:5000/test`)
-    console.time("process")
+    console.time('process')
     for (var i = 0; i < pers.length; i++) {
         await fetch(`img/segmentation_region${region}_pers${pers[i]}`)
             .then((r) => r.arrayBuffer())
@@ -169,7 +174,7 @@ async function getPersistence() {
                 persDatas[pers[i]] = new Int16Array(response)
                 // segsMax[pers[i]] = response.data[pers[i]].max
                 // persDatas[pers[i]] = response.data[pers[i]].array
-                var max = 0;
+                var max = 0
                 var imageData = new Uint8Array(4 * persDatas[pers[i]].length)
                 segsToPixels2[pers[i]] = {}
                 for (var x = 0; x < persDatas[pers[i]].length; x++) {
@@ -178,8 +183,8 @@ async function getPersistence() {
                         max = segID
                     }
                     imageData[x * 4] = Math.floor(segID / 1000)
-                    imageData[x * 4 + 1] = Math.floor(segID % 1000 / 100)
-                    imageData[x * 4 + 2] = Math.floor(segID % 100 / 10)
+                    imageData[x * 4 + 1] = Math.floor((segID % 1000) / 100)
+                    imageData[x * 4 + 2] = Math.floor((segID % 100) / 10)
                     imageData[x * 4 + 3] = segID % 10
                     if (segsToPixels2[pers[i]][segID]) {
                         segsToPixels2[pers[i]][segID].push(x)
@@ -187,19 +192,23 @@ async function getPersistence() {
                         segsToPixels2[pers[i]][segID] = [x]
                     }
                 }
-                segsMax[pers[i]] = max;
-                persTextures[pers[i]] = new THREE.DataTexture(imageData, regionDimensions[0], regionDimensions[1])
+                segsMax[pers[i]] = max
+                persTextures[pers[i]] = new THREE.DataTexture(
+                    imageData,
+                    regionDimensions[0],
+                    regionDimensions[1]
+                )
                 persTextures[pers[i]].needsUpdate = true
                 if (pers[i] == Math.round(params.pers * 100) / 100) {
                     uniforms.persTexture.value = persTextures[pers[i]]
                     uniforms.segsMax.value = segsMax[pers[i]]
                 }
-            }
-        ).catch((error) => {
-            console.log(error)
-        })
+            })
+            .catch((error) => {
+                console.log(error)
+            })
     }
-    console.timeEnd("process")
+    console.timeEnd('process')
 
     if (Developer) {
         _readstateFile()
@@ -223,7 +232,7 @@ persLoader.load(
 // scene.add( ambient );
 
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 5000)
-camera.position.set(regionDimensions[0] / 2, regionDimensions[1] / 2, 1000)
+camera.position.set(regionDimensions[0] / 2, regionDimensions[1] / 2, 2000)
 
 const renderer = new THREE.WebGLRenderer({ preserveDrawingBuffer: true })
 renderer.outputEncoding = THREE.sRGBEncoding
@@ -234,6 +243,8 @@ document.body.appendChild(renderer.domElement)
 
 let controls = new OrbitControls(camera, renderer.domElement)
 controls.target = new THREE.Vector3(regionDimensions[0] / 2, regionDimensions[1] / 2, -2000)
+controls.dampingFactor = 1.25
+controls.enableDamping = true
 
 var canvas = document.createElement('canvas')
 canvas.width = regionDimensions[0]
@@ -241,17 +252,18 @@ canvas.height = regionDimensions[1]
 var annotationTexture = new THREE.Texture(canvas)
 var context = canvas.getContext('2d')
 
-const gui = new GUI({width: window.innerWidth / 5})
+const gui = new GUI({ width: window.innerWidth / 5 })
 var params = {
     blur: 0,
     dimension: true,
     annotation: true,
-    brushSize: 5,
+    brushSize: 30,
     pers: 0.06,
     persShow: false,
     guide: 0,
     flood: true,
     dry: false,
+    annoation: 'lighten',
 }
 // var persIndex = persToIndex[params.pers];
 
@@ -266,80 +278,155 @@ var uniforms = {
     persShow: { value: 0 },
     hoverValue: { type: 'f', value: 0 },
     guide: { value: params.guide },
-    dimensions: { type: 'vec2', value: regionDimensions }
+    dimensions: { type: 'vec2', value: regionDimensions },
+    dry: { type: 'bool', value: params.dry },
+    flood: { type: 'bool', value: params.flood },
 }
 const viewFolder = gui.addFolder('Settings')
-viewFolder.add(params, 'flood').onChange(() => {
-    params.dry = !params.flood
-    viewFolder.updateDisplay()
-}).name("Annotate Flood")
-viewFolder.add(params, 'dry').onChange(() => {
-    params.flood = !params.dry
-    viewFolder.updateDisplay()
-}).name("Annotate Dry Area")
-viewFolder.add(params, 'dimension').onChange(() => {
-    scene.remove(scene.children[0])
-    if (params.dimension) {
-        uniforms.z.value = 500
-        scene.add(meshes[3])
-    } else {
-        uniforms.z.value = 0
-        scene.add(meshes[2])
-    }
 
-}).name("3D View")
-viewFolder.add(params, 'annotation').onChange(() => {
-    if (params.annotation) {
-        uniforms.annotation.value = 1
-    } else {
-        uniforms.annotation.value = 0
-    }
-}).name("Show Annotation")
-viewFolder.add(params, 'pers', 0.02, 0.1, 0.02).onFinishChange(() => {
-    uniforms.persTexture.value = persTextures[Math.round(params.pers * 100) / 100]
-    uniforms.segsMax.value = segsMax[Math.round(params.pers * 100) / 100]
-}).name("Segmentation Detail")
-viewFolder.add(params, 'persShow').onChange(() => {
-    if (params.persShow) {
-        uniforms.persShow.value = 2
-    } else {
-        uniforms.persShow.value = 0
-    }
-}).name("Show Borders")
+// viewFolder
+//     .add(params, 'flood')
+//     .onChange(() => {
+//         params.dry = !params.flood
+//         viewFolder.updateDisplay()
+//     })
+//     .name('Annotate Flood')
+
+// viewFolder
+//     .add(params, 'dry')
+//     .onChange(() => {
+//         params.flood = !params.dry
+//         viewFolder.updateDisplay()
+//     })
+//     .name('Annotate Dry Area')
+viewFolder
+    .add(params, 'dimension')
+    .onChange(() => {
+        scene.remove(scene.children[0])
+        if (params.dimension) {
+            uniforms.z.value = 500
+            scene.add(meshes[3])
+        } else {
+            uniforms.z.value = 0
+            scene.add(meshes[2])
+        }
+    })
+    .name('3D View')
+viewFolder
+    .add(params, 'annotation')
+    .onChange(() => {
+        if (params.annotation) {
+            uniforms.annotation.value = 1
+        } else {
+            uniforms.annotation.value = 0
+        }
+    })
+    .name('Show Annotation')
+viewFolder
+    .add(params, 'pers', 0.02, 0.1, 0.02)
+    .onFinishChange(() => {
+        uniforms.persTexture.value = persTextures[Math.round(params.pers * 100) / 100]
+        uniforms.segsMax.value = segsMax[Math.round(params.pers * 100) / 100]
+    })
+    .name('Segmentation Detail')
+viewFolder
+    .add(params, 'persShow')
+    .onChange(() => {
+        if (params.persShow) {
+            uniforms.persShow.value = 2
+        } else {
+            uniforms.persShow.value = 0
+        }
+    })
+    .name('Show Borders')
 // viewFolder.add(params, 'brushSize', 1, 50, 1)
-viewFolder.add({ x: () => {
-    camera.position.set(regionDimensions[0] / 2, regionDimensions[1] / 2, 2000)
-    controls.target = new THREE.Vector3(regionDimensions[0] / 2, regionDimensions[1] / 2, -2000)
-}}, "x").name("Camera to Birds Eye View")
-viewFolder.add({x: () => {
-    camera.position.set(-500, regionDimensions[1] / 2, 500)
-    camera.up.set(0, 0, 1)
-    controls.dispose()
-    controls = new OrbitControls(camera, renderer.domElement)
-    controls.target = new THREE.Vector3(regionDimensions[0] / 2, regionDimensions[1] / 2, -1000)
-}}, "x").name("Camera to Left View")
-viewFolder.add({x: () => {
-    camera.position.set(regionDimensions[0] + 500, regionDimensions[1] / 2, 500)
-    camera.up.set(0, 0, 1)
-    controls.dispose()
-    controls = new OrbitControls(camera, renderer.domElement)
-    controls.target = new THREE.Vector3(regionDimensions[0] / 2, regionDimensions[1] / 2, -1000)
-}}, "x").name("Camera to Right View")
-viewFolder.add({x: () => {
-    camera.position.set(regionDimensions[0] / 2, regionDimensions[1] + 500, 500)
-    camera.up.set(0, 0, 1)
-    controls.dispose()
-    controls = new OrbitControls(camera, renderer.domElement)
-    controls.target = new THREE.Vector3(regionDimensions[0] / 2, regionDimensions[1] / 2, -1000)
-}}, "x").name("Camera to Top View")
-viewFolder.add({x: () => {
-    camera.position.set(regionDimensions[0] / 2, -500, 500)
-    camera.up.set(0, 0, 1)
-    controls.dispose()
-    controls = new OrbitControls(camera, renderer.domElement)
-    controls.target = new THREE.Vector3(regionDimensions[0] / 2, regionDimensions[1] / 2, -1000)
-}}, "x").name("Camera to Bottom View")
-
+viewFolder
+    .add(
+        {
+            x: () => {
+                camera.position.set(regionDimensions[0] / 2, regionDimensions[1] / 2, 2000)
+                controls.target = new THREE.Vector3(
+                    regionDimensions[0] / 2,
+                    regionDimensions[1] / 2,
+                    -2000
+                )
+            },
+        },
+        'x'
+    )
+    .name('Camera to Birds Eye View')
+viewFolder
+    .add(
+        {
+            x: () => {
+                camera.position.set(-500, regionDimensions[1] / 2, 500)
+                camera.up.set(0, 0, 1)
+                controls.dispose()
+                controls = new OrbitControls(camera, renderer.domElement)
+                controls.target = new THREE.Vector3(
+                    regionDimensions[0] / 2,
+                    regionDimensions[1] / 2,
+                    -1000
+                )
+            },
+        },
+        'x'
+    )
+    .name('Camera to Left View')
+viewFolder
+    .add(
+        {
+            x: () => {
+                camera.position.set(regionDimensions[0] + 500, regionDimensions[1] / 2, 500)
+                camera.up.set(0, 0, 1)
+                controls.dispose()
+                controls = new OrbitControls(camera, renderer.domElement)
+                controls.target = new THREE.Vector3(
+                    regionDimensions[0] / 2,
+                    regionDimensions[1] / 2,
+                    -1000
+                )
+            },
+        },
+        'x'
+    )
+    .name('Camera to Right View')
+viewFolder
+    .add(
+        {
+            x: () => {
+                camera.position.set(regionDimensions[0] / 2, regionDimensions[1] + 500, 500)
+                camera.up.set(0, 0, 1)
+                controls.dispose()
+                controls = new OrbitControls(camera, renderer.domElement)
+                controls.target = new THREE.Vector3(
+                    regionDimensions[0] / 2,
+                    regionDimensions[1] / 2,
+                    -1000
+                )
+            },
+        },
+        'x'
+    )
+    .name('Camera to Top View')
+viewFolder
+    .add(
+        {
+            x: () => {
+                camera.position.set(regionDimensions[0] / 2, -500, 500)
+                camera.up.set(0, 0, 1)
+                controls.dispose()
+                controls = new OrbitControls(camera, renderer.domElement)
+                controls.target = new THREE.Vector3(
+                    regionDimensions[0] / 2,
+                    regionDimensions[1] / 2,
+                    -1000
+                )
+            },
+        },
+        'x'
+    )
+    .name('Camera to Bottom View')
 
 viewFolder.open()
 // meshFolder.open()
@@ -354,7 +441,7 @@ function segSelect(x: number, y: number) {
     var pixels = segsToPixels2[Math.round(params.pers * 100) / 100][value]
     for (var i = 0; i < pixels.length; i++) {
         var x = pixels[i] % regionDimensions[0]
-        var y = (regionDimensions[1] - 1) - Math.floor(pixels[i] / regionDimensions[0])
+        var y = regionDimensions[1] - 1 - Math.floor(pixels[i] / regionDimensions[0])
         recentFills[recentFills.length - 1].push(x, y)
         context!.fillRect(x, y, 1, 1)
     }
@@ -366,52 +453,81 @@ function connectedSegSelect(x: number, y: number, color: string) {
     recentFills.push([])
     recentPolys.push([])
     visited = new Map()
-    BFS(x, y, "BFS_Segment", color)
+    BFS(x, y, 'BFS_Segment', color)
 }
 
 const searchFunction = {
     BFS_Down: {
         E: (x: number, y: number, value: number) => data[x + 1 + y * regionDimensions[0]] <= value,
         W: (x: number, y: number, value: number) => data[x - 1 + y * regionDimensions[0]] <= value,
-        N: (x: number, y: number, value: number) => data[x + (y + 1) * regionDimensions[0]] <= value,
-        S: (x: number, y: number, value: number) => data[x + (y - 1) * regionDimensions[0]] <= value,
-        EN: (x: number, y: number, value: number) => data[x + 1 + (y + 1) * regionDimensions[0]] <= value,
-        WN: (x: number, y: number, value: number) => data[x - 1 + (y + 1) * regionDimensions[0]] <= value,
-        SW: (x: number, y: number, value: number) => data[x - 1 + (y - 1) * regionDimensions[0]] <= value,
-        SE: (x: number, y: number, value: number) => data[x + 1 + (y - 1) * regionDimensions[0]] <= value,
+        N: (x: number, y: number, value: number) =>
+            data[x + (y + 1) * regionDimensions[0]] <= value,
+        S: (x: number, y: number, value: number) =>
+            data[x + (y - 1) * regionDimensions[0]] <= value,
+        EN: (x: number, y: number, value: number) =>
+            data[x + 1 + (y + 1) * regionDimensions[0]] <= value,
+        WN: (x: number, y: number, value: number) =>
+            data[x - 1 + (y + 1) * regionDimensions[0]] <= value,
+        SW: (x: number, y: number, value: number) =>
+            data[x - 1 + (y - 1) * regionDimensions[0]] <= value,
+        SE: (x: number, y: number, value: number) =>
+            data[x + 1 + (y - 1) * regionDimensions[0]] <= value,
     },
     BFS_Hill: {
         E: (x: number, y: number, value: number) => data[x + 1 + y * regionDimensions[0]] >= value,
         W: (x: number, y: number, value: number) => data[x - 1 + y * regionDimensions[0]] >= value,
-        N: (x: number, y: number, value: number) => data[x + (y + 1) * regionDimensions[0]] >= value,
-        S: (x: number, y: number, value: number) => data[x + (y - 1) * regionDimensions[0]] >= value,
-        EN: (x: number, y: number, value: number) => data[x + 1 + (y + 1) * regionDimensions[0]] >= value,
-        WN: (x: number, y: number, value: number) => data[x - 1 + (y + 1) * regionDimensions[0]] >= value,
-        SW: (x: number, y: number, value: number) => data[x - 1 + (y - 1) * regionDimensions[0]] >= value,
-        SE: (x: number, y: number, value: number) => data[x + 1 + (y - 1) * regionDimensions[0]] >= value,
+        N: (x: number, y: number, value: number) =>
+            data[x + (y + 1) * regionDimensions[0]] >= value,
+        S: (x: number, y: number, value: number) =>
+            data[x + (y - 1) * regionDimensions[0]] >= value,
+        EN: (x: number, y: number, value: number) =>
+            data[x + 1 + (y + 1) * regionDimensions[0]] >= value,
+        WN: (x: number, y: number, value: number) =>
+            data[x - 1 + (y + 1) * regionDimensions[0]] >= value,
+        SW: (x: number, y: number, value: number) =>
+            data[x - 1 + (y - 1) * regionDimensions[0]] >= value,
+        SE: (x: number, y: number, value: number) =>
+            data[x + 1 + (y - 1) * regionDimensions[0]] >= value,
     },
     BFS_Segment: {
-        E: (x: number, y: number, value: number) => persDatas[Math.round(params.pers * 100) / 100][x + 1 + y * regionDimensions[0]] == value,
-        W: (x: number, y: number, value: number) => persDatas[Math.round(params.pers * 100) / 100][x - 1 + y * regionDimensions[0]] == value,
-        N: (x: number, y: number, value: number) => persDatas[Math.round(params.pers * 100) / 100][x + (y + 1) * regionDimensions[0]] == value,
-        S: (x: number, y: number, value: number) => persDatas[Math.round(params.pers * 100) / 100][x + (y - 1) * regionDimensions[0]] == value,
-        EN: (x: number, y: number, value: number) => persDatas[Math.round(params.pers * 100) / 100][x + 1 + (y + 1) * regionDimensions[0]] == value,
-        WN: (x: number, y: number, value: number) => persDatas[Math.round(params.pers * 100) / 100][x - 1 + (y + 1) * regionDimensions[0]] == value,
-        SW: (x: number, y: number, value: number) => persDatas[Math.round(params.pers * 100) / 100][x - 1 + (y - 1) * regionDimensions[0]] == value,
-        SE: (x: number, y: number, value: number) => persDatas[Math.round(params.pers * 100) / 100][x + 1 + (y - 1) * regionDimensions[0]] == value,
-    }
+        E: (x: number, y: number, value: number) =>
+            persDatas[Math.round(params.pers * 100) / 100][x + 1 + y * regionDimensions[0]] ==
+            value,
+        W: (x: number, y: number, value: number) =>
+            persDatas[Math.round(params.pers * 100) / 100][x - 1 + y * regionDimensions[0]] ==
+            value,
+        N: (x: number, y: number, value: number) =>
+            persDatas[Math.round(params.pers * 100) / 100][x + (y + 1) * regionDimensions[0]] ==
+            value,
+        S: (x: number, y: number, value: number) =>
+            persDatas[Math.round(params.pers * 100) / 100][x + (y - 1) * regionDimensions[0]] ==
+            value,
+        EN: (x: number, y: number, value: number) =>
+            persDatas[Math.round(params.pers * 100) / 100][x + 1 + (y + 1) * regionDimensions[0]] ==
+            value,
+        WN: (x: number, y: number, value: number) =>
+            persDatas[Math.round(params.pers * 100) / 100][x - 1 + (y + 1) * regionDimensions[0]] ==
+            value,
+        SW: (x: number, y: number, value: number) =>
+            persDatas[Math.round(params.pers * 100) / 100][x - 1 + (y - 1) * regionDimensions[0]] ==
+            value,
+        SE: (x: number, y: number, value: number) =>
+            persDatas[Math.round(params.pers * 100) / 100][x + 1 + (y - 1) * regionDimensions[0]] ==
+            value,
+    },
 }
 
 const valueFunction = {
     BFS_Down: (x: number, y: number) => data[x + y * regionDimensions[0]],
     BFS_Hill: (x: number, y: number) => data[x + y * regionDimensions[0]],
-    BFS_Segment: (x: number, y: number) => persDatas[Math.round(params.pers * 100) / 100][x + y * regionDimensions[0]],
+    BFS_Segment: (x: number, y: number) =>
+        persDatas[Math.round(params.pers * 100) / 100][x + y * regionDimensions[0]],
 }
 
 const fillFunction = {
-    BFS_Down: (x: number, y: number) => [x, (regionDimensions[1] - 1) - y],
-    BFS_Hill: (x: number, y: number) => [x, (regionDimensions[1] - 1) - y],
-    BFS_Segment: (x: number, y: number) => [x, (regionDimensions[1] - 1) - y],
+    BFS_Down: (x: number, y: number) => [x, regionDimensions[1] - 1 - y],
+    BFS_Hill: (x: number, y: number) => [x, regionDimensions[1] - 1 - y],
+    BFS_Segment: (x: number, y: number) => [x, regionDimensions[1] - 1 - y],
 }
 
 var visited = new Map()
@@ -510,7 +626,7 @@ var polyPoints: Array<number> = []
 const state = {
     BFS: true,
     segmentation: true,
-    brushSelection: false,
+    brushSelection: { clear: true, select: true },
     polygonSelection: true,
     segEnabled: true,
 }
@@ -563,13 +679,13 @@ function brushClearHandler(x: number, y: number) {
     logMyState('e', 'brushClear', camera, pointer, x, y, params.brushSize)
 }
 
-function brushAnnotationHandler(key: string, color: string, x: number, y: number) {
-    if (!color) {
-        console.error('no annotation without color, send color !!')
-        return
+function brushAnnotationHandler(key: string, x: number, y: number) {
+    context!.fillStyle = 'red'
+    let color = 'red'
+    if (params.dry) {
+        context!.fillStyle = 'blue'
+        color = 'blue'
     }
-
-    context!.fillStyle = color
     context!.fillRect(
         x - Math.floor(params.brushSize / 2),
         y - Math.floor(params.brushSize / 2),
@@ -583,9 +699,10 @@ function brushAnnotationHandler(key: string, color: string, x: number, y: number
 }
 
 function polygonSelectionHandler(x: number, y: number) {
+    console.log('t')
     polyPoints.push(x, y)
     context!.fillStyle = 'red'
-    context!.fillRect(x - 2, (regionDimensions[1] - 1) - y - 2, 4, 4)
+    context!.fillRect(x - 2, regionDimensions[1] - 1 - y - 2, 4, 4)
     logMyState('p', 'polygonSelector', camera, pointer, x, y, params.brushSize)
     sessionData.annotatedPixelCount += 16 //follow this with the line selection to minimize the double counting
     annotationTexture.needsUpdate = true
@@ -596,10 +713,10 @@ function polygonFillHandler() {
     context!.beginPath()
     logMyState('o', 'polygonFill', camera, undefined, undefined, undefined, undefined, polyPoints)
     recentPolys.push(polyPoints)
-    context!.moveTo(polyPoints[0], (regionDimensions[1] - 1) - polyPoints[1])
+    context!.moveTo(polyPoints[0], regionDimensions[1] - 1 - polyPoints[1])
     for (var i = 2; i < polyPoints.length; i += 2) {
-        context!.lineTo(polyPoints[i], (regionDimensions[1] - 1) - polyPoints[i + 1])
-        context!.clearRect(polyPoints[i] - 2, (regionDimensions[1] - 1) - polyPoints[i + 1] - 2, 4, 4)
+        context!.lineTo(polyPoints[i], regionDimensions[1] - 1 - polyPoints[i + 1])
+        context!.clearRect(polyPoints[i] - 2, regionDimensions[1] - 1 - polyPoints[i + 1] - 2, 4, 4)
     }
     context!.closePath()
     context!.fill()
@@ -684,10 +801,10 @@ function polygonFill2Handler() {
     context!.beginPath()
     logMyState('o', 'polygonFill2', camera, undefined, undefined, undefined, undefined, polyPoints)
     recentPolys.push(polyPoints)
-    context!.moveTo(polyPoints[0], (regionDimensions[1] - 1) - polyPoints[1])
+    context!.moveTo(polyPoints[0], regionDimensions[1] - 1 - polyPoints[1])
     for (var i = 2; i < polyPoints.length; i += 2) {
-        context!.lineTo(polyPoints[i], (regionDimensions[1] - 1) - polyPoints[i + 1])
-        context!.clearRect(polyPoints[i] - 2, (regionDimensions[1] - 1) - polyPoints[i + 1] - 2, 4, 4)
+        context!.lineTo(polyPoints[i], regionDimensions[1] - 1 - polyPoints[i + 1])
+        context!.clearRect(polyPoints[i] - 2, regionDimensions[1] - 1 - polyPoints[i + 1] - 2, 4, 4)
     }
     context!.closePath()
     context!.fill()
@@ -793,17 +910,17 @@ function clearAllHandler() {
     }
     var lastPoly = recentPolys.pop()!
     if (lastPoly[0]) {
-        context!.moveTo(lastPoly[0], (regionDimensions[1] - 1) - lastPoly[1])
+        context!.moveTo(lastPoly[0], regionDimensions[1] - 1 - lastPoly[1])
         for (var i = 2; i < lastPoly.length; i += 2) {
-            context!.lineTo(lastPoly[i], (regionDimensions[1] - 1) - lastPoly[i + 1])
+            context!.lineTo(lastPoly[i], regionDimensions[1] - 1 - lastPoly[i + 1])
         }
         context!.closePath()
-        context!.globalCompositeOperation = "destination-out"
+        context!.globalCompositeOperation = 'destination-out'
         context!.fillStyle = 'blue'
         context!.fill()
         // second pass, the actual painting, with the desired color
-        context!.globalCompositeOperation = "source-over"
-        context!.fillStyle='rgba(0,0,0,0)'
+        context!.globalCompositeOperation = 'source-over'
+        context!.fillStyle = 'rgba(0,0,0,0)'
         context!.fill()
     }
     annotationTexture.needsUpdate = true
@@ -817,7 +934,7 @@ const onKeyPress = (event: KeyboardEvent) => {
     // if (event.key == 'Escape') {
     //     camera.position.set(2000, 1000, 1000)
     //     controls.target = new THREE.Vector3(2000, 1000, -2000)
-    // } else 
+    // } else
     if (event.key == 'm') {
         ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
     } else if (event.key == 'g') {
@@ -829,18 +946,18 @@ const onKeyPress = (event: KeyboardEvent) => {
         } else {
             BFS2Handler(x, y)
         }
-    } else if (event.key == 'e' && state.brushSelection) {
+    } else if (event.key == 'e' && state.brushSelection.clear) {
         let [x, y] = performRayCasting()
         y = regionDimensions[1] - y
         brushClearHandler(x, y)
-    } else if (event.key == 'r' && state.brushSelection) {
+    } else if (event.key == 'r' && state.brushSelection.select) {
         let [x, y] = performRayCasting()
         y = regionDimensions[1] - y
-        brushAnnotationHandler('r', 'red', x, y)
-    } else if (event.key == 't' && state.brushSelection) {
+        brushAnnotationHandler('r', x, y)
+    } else if (event.key == 't' && state.brushSelection.select) {
         let [x, y] = performRayCasting()
         y = regionDimensions[1] - y
-        brushAnnotationHandler('t', 'blue', x, y)
+        brushAnnotationHandler('t', x, y)
     } else if (event.key == 'p' && state.polygonSelection) {
         let [x, y] = performRayCasting()
         // y = regionDimensions[1] - y
@@ -864,7 +981,7 @@ const onKeyPress = (event: KeyboardEvent) => {
             connectedSegAnnotationHandler('d', 'red', x, y)
         } else {
             connectedSegAnnotationHandler('d', 'blue', x, y)
-        }   
+        }
     } else if (event.key == 'z') {
         clearAllHandler()
     }
@@ -880,6 +997,10 @@ function startUp() {
     window.addEventListener('mousemove', onMouseMove)
     window.addEventListener('keydown', onKeyPress)
     window.addEventListener('keyup', onKeyUp)
+    document.getElementById('cancel')?.addEventListener('click', () => {
+        ;(document.getElementById('uploadForm') as HTMLFormElement).style.display = 'none'
+        ;(document.getElementById('download') as HTMLElement).style.display = 'block'
+    })
 }
 
 const satelliteLoader = new THREE.TextureLoader()
@@ -892,14 +1013,13 @@ satelliteLoader.load(
             vertexShader: terrainShader._VS,
             fragmentShader: terrainShader._FS,
         })
-        const terrainLoader = new STLLoader();
-        [2, 3].forEach((x) => {
+        const terrainLoader = new STLLoader()
+        ;[2, 3].forEach((x) => {
             terrainLoader.load(
                 `stl/${x}Dregion${region}.stl`,
                 function (geometry) {
-                    geometry.computeBoundingBox()
-                    geometry.computeVertexNormals()
-
+                    // geometry.computeBoundingBox()
+                    // geometry.computeVertexNormals()
                     mesh = new THREE.Mesh(geometry, meshMaterial)
                     mesh.receiveShadow = true
                     mesh.castShadow = true
@@ -946,6 +1066,7 @@ function animate() {
     if (!Developer || overRideControl) {
         controls.update()
     }
+    TWEEN.update()
     // let position = new THREE.Vector3()
     // camera.getWorldPosition(position)
     render()
@@ -976,4 +1097,17 @@ function getCameraLastStage() {
 startState()
 animate()
 
-export { canvas, startUp, controls, mesh, pointer }
+export {
+    canvas,
+    startUp,
+    controls,
+    mesh,
+    pointer,
+    renderer,
+    camera,
+    TWEEN,
+    raycaster,
+    scene,
+    params,
+    uniforms,
+}

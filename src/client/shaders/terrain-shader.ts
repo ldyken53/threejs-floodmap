@@ -39,6 +39,8 @@ uniform int persShow;
 uniform float hoverValue;
 uniform float segsMax;
 uniform int guide;
+uniform bool flood;
+uniform bool dry;
 uniform int z;
 uniform vec2 dimensions;
 
@@ -57,8 +59,12 @@ void main(){
       float segID = _segID.x*1000.0 + _segID.y*100.0 + _segID.z*10.0 + _segID.w*1.0;
       if(guide > 0){
         if(abs(segID - hoverValue) < 0.1){
-          //  color = 0.3 * color + 0.7 * texture(colormap, vec2(segID / segsMax, 0)).rgb;
-          color = 0.7 * color + 0.3 * vec3(1, 0, 0);
+          if(flood){
+            color = 0.5*color + 0.5*vec3(1, 0, 0);
+          }
+          if(dry){
+            color = 0.5*color + 0.5*vec3(0, 0, 1.0);
+          }
         }
       }
       else{

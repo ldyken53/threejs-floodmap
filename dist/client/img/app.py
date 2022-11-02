@@ -1,4 +1,8 @@
+# from crypt import methods
 from flask import jsonify, Flask, render_template, request, url_for
+from werkzeug.utils import secure_filename
+import os
+
 from vtkmodules.all import (
     vtkTIFFReader,
 )
@@ -14,9 +18,16 @@ from topologytoolkit import (
     ttkScalarFieldSmoother
 )
 
+
 app = Flask(__name__)
+app.config["UPLOAD_FOLDER"] = "static/files"
+
+APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+target = os.path.join(APP_ROOT, app.config["UPLOAD_FOLDER"])
+
 pread = vtkTIFFReader()
 pread.SetFileName("./elevation1.tiff")
+
 
 # extractComponent = vtkImageExtractComponents()
 # extractComponent.SetInputConnection(pread.GetOutputPort())
@@ -61,5 +72,15 @@ def test():
     payload.headers.add('Access-Control-Allow-Origin', '*')
     return payload
 
+@app.route("/stateUpload", methods=[ "POST"])
+def stateUpload():
+    # _data = request.form.to_dict(flat=False)
+    file = request.files.get("file")
+    fileName = secure_filename(file.filename)
+    destination = "/".join([target, fileName])
+    file.save(destination)
+    resp = jsonify(success=True)
+    return resp
+    
 if __name__ == '__main__':
    app.run()
