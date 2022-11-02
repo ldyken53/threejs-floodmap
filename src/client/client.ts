@@ -55,8 +55,8 @@ if (Developer) {
         BFS_Down: (x: number, y: number) => BFSHandler(x, y),
         BFS_Hill: (x: number, y: number) => BFS2Handler(x, y),
         brushClear: (x: number, y: number) => brushClearHandler(x, y),
-        brushAnnotationred: (x: number, y: number) => brushAnnotationHandler('r', 'red', x, y),
-        brushAnnotationblue: (x: number, y: number) => brushAnnotationHandler('t', 'blue', x, y),
+        // brushAnnotationred: (x: number, y: number) => brushAnnotationHandler('r', 'red', x, y),
+        brushAnnotation: (x: number, y: number) => brushAnnotationHandler('t', x, y),
         polygonSelector: (x: number, y: number) => polygonSelectionHandler(x, y),
         polygonFill: (x: number, y: number) => polygonFillHandler(),
         polygonFill2: (x: number, y: number) => polygonFill2Handler(),
@@ -257,7 +257,7 @@ var params = {
     blur: 0,
     dimension: true,
     annotation: true,
-    brushSize: 5,
+    brushSize: 30,
     pers: 0.06,
     persShow: false,
     guide: 0,
@@ -679,13 +679,13 @@ function brushClearHandler(x: number, y: number) {
     logMyState('e', 'brushClear', camera, pointer, x, y, params.brushSize)
 }
 
-function brushAnnotationHandler(key: string, color: string, x: number, y: number) {
-    if (!color) {
-        console.error('no annotation without color, send color !!')
-        return
+function brushAnnotationHandler(key: string, x: number, y: number) {
+    context!.fillStyle = 'red'
+    let color = 'red'
+    if (params.dry) {
+        context!.fillStyle = 'blue'
+        color = 'blue'
     }
-
-    context!.fillStyle = color
     context!.fillRect(
         x - Math.floor(params.brushSize / 2),
         y - Math.floor(params.brushSize / 2),
@@ -950,14 +950,14 @@ const onKeyPress = (event: KeyboardEvent) => {
         let [x, y] = performRayCasting()
         y = regionDimensions[1] - y
         brushClearHandler(x, y)
-    } else if (event.key == 'r' && state.brushSelection.select && params.flood) {
+    } else if (event.key == 'r' && state.brushSelection.select) {
         let [x, y] = performRayCasting()
         y = regionDimensions[1] - y
-        brushAnnotationHandler('r', 'red', x, y)
-    } else if (event.key == 't' && state.brushSelection.select && params.dry) {
+        brushAnnotationHandler('r', x, y)
+    } else if (event.key == 't' && state.brushSelection.select) {
         let [x, y] = performRayCasting()
         y = regionDimensions[1] - y
-        brushAnnotationHandler('t', 'blue', x, y)
+        brushAnnotationHandler('t', x, y)
     } else if (event.key == 'p' && state.polygonSelection) {
         let [x, y] = performRayCasting()
         // y = regionDimensions[1] - y
@@ -1020,7 +1020,6 @@ satelliteLoader.load(
                 function (geometry) {
                     // geometry.computeBoundingBox()
                     // geometry.computeVertexNormals()
-
                     mesh = new THREE.Mesh(geometry, meshMaterial)
                     mesh.receiveShadow = true
                     mesh.castShadow = true

@@ -225,7 +225,6 @@ function doubleClickHandler(event: MouseEvent) {
             })
             .start()
 
-        console.log('point selection', point)
         new TWEEN.Tween(camera.position)
             .to(
                 {
