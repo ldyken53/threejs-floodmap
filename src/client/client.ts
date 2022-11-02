@@ -55,9 +55,10 @@ if (Developer) {
         BFS_Down: (x: number, y: number) => BFSHandler(x, y),
         BFS_Hill: (x: number, y: number) => BFS2Handler(x, y),
         brushClear: (x: number, y: number) => brushClearHandler(x, y),
-        // brushAnnotationred: (x: number, y: number) => brushAnnotationHandler('r', 'red', x, y),
-        brushAnnotation: (x: number, y: number) => brushAnnotationHandler('t', x, y),
-        polygonSelector: (x: number, y: number) => polygonSelectionHandler(x, y),
+        brushAnnotationred: (x: number, y: number) => brushAnnotationHandler('r', 'red', x, y),
+        brushAnnotationblue: (x: number, y: number) => brushAnnotationHandler('r', 'blue', x, y),
+        polygonSelectorred: (x: number, y: number) => polygonSelectionHandler(x, y, 'red'),
+        polygonSelectorblue: (x: number, y: number) => polygonSelectionHandler(x, y, 'blue'),
         polygonFill: (x: number, y: number) => polygonFillHandler(),
         polygonFill2: (x: number, y: number) => polygonFill2Handler(),
         segmentationred: (x: number, y: number) => segAnnotationHandler('s', 'red', x, y),
@@ -679,13 +680,8 @@ function brushClearHandler(x: number, y: number) {
     logMyState('e', 'brushClear', camera, pointer, x, y, params.brushSize)
 }
 
-function brushAnnotationHandler(key: string, x: number, y: number) {
-    context!.fillStyle = 'red'
-    let color = 'red'
-    if (params.dry) {
-        context!.fillStyle = 'blue'
-        color = 'blue'
-    }
+function brushAnnotationHandler(key: string, color: string, x: number, y: number) {
+    context!.fillStyle = color
     context!.fillRect(
         x - Math.floor(params.brushSize / 2),
         y - Math.floor(params.brushSize / 2),
@@ -698,12 +694,12 @@ function brushAnnotationHandler(key: string, x: number, y: number) {
     logMyState(key, 'brushAnnotation' + color, camera, pointer, x, y, params.brushSize)
 }
 
-function polygonSelectionHandler(x: number, y: number) {
+function polygonSelectionHandler(x: number, y: number, color: string) {
     console.log('t')
     polyPoints.push(x, y)
-    context!.fillStyle = 'red'
+    context!.fillStyle = color
     context!.fillRect(x - 2, regionDimensions[1] - 1 - y - 2, 4, 4)
-    logMyState('p', 'polygonSelector', camera, pointer, x, y, params.brushSize)
+    logMyState('p', 'polygonSelector' + color, camera, pointer, x, y, params.brushSize)
     sessionData.annotatedPixelCount += 16 //follow this with the line selection to minimize the double counting
     annotationTexture.needsUpdate = true
 }
@@ -953,15 +949,19 @@ const onKeyPress = (event: KeyboardEvent) => {
     } else if (event.key == 'r' && state.brushSelection.select) {
         let [x, y] = performRayCasting()
         y = regionDimensions[1] - y
-        brushAnnotationHandler('r', x, y)
-    } else if (event.key == 't' && state.brushSelection.select) {
-        let [x, y] = performRayCasting()
-        y = regionDimensions[1] - y
-        brushAnnotationHandler('t', x, y)
+        if (params.flood) {
+            brushAnnotationHandler('r', 'red', x, y)
+        } else {
+            brushAnnotationHandler('r', 'blue', x, y)
+        }
     } else if (event.key == 'p' && state.polygonSelection) {
         let [x, y] = performRayCasting()
         // y = regionDimensions[1] - y
-        polygonSelectionHandler(x, y)
+        if (params.flood) {
+            polygonSelectionHandler(x, y, 'red')
+        } else {
+            polygonSelectionHandler(x, y, 'blue')
+        }
     } else if (event.key == 'o' && state.polygonSelection) {
         if (params.flood) {
             polygonFillHandler()
