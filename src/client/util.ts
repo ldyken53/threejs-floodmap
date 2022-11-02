@@ -205,9 +205,9 @@ function getLocalCordinate(_cordiante: THREE.Vector3) {
 function doubleClickHandler(event: MouseEvent) {
     event.preventDefault()
     let ndcX = (event.clientX / renderer.domElement.clientWidth) * 2 - 1
-    let ndcY = (event.clientX / renderer.domElement.clientWidth) * 2 - 1
+    let ndcY = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1
     raycaster.setFromCamera({ x: ndcX, y: ndcY }, camera)
-    const intersection = raycaster.intersectObjects(scene.children, false)
+    const intersection = raycaster.intersectObjects(scene.children, true)
     if (intersection.length > 0) {
         const point = intersection[0].point //this is not local cordinate point rather world cordinate
         new TWEEN.Tween(controls.target)
@@ -225,14 +225,13 @@ function doubleClickHandler(event: MouseEvent) {
             })
             .start()
 
-        console.log('camera location', camera.position)
         console.log('point selection', point)
         new TWEEN.Tween(camera.position)
             .to(
                 {
                     x: point.x,
-                    y: 100 + point.y,
-                    z: point.z + 500,
+                    y: point.y,
+                    z: point.z + 1000,
                 },
                 1000
             )
@@ -302,7 +301,7 @@ function init() {
     document.getElementById('download')?.addEventListener('click', downloadSession)
     document.getElementById('exploration')?.addEventListener('click', hideModal)
     toggleAnnoation()
-    // window.addEventListener('dblclick', doubleClickHandler, true)
+    renderer.domElement.addEventListener('dblclick', doubleClickHandler, true)
 }
 
 function initVis() {
