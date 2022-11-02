@@ -18,7 +18,8 @@ button,
 div {
     font-family: 'Roboto', sans-serif !important;
 }
-button {
+
+.button_red {
     padding: 10px 10px;
     width: 120px;
     position: absolute;
@@ -30,7 +31,7 @@ button {
     cursor: pointer;
     /* margin: 0 10px; */
 
-    /* position: absolute; */
+    /* position: absolute;*/
 }
 
 #ui-menu {
@@ -147,4 +148,39 @@ input[type='submit'] {
 
 #upload-message {
     color: cadetblue;
+}
+
+/* dry/wet toggle button css */
+
+.btn {
+    background-color: #4d4f51;
+    border: navajowhite;
+    color: rgb(182, 182, 182);
+    cursor: pointer;
+}
+.btn-group-toggle {
+    border-radius: 8px;
+    border: 1px solid #212529;
+}
+.btn-group-toggle .btn {
+    /* margin: 3px 8px 3px 3px;
+    border-radius: 8px !important; */
+    position: relative !important;
+    width: auto !important;
+    font-size: inherit !important;
+    padding: 10px;
+}
+.btn-group-toggle .btn.active {
+    background-color: #ffff;
+    color: black;
+    font-weight: bold;
+    transition: background-color 1000ms ease-in-out;
+}
+.btn-group-toggle .btn:last-of-type {
+    margin-right: 3px !important;
+}
+
+.customList {
+    border-left: 2px solid wheat;
+    height: 37px !important;
 }

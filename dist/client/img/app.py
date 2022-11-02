@@ -26,7 +26,7 @@ APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 target = os.path.join(APP_ROOT, app.config["UPLOAD_FOLDER"])
 
 pread = vtkTIFFReader()
-pread.SetFileName("./elevation.tiff")
+pread.SetFileName("./elevation1.tiff")
 
 
 # extractComponent = vtkImageExtractComponents()
@@ -59,8 +59,8 @@ tree.SetWithSegmentation(1)
 @app.route('/test', methods=['GET'])
 def test():
     response = {}
-
-    ranges = [0.05]
+    # ranges = [0.02, 0.04, 0.06, 0.08, 0.1]
+    ranges = [0.02]
     for i in ranges:
         simplify.SetPersistenceThreshold(i)
         simplify.Update()

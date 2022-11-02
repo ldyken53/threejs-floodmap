@@ -8,29 +8,16 @@
             href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
             rel="stylesheet"
         />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/css/bootstrap.min.css">
 
-        <canvas
-            hidden
-            width="4104"
-            height="1856"
-            src="img/satelliteblur0.png"
-            id="streamCanvas"
-        ></canvas>
-        <canvas
-            hidden
-            width="4104"
-            height="1856"
-            src="img/satelliteblur0.png"
-            id="elevateCanvas"
-        ></canvas>
     </head>
 
     <body>
         <div id="loader"></div>
         <div id="ui-menu">
-            <button class="session-terminal" id="download">DOWNLOAD</button>
-            <button class="session-terminal" id="end">FINISH</button>
-            <button class="session-terminal" id="start">START</button>
+            <button class="session-terminal button_red" id="download">DOWNLOAD</button>
+            <button class="session-terminal button_red" id="end">FINISH</button>
+            <button class="session-terminal button_red" id="start">START</button>
         </div>
         <div id="uploadForm" >
             <h3 id="upload-message"></h3>
@@ -55,7 +42,7 @@
                     submit
                     <input type="submit" value="Upload !" />
                 </label>
-                <button id="cancel">Cancel</button>
+                <button id="cancel" class="button_red">Cancel</button>
             </div>
             </p>
         </form>
@@ -78,19 +65,19 @@
                 />
                 <small></small>
                 <ul>
-                    <li>Press <b>Escape</b> to reset the camera</li>
-                    <li>Press <b>e</b> erase with brush</li>
-                    <li>Press <b>r</b> to annotate by brush in red color</li>
-                    <li>Press <b>t</b> to annotate by brush in blue color</li>
-                    <li>Press <b>f</b> to run BFS from current point for flood</li>
+                    <li>Use right click to pan and left click to rotate the camera.</li> 
+                    <li>Select whether you are labeling flooded or dry areas by the checkboxes on the right.</li> 
+                    <li>Press <b>f</b> to run point BFS from current point</li>
                     <li>Press <b>p</b> to select points for polygon selection</li>
-                    <li>Press <b>l</b> to annotate with BFS to polygon selected by "p"</li>
-                    <li>Press <b>n</b> to annotate with Contour tree generated Segmentation</li>
+                    <li>Press <b>o</b> to annotate with BFS on the selected polygon</li>
+                    <li>Press <b>g</b> to highlight the full segmentation under current point</li>
+                    <li>Press <b>s</b> to annotate the full segmentation under current point</li>
+                    <li>Press <b>d</b> to annotate the connected segmentation under current point</li>
                     <li>Press <b>z</b> to undo the most recent annotation</li>
-                    <li>Press <b>M</b> to bring this menu back</li>
+                    <li>Press <b>m</b> to bring this menu back</li>
                     <li></li>
                 </ul>
-                <button id="exploration">Explore !!!</button>
+                <button id="exploration" class="button_red">Explore !!!</button>
             </div>
         </div>
         <script type="module" src="bundle.js"></script>
