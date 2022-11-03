@@ -32,7 +32,7 @@ interface sessionDataType {
     annotatedPixelCount: number
     numberofClick: number
     numberofUndo: number
-    numberofReset: number
+    numberofRedo: number
     metaState: Object
 }
 
@@ -93,7 +93,7 @@ const sessionData: sessionDataType = {
     annotatedPixelCount: 0,
     numberofClick: 0,
     numberofUndo: 0,
-    numberofReset: 0,
+    numberofRedo: 0,
     metaState: metaState
 }
 

@@ -582,6 +582,7 @@ function hoverHandler() {
 
 function BFSHandler(x: number, y: number, flood: boolean, clear: boolean) {
     logMyState('f', 'BFS', flood, clear, camera, pointer, x, y)
+    sessionData.numberofClick++
     visited = new Map()
     var type = "BFS_Hill"
     var color = "blue"
@@ -596,6 +597,7 @@ function BFSHandler(x: number, y: number, flood: boolean, clear: boolean) {
 }
 
 function brushHandler(key: string, x: number, y: number, flood: boolean, clear: boolean) {
+    sessionData.numberofClick++
     context!.fillStyle = "blue"
     if (flood) {
         context!.fillStyle = "red"    
@@ -623,6 +625,7 @@ function brushHandler(key: string, x: number, y: number, flood: boolean, clear: 
 }
 
 function polygonSelectionHandler(x: number, y: number, flood: boolean, clear: boolean) {
+    sessionData.numberofClick++
     context!.fillStyle = "blue"
     if (flood) {
         context!.fillStyle = "red"
@@ -642,6 +645,7 @@ function polygonSelectionHandler(x: number, y: number, flood: boolean, clear: bo
 }
 
 function polygonFillHandler(flood : boolean, clear : boolean, linePoints?: Array<number>) {
+    sessionData.numberofClick++
     if (linePoints) {
         polyPoints = linePoints
     }
@@ -669,7 +673,6 @@ function polygonFillHandler(flood : boolean, clear : boolean, linePoints?: Array
         context!.fillStyle = 'rgba(0,0,0,0)'        
     }
     context!.fill()
-    sessionData.numberofClick++
     var linePixels: Array<number> = []
     for (var i = 0; i < polyPoints.length; i += 2) {
         var x0 = polyPoints[i]
@@ -745,6 +748,7 @@ function polygonFillHandler(flood : boolean, clear : boolean, linePoints?: Array
 }
 
 function segAnnotationHandler(key: string, x: number, y: number, flood: boolean, clear: boolean) {
+    sessionData.numberofClick++
     var color = 'blue'
     if (flood) {
         color = 'red'
@@ -758,6 +762,7 @@ function segAnnotationHandler(key: string, x: number, y: number, flood: boolean,
 }
 
 function connectedSegAnnotationHandler(key: string, x: number, y: number, flood: boolean, clear: boolean) {
+    sessionData.numberofClick++
     logMyState(key, 'connectedSegmentation', flood, clear, camera, pointer, x, y)
     connectedSegSelect(x, y, flood, clear)
 }
@@ -767,6 +772,7 @@ const onKeyPress = (event: KeyboardEvent) => {
         var eve;
         for (var i = gameState.length - 1; i > 0; i--) {
             if (!(gameState[i]['mouseEvent'].undone) && !(gameState[i]['mouseEvent'].clear)) {
+                sessionData.numberofUndo++
                 gameState[i]['mouseEvent'].undone = true
                 eve = gameState[i]['mouseEvent']
                 break
@@ -779,6 +785,7 @@ const onKeyPress = (event: KeyboardEvent) => {
         var eve;
         for (var i = gameState.length - 1; i > 0; i--) {
             if (!(gameState[i]['mouseEvent'].redone) && gameState[i]['mouseEvent'].clear) {
+                sessionData.numberofRedo++
                 gameState[i]['mouseEvent'].redone = true
                 eve = gameState[i]['mouseEvent']
                 break
