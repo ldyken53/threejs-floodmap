@@ -45,6 +45,8 @@ interface gameEventType {
     x?: number
     y?: number
     linePoints?: Array<number>
+    undone?: boolean
+    redone?: boolean
     aspectRatio: number
     cameraPosition: THREE.Vector3
     targetPosition: THREE.Vector3

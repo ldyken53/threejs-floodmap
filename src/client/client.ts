@@ -51,13 +51,12 @@ var meshes: { [key: string]: Mesh } = {}
 let _readstateFile: () => {}
 let eventFunction : {[key: string]: any } = {
     BFS: (x: number, y: number, flood: boolean, clear: boolean) => BFSHandler(x, y, flood, clear),
-    brush: (x: number, y: number, flood: boolean, clear: boolean) => brushHandler('r', x, y, flood, clear),
+    brush: (x: number, y: number, flood: boolean, clear: boolean) => brushHandler('t', x, y, flood, clear),
     polygonSelector: (x: number, y: number, flood: boolean, clear: boolean) => polygonSelectionHandler(x, y, flood, clear),
     polygonFill: (x: number, y: number, flood: boolean, clear: boolean, linePoints: Array<number>) => polygonFillHandler(flood, clear, linePoints),
     segmentation: (x: number, y: number, flood: boolean, clear: boolean) => segAnnotationHandler('s', x, y, flood, clear),
     connectedSegmentation: (x: number, y: number, flood: boolean, clear: boolean) =>
         connectedSegAnnotationHandler('d', x, y, flood, clear),
-    resetAll: (x: number, y: number) => clearAllHandler(),
 }
 if (Developer) {
     ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'none'
@@ -373,19 +372,13 @@ viewFolder
 viewFolder.open()
 // meshFolder.open()
 
-var recentFills: Array<Array<number>> = []
-var recentPolys: Array<Array<number>> = []
-
 function segSelect(x: number, y: number, color: string) {
     context!.fillStyle = color
-    recentPolys.push([])
-    recentFills.push([])
     var value = persDatas[Math.round(params.pers * 100) / 100][x + y * regionDimensions[0]]
     var pixels = segsToPixels2[Math.round(params.pers * 100) / 100][value]
     for (var i = 0; i < pixels.length; i++) {
         var x = pixels[i] % regionDimensions[0]
         var y = regionDimensions[1] - 1 - Math.floor(pixels[i] / regionDimensions[0])
-        recentFills[recentFills.length - 1].push(x, y)
         if (color == 'clear') {
             context!.clearRect(x, y, 1, 1)
             sessionData.annotatedPixelCount--
@@ -405,8 +398,6 @@ function connectedSegSelect(x: number, y: number, flood: boolean, clear: boolean
     if (clear) {
         color = "clear"
     }
-    recentFills.push([])
-    recentPolys.push([])
     visited = new Map()
     BFS(x, y, 'BFS_Segment', color)
 }
@@ -504,7 +495,6 @@ function BFS(x: number, y: number, direction: string, color: string) {
             sessionData.annotatedPixelCount++
             context!.fillRect(fillX, fillY, 1, 1)
         }
-        recentFills[recentFills.length - 1].push(fillX, fillY)
         var value = valueFunction[_direction](x, y)
         if (searchFunction[_direction].E(x, y, value)) {
             if (!visited.get(`${x + 1}, ${y}`)) {
@@ -605,8 +595,6 @@ function hoverHandler() {
 function BFSHandler(x: number, y: number, flood: boolean, clear: boolean) {
     logMyState('f', 'BFS', flood, clear, camera, pointer, x, y)
     visited = new Map()
-    recentFills.push([])
-    recentPolys.push([])
     var type = "BFS_Hill"
     var color = "blue"
     if (flood) {
@@ -678,7 +666,6 @@ function polygonFillHandler(flood : boolean, clear : boolean, linePoints?: Array
     context!.fillStyle = color
     context!.beginPath()
     logMyState('o', 'polygonFill', flood, clear, camera, undefined, undefined, undefined, undefined, polyPoints)
-    recentPolys.push(polyPoints)
     context!.moveTo(polyPoints[0], regionDimensions[1] - 1 - polyPoints[1])
     for (var i = 2; i < polyPoints.length; i += 2) {
         context!.lineTo(polyPoints[i], regionDimensions[1] - 1 - polyPoints[i + 1])
@@ -761,7 +748,6 @@ function polygonFillHandler(flood : boolean, clear : boolean, linePoints?: Array
             }
         }
     }
-    recentFills.push([])
     visited = new Map()
     for (var i = 0; i < linePixels.length; i += 2) {
         BFS(linePixels[i], linePixels[i + 1], type, color)
@@ -788,30 +774,6 @@ function connectedSegAnnotationHandler(key: string, x: number, y: number, flood:
     connectedSegSelect(x, y, flood, clear)
 }
 
-function clearAllHandler() {
-    var lastPixels = recentFills.pop()!
-    for (var i = 0; i < lastPixels.length; i += 2) {
-        context!.clearRect(lastPixels[i], lastPixels[i + 1], 1, 1)
-    }
-    var lastPoly = recentPolys.pop()!
-    if (lastPoly[0]) {
-        context!.moveTo(lastPoly[0], regionDimensions[1] - 1 - lastPoly[1])
-        for (var i = 2; i < lastPoly.length; i += 2) {
-            context!.lineTo(lastPoly[i], regionDimensions[1] - 1 - lastPoly[i + 1])
-        }
-        context!.closePath()
-        context!.globalCompositeOperation = 'destination-out'
-        context!.fillStyle = 'blue'
-        context!.fill()
-        // second pass, the actual painting, with the desired color
-        context!.globalCompositeOperation = 'source-over'
-        context!.fillStyle = 'rgba(0,0,0,0)'
-        context!.fill()
-    }
-    annotationTexture.needsUpdate = true
-    logMyState('z', 'resetAll', true, false, camera, undefined, undefined, undefined)
-}
-
 const onKeyPress = (event: KeyboardEvent) => {
     console.log(gameState)
     if (event.repeat) {
@@ -828,10 +790,10 @@ const onKeyPress = (event: KeyboardEvent) => {
     } else if (event.key == 'f' && state.BFS) {
         let [x, y] = performRayCasting()
         BFSHandler(x, y, params.flood, params.clear)
-    } else if (event.key == 'r' && state.brushSelection) {
+    } else if (event.key == 't' && state.brushSelection) {
         let [x, y] = performRayCasting()
         y = regionDimensions[1] - y
-        brushHandler('r', x, y, params.flood, params.clear)
+        brushHandler('t', x, y, params.flood, params.clear)
     } else if (event.key == 'p' && state.polygonSelection) {
         let [x, y] = performRayCasting()
         // y = regionDimensions[1] - y
@@ -846,9 +808,29 @@ const onKeyPress = (event: KeyboardEvent) => {
         connectedSegAnnotationHandler('d', x, y, params.flood, params.clear)
 
     } else if (event.key == 'z') {
-        // clearAllHandler()
-        var eve = gameState[gameState.length - 1]['mouseEvent']
-        eventFunction[eve.label](eve.x, eve.y, eve.flood, !eve.clear, eve.linePoints)
+        var eve;
+        for (var i = gameState.length - 1; i > 0; i--) {
+            if (!(gameState[i]['mouseEvent'].undone) && !(gameState[i]['mouseEvent'].clear)) {
+                gameState[i]['mouseEvent'].undone = true
+                eve = gameState[i]['mouseEvent']
+                break
+            }
+        }
+        if (eve) {
+            eventFunction[eve.label](eve.x, eve.y, eve.flood, !eve.clear, eve.linePoints)
+        }
+    } else if (event.key == 'r') {
+        var eve;
+        for (var i = gameState.length - 1; i > 0; i--) {
+            if (!(gameState[i]['mouseEvent'].redone) && gameState[i]['mouseEvent'].clear) {
+                gameState[i]['mouseEvent'].redone = true
+                eve = gameState[i]['mouseEvent']
+                break
+            }
+        }
+        if (eve) {
+            eventFunction[eve.label](eve.x, eve.y, eve.flood, !eve.clear, eve.linePoints)
+        }
     }
 }
 const onKeyUp = (event: KeyboardEvent) => {
