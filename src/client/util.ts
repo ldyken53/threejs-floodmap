@@ -294,7 +294,7 @@ function toggleAnnoation() {
         button4 = document.createElement('button')
         button4.classList.add('ci', 'btn')
         button4.setAttribute('data-myid', 'clear')
-        button4.innerHTML = 'CLEAR'
+        button4.innerHTML = 'UNDO'
         div2.appendChild(button3)
         div2.appendChild(button4)
         li2.appendChild(div2)

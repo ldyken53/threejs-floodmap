@@ -556,14 +556,13 @@ function rfpart(x: number) {
     return 1 - fpart(x)
 }
 
-var guide = false
 const pointer = new THREE.Vector2()
 const raycaster = new THREE.Raycaster()
+var skip = true
 const onMouseMove = (event: MouseEvent) => {
-    // calculate pointer position in normalized device coordinates
-    // (-1 to +1) for both components
     pointer.x = (event.clientX / window.innerWidth) * 2 - 1
     pointer.y = -(event.clientY / window.innerHeight) * 2 + 1
+    skip = false
 }
 var polyPoints: Array<number> = []
 const state = {
@@ -586,7 +585,6 @@ function performRayCasting() {
 function hoverHandler() {
     let [x, y] = performRayCasting()
     let localId = persDatas[Math.round(params.pers * 100) / 100][x + y * regionDimensions[0]]
-    console.log(localId)
     uniforms.hoverValue.value = localId
     params.guide = 1
     uniforms.guide.value = params.guide
@@ -775,39 +773,7 @@ function connectedSegAnnotationHandler(key: string, x: number, y: number, flood:
 }
 
 const onKeyPress = (event: KeyboardEvent) => {
-    console.log(gameState)
-    if (event.repeat) {
-        return
-    }
-    // if (event.key == 'Escape') {
-    //     camera.position.set(2000, 1000, 1000)
-    //     controls.target = new THREE.Vector3(2000, 1000, -2000)
-    // } else
-    if (event.key == 'm') {
-        ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
-    } else if (event.key == 'g') {
-        hoverHandler()
-    } else if (event.key == 'f' && state.BFS) {
-        let [x, y] = performRayCasting()
-        BFSHandler(x, y, params.flood, params.clear)
-    } else if (event.key == 't' && state.brushSelection) {
-        let [x, y] = performRayCasting()
-        y = regionDimensions[1] - y
-        brushHandler('t', x, y, params.flood, params.clear)
-    } else if (event.key == 'p' && state.polygonSelection) {
-        let [x, y] = performRayCasting()
-        // y = regionDimensions[1] - y
-        polygonSelectionHandler(x, y, params.flood, params.clear)
-    } else if (event.key == 'o' && state.polygonSelection) {
-        polygonFillHandler(params.flood, params.clear)
-    } else if (event.key == 's' && state.segEnabled) {
-        let [x, y] = performRayCasting()
-        segAnnotationHandler('s', x, y, params.flood, params.clear)
-    } else if (event.key == 'd' && state.segEnabled) {
-        let [x, y] = performRayCasting()
-        connectedSegAnnotationHandler('d', x, y, params.flood, params.clear)
-
-    } else if (event.key == 'z') {
+    if (event.key == 'z') {
         var eve;
         for (var i = gameState.length - 1; i > 0; i--) {
             if (!(gameState[i]['mouseEvent'].undone) && !(gameState[i]['mouseEvent'].clear)) {
@@ -832,6 +798,37 @@ const onKeyPress = (event: KeyboardEvent) => {
             eventFunction[eve.label](eve.x, eve.y, eve.flood, !eve.clear, eve.linePoints)
         }
     }
+    
+    if (event.repeat && skip) {
+        return
+    }
+    skip = true
+
+    if (event.key == 'm') {
+        ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
+    } else if (event.key == 'g') {
+        hoverHandler()
+    } else if (event.key == 'f' && state.BFS) {
+        let [x, y] = performRayCasting()
+        BFSHandler(x, y, params.flood, params.clear)
+    } else if (event.key == 't' && state.brushSelection) {
+        let [x, y] = performRayCasting()
+        y = regionDimensions[1] - y
+        brushHandler('t', x, y, params.flood, params.clear)
+    } else if (event.key == 'p' && state.polygonSelection) {
+        let [x, y] = performRayCasting()
+        // y = regionDimensions[1] - y
+        polygonSelectionHandler(x, y, params.flood, params.clear)
+    } else if (event.key == 'o' && state.polygonSelection) {
+        polygonFillHandler(params.flood, params.clear)
+    } else if (event.key == 's' && state.segEnabled) {
+        let [x, y] = performRayCasting()
+        segAnnotationHandler('s', x, y, params.flood, params.clear)
+    } else if (event.key == 'd' && state.segEnabled) {
+        let [x, y] = performRayCasting()
+        connectedSegAnnotationHandler('d', x, y, params.flood, params.clear)
+
+    } 
 }
 const onKeyUp = (event: KeyboardEvent) => {
     if (event.key == 'g') {
