@@ -7,6 +7,7 @@ import { GUI } from 'dat.gui'
 import { Mesh } from 'three'
 import axios from 'axios'
 import {
+    metaState,
     init,
     sessionData,
     initVis,
@@ -23,22 +24,10 @@ import * as tiff from 'tiff'
 let Developer = false
 let overRideControl = false
 var data: Float32Array
-if (window.location.hash) {
-    var region = window.location.hash[window.location.hash.search('region') + 7]
-    console.log(region)
-} else {
-    var region = '1'
-}
-const regionDimensions = terrainDimensions[region]
+
+const regionDimensions = terrainDimensions[metaState.region]
 let _fetchData: any
 let mesh: THREE.Mesh
-fetch(`img/elevation${region}.tiff`).then((res) =>
-    res.arrayBuffer().then(function (arr) {
-        var tif = tiff.decode(arr)
-        data = tif[0].data as Float32Array
-    })
-)
-window.onload = init
 
 const scene = new THREE.Scene()
 // const blurs = [0, 1, 2];
@@ -92,6 +81,14 @@ if (Developer) {
     }
 }
 
+fetch(`img/elevation${metaState.region}.tiff`).then((res) =>
+    res.arrayBuffer().then(function (arr) {
+        var tif = tiff.decode(arr)
+        data = tif[0].data as Float32Array
+    })
+)
+window.onload = init
+
 const persLoader = new THREE.TextureLoader()
 var segsToPixels2: {
     [key: number]: {
@@ -109,7 +106,7 @@ async function getPersistence() {
     //     .get(`http://localhost:5000/test`)
     console.time('process')
     for (var i = 0; i < pers.length; i++) {
-        await fetch(`img/segmentation_region${region}_pers${pers[i]}`)
+        await fetch(`img/segmentation_region${metaState.region}_pers${pers[i]}`)
             .then((r) => r.arrayBuffer())
             .then((response) => {
                 persDatas[pers[i]] = new Int16Array(response)
@@ -565,13 +562,6 @@ const onMouseMove = (event: MouseEvent) => {
     skip = false
 }
 var polyPoints: Array<number> = []
-const state = {
-    BFS: true,
-    segmentation: true,
-    brushSelection: true,
-    polygonSelection: true,
-    segEnabled: true,
-}
 
 function performRayCasting() {
     raycaster.setFromCamera(pointer, camera)
@@ -806,25 +796,25 @@ const onKeyPress = (event: KeyboardEvent) => {
 
     if (event.key == 'm') {
         ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
-    } else if (event.key == 'g') {
+    } else if (event.key == 'g' && metaState.segEnabled) {
         hoverHandler()
-    } else if (event.key == 'f' && state.BFS) {
+    } else if (event.key == 'f' && metaState.BFS) {
         let [x, y] = performRayCasting()
         BFSHandler(x, y, params.flood, params.clear)
-    } else if (event.key == 't' && state.brushSelection) {
+    } else if (event.key == 't' && metaState.brushSelection) {
         let [x, y] = performRayCasting()
         y = regionDimensions[1] - y
         brushHandler('t', x, y, params.flood, params.clear)
-    } else if (event.key == 'p' && state.polygonSelection) {
+    } else if (event.key == 'p' && metaState.polygonSelection) {
         let [x, y] = performRayCasting()
         // y = regionDimensions[1] - y
         polygonSelectionHandler(x, y, params.flood, params.clear)
-    } else if (event.key == 'o' && state.polygonSelection) {
+    } else if (event.key == 'o' && metaState.polygonSelection) {
         polygonFillHandler(params.flood, params.clear)
-    } else if (event.key == 's' && state.segEnabled) {
+    } else if (event.key == 's' && metaState.segEnabled) {
         let [x, y] = performRayCasting()
         segAnnotationHandler('s', x, y, params.flood, params.clear)
-    } else if (event.key == 'd' && state.segEnabled) {
+    } else if (event.key == 'd' && metaState.segEnabled) {
         let [x, y] = performRayCasting()
         connectedSegAnnotationHandler('d', x, y, params.flood, params.clear)
 
@@ -849,7 +839,7 @@ function startUp() {
 
 const satelliteLoader = new THREE.TextureLoader()
 satelliteLoader.load(
-    `./img/Region_${region}_RGB.png`,
+    `./img/Region_${metaState.region}_RGB.png`,
     function (texture) {
         uniforms.diffuseTexture.value = texture
         const meshMaterial = new THREE.RawShaderMaterial({
@@ -860,7 +850,7 @@ satelliteLoader.load(
         const terrainLoader = new STLLoader()
         ;[2, 3].forEach((x) => {
             terrainLoader.load(
-                `stl/${x}Dregion${region}.stl`,
+                `stl/${x}Dregion${metaState.region}.stl`,
                 function (geometry) {
                     // geometry.computeBoundingBox()
                     // geometry.computeVertexNormals()
@@ -928,7 +918,7 @@ function startState() {
         targetPosition: controls.target.clone(),
         time: new Date(),
         flood: true,
-        clear: false,
+        clear: false
     }
     gameState.push({ start: startStateData })
 }

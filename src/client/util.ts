@@ -33,6 +33,7 @@ interface sessionDataType {
     numberofClick: number
     numberofUndo: number
     numberofReset: number
+    metaState: Object
 }
 
 interface gameEventType {
@@ -57,6 +58,32 @@ interface gameStateType {
     [key: string]: gameEventType
 }
 
+let metaState = {
+    BFS: true,
+    brushSelection: true,
+    polygonSelection: true,
+    segEnabled: true,
+    region: '1',
+}
+if (window.location.hash) {
+    if (window.location.hash.search("region") != -1) {
+        metaState.region = window.location.hash[window.location.hash.search('region') + 7]
+    } 
+    if (window.location.hash.search("BFS") !=-1) {
+        var bfs = window.location.hash[window.location.hash.search('BFS') + 4]
+        if (bfs == '0') {
+            metaState.BFS = false
+            metaState.polygonSelection = false
+        }
+    }
+    if (window.location.hash.search("segmentation") !=-1) {
+        var seg = window.location.hash[window.location.hash.search('segmentation') + 13]
+        if (seg == '0') {
+            metaState.segEnabled = false
+        }
+    }
+} 
+
 const sessionData: sessionDataType = {
     name: 'anonymous',
     sessionStart: null,
@@ -67,6 +94,7 @@ const sessionData: sessionDataType = {
     numberofClick: 0,
     numberofUndo: 0,
     numberofReset: 0,
+    metaState: metaState
 }
 
 // vector.applyMatrix(camera.matrixWorld)
@@ -143,22 +171,13 @@ function logMyState(
 }
 
 function download(filename: string, text: string) {
-    let imageName = 'annotatedImg.png'
-    if (sessionData.name) {
-        imageName = 'annotatedImg_' + sessionData.name + '.png'
-    }
     var element = document.createElement('a')
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text))
     element.setAttribute('download', filename)
     element.style.display = 'none'
     document.body.appendChild(element)
     element.click()
-    var url = canvas.toDataURL()
-    var link = document.createElement('a')
-    link.setAttribute('href', url)
-    link.setAttribute('target', '_blank')
-    link.setAttribute('download', imageName)
-    link.click()
+
 }
 
 function convertToSecMins(millisecond: number) {
@@ -199,6 +218,19 @@ function downloadSession(event: Event) {
     const _data = JSON.stringify(gameState)
     const _fileName = 'session_' + sessionData.name + '.json'
     download(_fileName, _data)
+    const _metadata = JSON.stringify(sessionData)
+    const _metaFileName = 'meta_session_' + sessionData.name + '.json'
+    download(_metaFileName, _metadata)
+    let imageName = 'annotatedImg.png'
+    if (sessionData.name) {
+        imageName = 'annotatedImg_' + sessionData.name + '.png'
+    }
+    var url = canvas.toDataURL()
+    var link = document.createElement('a')
+    link.setAttribute('href', url)
+    link.setAttribute('target', '_blank')
+    link.setAttribute('download', imageName)
+    link.click()
     ;(document.getElementById('uploadForm') as HTMLFormElement).style.display = 'block'
 }
 
@@ -299,7 +331,7 @@ function toggleAnnoation() {
         div2.appendChild(button4)
         li2.appendChild(div2)
         ULelement.prepend(li2)
-        ULelement.prepend(li)
+        ULelement.prepend(li)        
         button3.addEventListener('click', setActiveButton2)
         button4.addEventListener('click', setActiveButton2)
     }
@@ -358,6 +390,7 @@ function initVis() {
 }
 
 export {
+    metaState,
     resetCamera,
     startSession,
     endSession,
