@@ -19,6 +19,7 @@ import {
 
 const pixelCount = 7617024
 let button1: HTMLButtonElement, button2: HTMLButtonElement
+let button3: HTMLButtonElement, button4: HTMLButtonElement
 type ObjectKeyParams = keyof typeof params
 type ObjectKeyUniforms = keyof typeof uniforms
 
@@ -36,6 +37,8 @@ interface sessionDataType {
 
 interface gameEventType {
     label: string
+    flood: boolean
+    clear: boolean
     clickPosition?: THREE.Vector2
     keyPressed?: string
     brushSize?: number
@@ -78,6 +81,8 @@ async function readstateFile() {
 function logMyState(
     key: string,
     event: string,
+    flood: boolean,
+    clear: boolean,
     camera: THREE.PerspectiveCamera,
     pointer?: THREE.Vector2,
     x?: number,
@@ -91,6 +96,8 @@ function logMyState(
     if (brushSize != undefined) {
         stateData = {
             label: tempS,
+            flood: flood,
+            clear: clear,
             clickPosition: pointer,
             keyPressed: key,
             x: x,
@@ -105,6 +112,8 @@ function logMyState(
     if (linePoints != undefined) {
         stateData = {
             label: tempS,
+            flood: flood,
+            clear: clear,
             aspectRatio: camera.aspect,
             keyPressed: key,
             cameraPosition: camera.position.clone(),
@@ -115,6 +124,8 @@ function logMyState(
     } else {
         stateData = {
             label: tempS,
+            flood: flood,
+            clear: clear,
             clickPosition: pointer,
             keyPressed: key,
             x: x,
@@ -264,9 +275,31 @@ function toggleAnnoation() {
         div.appendChild(button1)
         div.appendChild(button2)
         li.appendChild(div)
-        ULelement.prepend(li)
         button1.addEventListener('click', setActiveButton)
         button2.addEventListener('click', setActiveButton)
+        var li2 = document.createElement('li')
+        li2.classList.add('cr', 'customList')
+        let span2 = document.createElement('span')
+        span2.classList.add('property-name')
+        span2.innerHTML = 'Brush Style'
+        li2.appendChild(span2)
+        let div2 = document.createElement('div')
+        div2.classList.add('btn-group', 'btn-group-toggle')
+        button3 = document.createElement('button')
+        button3.classList.add('ci', 'btn', 'active')
+        button3.setAttribute('data-myid', 'fill')
+        button3.innerHTML = 'FILL'
+        button4 = document.createElement('button')
+        button4.classList.add('ci', 'btn')
+        button4.setAttribute('data-myid', 'clear')
+        button4.innerHTML = 'CLEAR'
+        div2.appendChild(button3)
+        div2.appendChild(button4)
+        li2.appendChild(div2)
+        ULelement.prepend(li2)
+        ULelement.prepend(li)
+        button3.addEventListener('click', setActiveButton2)
+        button4.addEventListener('click', setActiveButton2)
     }
 }
 
@@ -292,6 +325,20 @@ function setActiveButton(event: MouseEvent) {
         params['dry'] = true
     }
     updateUniform(['dry', 'flood'])
+}
+
+function setActiveButton2(event: MouseEvent) {
+    event.preventDefault()
+    button3.classList.remove('active')
+    button4.classList.remove('active')
+    ;(event.target as HTMLButtonElement).classList.add('active')
+    type ObjectKeyParams = keyof typeof params
+    let myId = (event.target as HTMLButtonElement).dataset.myid as ObjectKeyParams
+    if (myId == 'clear') {
+        params['clear'] = true
+    } else {
+        params['clear'] = false
+    }
 }
 
 function init() {
