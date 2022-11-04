@@ -193,6 +193,11 @@ let controls = new OrbitControls(camera, renderer.domElement)
 controls.target = new THREE.Vector3(regionDimensions[0] / 2, regionDimensions[1] / 2, -2000)
 controls.dampingFactor = 1.25
 controls.enableDamping = true
+controls.maxPolarAngle = Math.PI / 1.5
+controls.minPolarAngle = 1.2
+controls.minDistance = 1000
+controls.maxAzimuthAngle = 0.8
+controls.minAzimuthAngle = -0.35
 
 var canvas = document.createElement('canvas')
 canvas.width = regionDimensions[0]
