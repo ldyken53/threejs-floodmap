@@ -50,8 +50,9 @@ div {
 } */
 
 #modal-wrapper {
-    position: fixed;
+    position: absolute;
     display: none;
+    overflow: auto;
     /* top: 15%;
     left: 35%; */
     width: 100%;
@@ -78,10 +79,14 @@ div {
 #modal-wrapper ul {
     list-style-type: none;
     text-align: left;
+    /* display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; */
 }
 
 #modal-wrapper ul li {
     padding: 35px 0 0 0;
+    /* min-width: 400px; */
 }
 .modal-body {
     padding: 20px;
