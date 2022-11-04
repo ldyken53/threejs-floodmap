@@ -197,7 +197,7 @@ controls.maxPolarAngle = Math.PI / 1.5
 controls.minPolarAngle = 1.2
 controls.minDistance = 1000
 controls.maxAzimuthAngle = 0.8
-controls.minAzimuthAngle = -0.35
+controls.minAzimuthAngle = -0.65
 
 var canvas = document.createElement('canvas')
 canvas.width = regionDimensions[0]
