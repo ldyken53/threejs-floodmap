@@ -38,12 +38,21 @@ const pers = [0.02, 0.04, 0.06, 0.08, 0.1]
 var meshes: { [key: string]: Mesh } = {}
 
 let _readstateFile: () => {}
-let eventFunction : {[key: string]: any } = {
+let eventFunction: { [key: string]: any } = {
     BFS: (x: number, y: number, flood: boolean, clear: boolean) => BFSHandler(x, y, flood, clear),
-    brush: (x: number, y: number, flood: boolean, clear: boolean) => brushHandler('t', x, y, flood, clear),
-    polygonSelector: (x: number, y: number, flood: boolean, clear: boolean) => polygonSelectionHandler(x, y, flood, clear),
-    polygonFill: (x: number, y: number, flood: boolean, clear: boolean, linePoints: Array<number>) => polygonFillHandler(flood, clear, linePoints),
-    segmentation: (x: number, y: number, flood: boolean, clear: boolean) => segAnnotationHandler('s', x, y, flood, clear),
+    brush: (x: number, y: number, flood: boolean, clear: boolean) =>
+        brushHandler('t', x, y, flood, clear),
+    polygonSelector: (x: number, y: number, flood: boolean, clear: boolean) =>
+        polygonSelectionHandler(x, y, flood, clear),
+    polygonFill: (
+        x: number,
+        y: number,
+        flood: boolean,
+        clear: boolean,
+        linePoints: Array<number>
+    ) => polygonFillHandler(flood, clear, linePoints),
+    segmentation: (x: number, y: number, flood: boolean, clear: boolean) =>
+        segAnnotationHandler('s', x, y, flood, clear),
     connectedSegmentation: (x: number, y: number, flood: boolean, clear: boolean) =>
         connectedSegAnnotationHandler('d', x, y, flood, clear),
 }
@@ -389,12 +398,12 @@ function segSelect(x: number, y: number, color: string) {
 }
 
 function connectedSegSelect(x: number, y: number, flood: boolean, clear: boolean) {
-    var color = "blue"
+    var color = 'blue'
     if (flood) {
-        color = "red"  
+        color = 'red'
     }
     if (clear) {
-        color = "clear"
+        color = 'clear'
     }
     visited = new Map()
     BFS(x, y, 'BFS_Segment', color)
@@ -486,9 +495,9 @@ function BFS(x: number, y: number, direction: string, color: string) {
         y = stack.pop()!
         x = stack.pop()!
         let [fillX, fillY] = fillFunction[_direction](x, y)
-        if (color == "clear") {
+        if (color == 'clear') {
             sessionData.annotatedPixelCount--
-            context!.clearRect(fillX, fillY, 1, 1) 
+            context!.clearRect(fillX, fillY, 1, 1)
         } else {
             sessionData.annotatedPixelCount++
             context!.fillRect(fillX, fillY, 1, 1)
@@ -585,23 +594,23 @@ function BFSHandler(x: number, y: number, flood: boolean, clear: boolean) {
     logMyState('f', 'BFS', flood, clear, camera, pointer, x, y)
     sessionData.numberofClick++
     visited = new Map()
-    var type = "BFS_Hill"
-    var color = "blue"
+    var type = 'BFS_Hill'
+    var color = 'blue'
     if (flood) {
-        type = "BFS_Down"
-        color = "red"
+        type = 'BFS_Down'
+        color = 'red'
     }
     if (clear) {
-        color = "clear"
+        color = 'clear'
     }
     BFS(x, y, type, color)
 }
 
 function brushHandler(key: string, x: number, y: number, flood: boolean, clear: boolean) {
     sessionData.numberofClick++
-    context!.fillStyle = "blue"
+    context!.fillStyle = 'blue'
     if (flood) {
-        context!.fillStyle = "red"    
+        context!.fillStyle = 'red'
     }
     if (clear) {
         context!.clearRect(
@@ -609,7 +618,7 @@ function brushHandler(key: string, x: number, y: number, flood: boolean, clear: 
             y - Math.floor(params.brushSize / 2),
             params.brushSize,
             params.brushSize
-        ) 
+        )
         sessionData.annotatedPixelCount -= params.brushSize * params.brushSize
     } else {
         context!.fillRect(
@@ -627,9 +636,9 @@ function brushHandler(key: string, x: number, y: number, flood: boolean, clear: 
 
 function polygonSelectionHandler(x: number, y: number, flood: boolean, clear: boolean) {
     sessionData.numberofClick++
-    context!.fillStyle = "blue"
+    context!.fillStyle = 'blue'
     if (flood) {
-        context!.fillStyle = "red"
+        context!.fillStyle = 'red'
     }
     if (clear) {
         var cy = polyPoints.pop()!
@@ -645,20 +654,31 @@ function polygonSelectionHandler(x: number, y: number, flood: boolean, clear: bo
     annotationTexture.needsUpdate = true
 }
 
-function polygonFillHandler(flood : boolean, clear : boolean, linePoints?: Array<number>) {
+function polygonFillHandler(flood: boolean, clear: boolean, linePoints?: Array<number>) {
     sessionData.numberofClick++
     if (linePoints) {
         polyPoints = linePoints
     }
-    var type = "BFS_Hill"
-    var color = "blue"
+    var type = 'BFS_Hill'
+    var color = 'blue'
     if (flood) {
-        color = "red"  
-        type = "BFS_Down"  
+        color = 'red'
+        type = 'BFS_Down'
     }
     context!.fillStyle = color
     context!.beginPath()
-    logMyState('o', 'polygonFill', flood, clear, camera, undefined, undefined, undefined, undefined, polyPoints)
+    logMyState(
+        'o',
+        'polygonFill',
+        flood,
+        clear,
+        camera,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        polyPoints
+    )
     context!.moveTo(polyPoints[0], regionDimensions[1] - 1 - polyPoints[1])
     for (var i = 2; i < polyPoints.length; i += 2) {
         context!.lineTo(polyPoints[i], regionDimensions[1] - 1 - polyPoints[i + 1])
@@ -666,12 +686,12 @@ function polygonFillHandler(flood : boolean, clear : boolean, linePoints?: Array
     }
     context!.closePath()
     if (clear) {
-        color = "clear"
+        color = 'clear'
         context!.globalCompositeOperation = 'destination-out'
         context!.fill()
         // second pass, the actual painting, with the desired color
         context!.globalCompositeOperation = 'source-over'
-        context!.fillStyle = 'rgba(0,0,0,0)'        
+        context!.fillStyle = 'rgba(0,0,0,0)'
     }
     context!.fill()
     var linePixels: Array<number> = []
@@ -755,14 +775,20 @@ function segAnnotationHandler(key: string, x: number, y: number, flood: boolean,
         color = 'red'
     }
     if (clear) {
-        color = "clear"
+        color = 'clear'
     }
     context!.fillStyle = color
     logMyState(key, 'segmentation', flood, clear, camera, pointer, x, y)
     segSelect(x, y, color)
 }
 
-function connectedSegAnnotationHandler(key: string, x: number, y: number, flood: boolean, clear: boolean) {
+function connectedSegAnnotationHandler(
+    key: string,
+    x: number,
+    y: number,
+    flood: boolean,
+    clear: boolean
+) {
     sessionData.numberofClick++
     logMyState(key, 'connectedSegmentation', flood, clear, camera, pointer, x, y)
     connectedSegSelect(x, y, flood, clear)
@@ -770,9 +796,9 @@ function connectedSegAnnotationHandler(key: string, x: number, y: number, flood:
 
 const onKeyPress = (event: KeyboardEvent) => {
     if (event.key == 'z') {
-        var eve;
+        var eve
         for (var i = gameState.length - 1; i > 0; i--) {
-            if (!(gameState[i]['mouseEvent'].undone) && !(gameState[i]['mouseEvent'].clear)) {
+            if (!gameState[i]['mouseEvent'].undone && !gameState[i]['mouseEvent'].clear) {
                 sessionData.numberofUndo++
                 gameState[i]['mouseEvent'].undone = true
                 eve = gameState[i]['mouseEvent']
@@ -783,9 +809,9 @@ const onKeyPress = (event: KeyboardEvent) => {
             eventFunction[eve.label](eve.x, eve.y, eve.flood, !eve.clear, eve.linePoints)
         }
     } else if (event.key == 'r') {
-        var eve;
+        var eve
         for (var i = gameState.length - 1; i > 0; i--) {
-            if (!(gameState[i]['mouseEvent'].redone) && gameState[i]['mouseEvent'].clear) {
+            if (!gameState[i]['mouseEvent'].redone && gameState[i]['mouseEvent'].clear) {
                 sessionData.numberofRedo++
                 gameState[i]['mouseEvent'].redone = true
                 eve = gameState[i]['mouseEvent']
@@ -796,7 +822,7 @@ const onKeyPress = (event: KeyboardEvent) => {
             eventFunction[eve.label](eve.x, eve.y, eve.flood, !eve.clear, eve.linePoints)
         }
     }
-    
+
     if (event.repeat && skip) {
         return
     }
@@ -804,6 +830,7 @@ const onKeyPress = (event: KeyboardEvent) => {
 
     if (event.key == 'm') {
         ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
+        ;(document.getElementById('exploration') as HTMLButtonElement).innerHTML = 'Continue ->'
     } else if (event.key == 'g' && metaState.segEnabled) {
         hoverHandler()
     } else if (event.key == 'f' && metaState.BFS) {
@@ -825,8 +852,7 @@ const onKeyPress = (event: KeyboardEvent) => {
     } else if (event.key == 'd' && metaState.segEnabled) {
         let [x, y] = performRayCasting()
         connectedSegAnnotationHandler('d', x, y, params.flood, params.clear)
-
-    } 
+    }
 }
 const onKeyUp = (event: KeyboardEvent) => {
     if (event.key == 'g') {
@@ -926,7 +952,7 @@ function startState() {
         targetPosition: controls.target.clone(),
         time: new Date(),
         flood: true,
-        clear: false
+        clear: false,
     }
     gameState.push({ start: startStateData })
 }

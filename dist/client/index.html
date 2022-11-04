@@ -8,6 +8,13 @@
             href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
             rel="stylesheet"
         />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+            integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        />
         <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/css/bootstrap.min.css" />
     </head>
 
@@ -16,7 +23,7 @@
         <div id="ui-menu">
             <button class="session-terminal button_red" id="download">DOWNLOAD</button>
             <button class="session-terminal button_red" id="end">FINISH</button>
-            <button class="session-terminal button_red" id="start">START</button>
+            <!-- <button class="session-terminal button_red" id="start">START</button> -->
         </div>
         <div id="uploadForm">
             <h3 id="upload-message"></h3>
@@ -50,12 +57,10 @@
 
         <div id="modal-wrapper">
             <div class="modal-header">
-                <h2>Instructions and Guide:</h2>
+                <!-- <h2>Instructions and Guide:</h2> -->
                 <a href="#modal-wrapper" class="btn-close" aria-hidden="true">×</a>
             </div>
             <div class="modal-body">
-                <p>Please read and note these instruction if needed ! :D</p>
-                <hr />
                 <label for="studentId">Student Id:</label>
                 <input
                     type="text"
@@ -64,12 +69,31 @@
                     placeholder="Enter your student id"
                 />
                 <small></small>
+                <hr />
+                <div class="top-group">
+                    <div style="text-align: left">
+                        <span>
+                            <i class="fa-solid fa-computer-mouse mouse-icon"></i>
+                            <b> Mouse: </b>
+                        </span>
+                        <span class="mouse-instruction">Right click: Panning</span>
+                        <b><i class="fa-solid fa-mountain-sun"></i></b>
+                        <span class="mouse-instruction">Left click: Rotation</span>
+                    </div>
+
+                    <div class="dat-instruction" style="text-align: left">
+                        <div class="btn-group btn-group-toggle">
+                            <button class="ci btn active">FLOOD</button>
+                            <button class="ci btn">DRY</button>
+                            <p style="margin-left: 5px">
+                                Select between two in UI to annotate as flood or dry before/while
+                                doing annotation
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
                 <ul>
-                    <li>Use right click to pan and left click to rotate the camera.</li>
-                    <li>
-                        Select whether you are labeling flooded or dry areas by the checkboxes on
-                        the right.
-                    </li>
                     <li>Press <b>f</b> to run point BFS from current point</li>
                     <li>Press <b>p</b> to select points for polygon selection</li>
                     <li>Press <b>o</b> to annotate with BFS on the selected polygon</li>
@@ -82,7 +106,7 @@
                     <li>Press <b>m</b> to bring this menu back</li>
                     <li></li>
                 </ul>
-                <button id="exploration" class="button_red">Start!!!</button>
+                <button id="exploration" class="button_red">Start !!!</button>
             </div>
         </div>
         <script type="module" src="bundle.js"></script>
