@@ -936,6 +936,10 @@ function onWindowResize() {
 
 function animate() {
     requestAnimationFrame(animate)
+    if (camera.position.z <= 600) {
+        camera.position.z = 600
+        camera.updateProjectionMatrix()
+    }
     if (!Developer || overRideControl) {
         controls.update()
     }
