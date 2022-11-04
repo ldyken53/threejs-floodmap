@@ -101,6 +101,7 @@ var persDatas: {
 
 var persTextures: { [key: number]: THREE.Texture } = {}
 var segsMax: { [key: number]: number } = {}
+let mappedMaxMap: { [key: number]: number } = {}
 async function getPersistence() {
     // axios
     //     .get(`http://localhost:5000/test`)

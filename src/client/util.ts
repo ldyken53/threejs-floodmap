@@ -192,9 +192,9 @@ function resetCamera(controls: any) {
     return controls
 }
 
-function startSession(event: Event) {
-    event.preventDefault()
-    ;(event.target as HTMLButtonElement).style.display = 'none'
+function startSession() {
+    // event.preventDefault()
+    // ;(event.target as HTMLButtonElement).style.display = 'none'
     sessionData.sessionStart = new Date()
     startUp()
 }
@@ -239,6 +239,7 @@ function hideModal() {
     ;(document.getElementById('ui-menu') as HTMLElement).style.display = 'block'
     let userId = (document.getElementById('studentId') as HTMLInputElement).value
     sessionData.name = userId
+    startSession()
 }
 
 function getLocalCordinate(_cordiante: THREE.Vector3) {
@@ -376,7 +377,7 @@ function setActiveButton2(event: MouseEvent) {
 }
 
 function init() {
-    document.getElementById('start')?.addEventListener('click', startSession)
+    // document.getElementById('start')?.addEventListener('click', startSession)
     document.getElementById('end')?.addEventListener('click', endSession)
     document.getElementById('download')?.addEventListener('click', downloadSession)
     document.getElementById('exploration')?.addEventListener('click', hideModal)
