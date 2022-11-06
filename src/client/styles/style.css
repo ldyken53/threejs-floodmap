@@ -196,6 +196,13 @@ input[type='submit'] {
     height: 37px !important;
 }
 
+.outList {
+    position: absolute;
+    top: 20px;
+    left: 10px;
+    border: none;
+}
+
 ul li b {
     box-shadow: 2px 2px 5px #524e4e;
     padding: 15px;
@@ -226,4 +233,8 @@ ul li b {
 
 .top-group div span {
     margin: 10px;
+}
+
+.close-button {
+    font-size: 14px;
 }

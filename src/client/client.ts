@@ -1003,4 +1003,5 @@ export {
     scene,
     params,
     uniforms,
+    gui,
 }

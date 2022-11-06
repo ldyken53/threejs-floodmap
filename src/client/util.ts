@@ -14,6 +14,7 @@ import {
     scene,
     params,
     uniforms,
+    gui,
 } from './client'
 // import * as fs from 'fs'
 
@@ -66,23 +67,23 @@ let metaState = {
     region: '1',
 }
 if (window.location.hash) {
-    if (window.location.hash.search("region") != -1) {
+    if (window.location.hash.search('region') != -1) {
         metaState.region = window.location.hash[window.location.hash.search('region') + 7]
-    } 
-    if (window.location.hash.search("BFS") !=-1) {
+    }
+    if (window.location.hash.search('BFS') != -1) {
         var bfs = window.location.hash[window.location.hash.search('BFS') + 4]
         if (bfs == '0') {
             metaState.BFS = false
             metaState.polygonSelection = false
         }
     }
-    if (window.location.hash.search("segmentation") !=-1) {
+    if (window.location.hash.search('segmentation') != -1) {
         var seg = window.location.hash[window.location.hash.search('segmentation') + 13]
         if (seg == '0') {
             metaState.segEnabled = false
         }
     }
-} 
+}
 
 const sessionData: sessionDataType = {
     name: 'anonymous',
@@ -94,7 +95,7 @@ const sessionData: sessionDataType = {
     numberofClick: 0,
     numberofUndo: 0,
     numberofRedo: 0,
-    metaState: metaState
+    metaState: metaState,
 }
 
 // vector.applyMatrix(camera.matrixWorld)
@@ -177,7 +178,6 @@ function download(filename: string, text: string) {
     element.style.display = 'none'
     document.body.appendChild(element)
     element.click()
-
 }
 
 function convertToSecMins(millisecond: number) {
@@ -289,29 +289,31 @@ function doubleClickHandler(event: MouseEvent) {
 }
 
 function toggleAnnoation() {
+    var li = document.createElement('li')
+    li.classList.add('cr', 'customList', 'outList')
+    // let span = document.createElement('span')
+    // span.classList.add('property-name')
+    // span.innerHTML = 'Annotate'
+    // li.appendChild(span)
+    let div = document.createElement('div')
+    div.classList.add('btn-group', 'btn-group-toggle')
+    button1 = document.createElement('button')
+    button1.classList.add('ci', 'btn', 'active')
+    button1.setAttribute('data-myid', 'flood')
+    button1.innerHTML = 'FLOOD'
+    button2 = document.createElement('button')
+    button2.classList.add('ci', 'btn')
+    button2.setAttribute('data-myid', 'dry')
+    button2.innerHTML = 'DRY'
+    div.appendChild(button1)
+    div.appendChild(button2)
+    li.appendChild(div)
+    button1.addEventListener('click', setActiveButton)
+    button2.addEventListener('click', setActiveButton)
+    document.body.appendChild(li)
+
     let ULelement = document.getElementsByTagName('ul')[2]
     if (ULelement) {
-        var li = document.createElement('li')
-        li.classList.add('cr', 'customList')
-        let span = document.createElement('span')
-        span.classList.add('property-name')
-        span.innerHTML = 'Annotate'
-        li.appendChild(span)
-        let div = document.createElement('div')
-        div.classList.add('btn-group', 'btn-group-toggle')
-        button1 = document.createElement('button')
-        button1.classList.add('ci', 'btn', 'active')
-        button1.setAttribute('data-myid', 'flood')
-        button1.innerHTML = 'FLOOD'
-        button2 = document.createElement('button')
-        button2.classList.add('ci', 'btn')
-        button2.setAttribute('data-myid', 'dry')
-        button2.innerHTML = 'DRY'
-        div.appendChild(button1)
-        div.appendChild(button2)
-        li.appendChild(div)
-        button1.addEventListener('click', setActiveButton)
-        button2.addEventListener('click', setActiveButton)
         var li2 = document.createElement('li')
         li2.classList.add('cr', 'customList')
         let span2 = document.createElement('span')
@@ -332,7 +334,7 @@ function toggleAnnoation() {
         div2.appendChild(button4)
         li2.appendChild(div2)
         ULelement.prepend(li2)
-        ULelement.prepend(li)        
+        // ULelement.prepend(li)
         button3.addEventListener('click', setActiveButton2)
         button4.addEventListener('click', setActiveButton2)
     }
@@ -346,6 +348,7 @@ function updateUniform(input: any) {
 
 function setActiveButton(event: MouseEvent) {
     event.preventDefault()
+    hideSetting()
     button1.classList.remove('active')
     button2.classList.remove('active')
     ;(event.target as HTMLButtonElement).classList.add('active')
@@ -383,6 +386,15 @@ function init() {
     document.getElementById('exploration')?.addEventListener('click', hideModal)
     toggleAnnoation()
     renderer.domElement.addEventListener('dblclick', doubleClickHandler, true)
+    renderer.domElement.addEventListener('click', hideSetting, false)
+}
+
+function hideSetting() {
+    // const dgDiv = document.querySelector('div.main div') as HTMLElement
+    // dgDiv.style.height = '101px'
+    // const dgUl = document.querySelector('li.folder div.dg ul') as HTMLUListElement
+    // dgUl.classList.add('closed')
+    gui.close()
 }
 
 function initVis() {
