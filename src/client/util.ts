@@ -49,6 +49,7 @@ interface gameEventType {
     linePoints?: Array<number>
     undone?: boolean
     redone?: boolean
+    persistanceThreshold?: number
     aspectRatio: number
     cameraPosition: THREE.Vector3
     targetPosition: THREE.Vector3
@@ -166,6 +167,7 @@ function logMyState(
             targetPosition: controls.target.clone(),
             time: new Date(),
             brushSize: brushSize,
+            persistanceThreshold: params.pers,
         }
     }
     gameState.push({ mouseEvent: stateData })

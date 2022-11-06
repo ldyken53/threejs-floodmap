@@ -20,6 +20,7 @@ import {
 import { terrainDimensions } from './constants'
 import './styles/style.css'
 import * as tiff from 'tiff'
+import { Console } from 'console'
 
 let Developer = false
 let overRideControl = false
@@ -215,7 +216,7 @@ var params = {
     blur: 0,
     dimension: true,
     annotation: true,
-    brushSize: 30,
+    brushSize: 8,
     pers: 0.06,
     persShow: false,
     guide: 0,
@@ -298,6 +299,23 @@ viewFolder
     })
     .name('Show Borders')
 // viewFolder.add(params, 'brushSize', 1, 50, 1)
+
+let sizeMap = {
+    brushSize: {
+        '4x4': 4,
+        '8x8': 8,
+        '16x16': 16,
+        '32x32': 32,
+    },
+}
+
+viewFolder
+    .add(sizeMap, 'brushSize', sizeMap.brushSize)
+    .setValue(8)
+    .onChange((value) => {
+        params.brushSize = value
+    })
+
 viewFolder
     .add(
         {
@@ -631,6 +649,7 @@ function brushHandler(key: string, x: number, y: number, flood: boolean, clear: 
         )
         sessionData.annotatedPixelCount -= params.brushSize * params.brushSize
     } else {
+        console.log(params.brushSize)
         context!.fillRect(
             x - Math.floor(params.brushSize / 2),
             y - Math.floor(params.brushSize / 2),
@@ -839,6 +858,7 @@ const onKeyPress = (event: KeyboardEvent) => {
     skip = true
 
     if (event.key == 'm') {
+        console.log('m pressed')
         ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
         ;(document.getElementById('exploration') as HTMLButtonElement).innerHTML = 'Continue ->'
     } else if (event.key == 'g' && metaState.segEnabled) {
