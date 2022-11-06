@@ -29,6 +29,10 @@ const regionDimensions = terrainDimensions[metaState.region]
 let _fetchData: any
 let mesh: THREE.Mesh
 
+let isSegmentationDone = false
+let isModelLoaded = false
+let isSatelliteImageLoaded = false
+
 const scene = new THREE.Scene()
 // const blurs = [0, 1, 2];
 // const zs = [100, 200, 300, 400, 500];
@@ -157,6 +161,7 @@ async function getPersistence() {
             })
     }
     console.timeEnd('process')
+    isSegmentationDone = true
 
     if (Developer) {
         _readstateFile()
@@ -887,37 +892,46 @@ satelliteLoader.load(
             fragmentShader: terrainShader._FS,
         })
         const terrainLoader = new STLLoader()
-        ;[2, 3].forEach((x) => {
-            terrainLoader.load(
-                `stl/${x}Dregion${metaState.region}.stl`,
-                function (geometry) {
-                    // geometry.computeBoundingBox()
-                    // geometry.computeVertexNormals()
-                    mesh = new THREE.Mesh(geometry, meshMaterial)
-                    mesh.receiveShadow = true
-                    mesh.castShadow = true
-                    mesh.position.set(0, 0, -100)
-                    meshes[x] = mesh
-                    if (x == 3) {
-                        scene.add(mesh)
-                        console.log(scene)
-                    }
-                },
-                (xhr) => {
-                    // console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
-                },
-                (error) => {
-                    console.log(error)
+        ;[2, 3].forEach(async (x) => {
+            try {
+                let response: THREE.BufferGeometry = await terrainLoader.loadAsync(
+                    `stl/${x}Dregion${metaState.region}.stl`
+                )
+                mesh = new THREE.Mesh(response, meshMaterial)
+                mesh.receiveShadow = true
+                mesh.castShadow = true
+                mesh.position.set(0, 0, -100)
+                meshes[x] = mesh
+                if (x == 3) {
+                    scene.add(mesh)
+                    console.log(scene)
                 }
-            )
-            setTimeout(function () {
-                ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
-                if (!Developer) {
-                    ;(document.getElementById('modal-wrapper') as HTMLElement).style.display =
-                        'block'
-                }
-            }, 2000)
+            } catch (e) {
+                console.error(`error on reading STL file ${x}Dregion${metaState.region}.stl`)
+            }
+            // geometry.computeBoundingBox()
+            // geometry.computeVertexNormals()
+
+            // .catch((error: any) => {
+            //     console.log(error)
+            // })
         })
+        setTimeout(function () {
+            const checkLoading = () => {
+                if (!isSegmentationDone) {
+                    console.log('loading on progress')
+                    window.setTimeout(checkLoading, 100)
+                } else {
+                    return true
+                }
+            }
+            checkLoading()
+            ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
+            if (!Developer) {
+                ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
+            }
+            // isModelLoaded = true
+        }, 5000)
     },
     undefined,
     function (err) {
