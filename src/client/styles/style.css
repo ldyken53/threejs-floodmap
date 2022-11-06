@@ -238,3 +238,18 @@ ul li b {
 .close-button {
     font-size: 14px;
 }
+
+.inscene-ui {
+    position: absolute;
+    bottom: 20px;
+    left: 0px;
+    color: wheat;
+}
+
+.inscene-ui ul {
+    list-style-type: none;
+}
+
+.inscene-ui ul li {
+    padding: 17px 17px 17px 0px;
+}
