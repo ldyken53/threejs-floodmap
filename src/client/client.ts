@@ -135,7 +135,7 @@ async function getPersistence() {
     //     .get(`http://localhost:5000/test`)
     console.time('process')
     for (var i = 0; i < pers.length; i++) {
-        await fetch(`${host}img/segmentation_region${metaState.region}_pers${pers[i]}`)
+        await fetch(`${host}img/segmentation_region${metaState.region}_pers${pers[i]}.data`)
         .then((r) => r.arrayBuffer())
         .then((response) => {
             persDatas[pers[i]] = new Int16Array(response)
