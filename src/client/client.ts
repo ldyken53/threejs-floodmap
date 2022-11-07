@@ -16,6 +16,8 @@ import {
     getLocalCordinate,
     readstateFile,
     toggleAnnoation,
+    regionBounds,
+    regionDimensions
 } from './util'
 import { terrainDimensions } from './constants'
 import './styles/style.css'
@@ -26,7 +28,6 @@ let Developer = false
 let overRideControl = false
 var data: Float32Array
 
-const regionDimensions = terrainDimensions[metaState.region]
 let _fetchData: any
 let mesh: THREE.Mesh
 
@@ -145,11 +146,11 @@ async function getPersistence() {
                     imageData[x * 4 + 1] = Math.floor((segID % 1000) / 100)
                     imageData[x * 4 + 2] = Math.floor((segID % 100) / 10)
                     imageData[x * 4 + 3] = segID % 10
-                    if (segsToPixels2[pers[i]][segID]) {
-                        segsToPixels2[pers[i]][segID].push(x)
-                    } else {
-                        segsToPixels2[pers[i]][segID] = [x]
-                    }
+                    // if (segsToPixels2[pers[i]][segID]) {
+                    //     segsToPixels2[pers[i]][segID].push(x)
+                    // } else {
+                    //     segsToPixels2[pers[i]][segID] = [x]
+                    // }
                 }
                 segsMax[pers[i]] = max
                 persTextures[pers[i]] = new THREE.DataTexture(
@@ -246,6 +247,7 @@ var uniforms = {
     dimensions: { type: 'vec2', value: regionDimensions },
     dry: { type: 'bool', value: params.dry },
     flood: { type: 'bool', value: params.flood },
+    quadrant: { value: metaState.quadrant }
 }
 const viewFolder = gui.addFolder('Settings')
 
@@ -1046,6 +1048,10 @@ function onWindowResize() {
 
 function animate() {
     requestAnimationFrame(animate)
+    if (camera.position.z <= 200) {
+        camera.position.z = 200
+        camera.updateProjectionMatrix()
+    }
     if (!Developer || overRideControl) {
         controls.update()
     }

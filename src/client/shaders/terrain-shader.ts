@@ -43,6 +43,7 @@ uniform bool flood;
 uniform bool dry;
 uniform int z;
 uniform vec2 dimensions;
+uniform int quadrant;
 
 in vec3 vNormal;
 in vec3 vPosition;
@@ -54,6 +55,18 @@ vec4 sampleTexture(sampler2D sampleTex, vec2 coords) {
 }
 
 void main(){
+    if (quadrant > 2 && vPosition.y > float(dimensions.y) / 2.0) {
+        discard;
+    }
+    if ((quadrant == 1 || quadrant == 3) && vPosition.x > float(dimensions.x) / 2.0) {
+        discard;
+    }
+    if ((quadrant == 1 || quadrant == 2) && vPosition.y < float(dimensions.y) / 2.0) {
+        discard;
+    }    
+    if ((quadrant == 2 || quadrant == 4) && vPosition.x < float(dimensions.x) / 2.0) {
+        discard;
+    }
     vec3 color = sampleTexture(diffuseTexture, vPosition.xy).rgb;
     vec4 _segID = sampleTexture(persTexture, vPosition.xy).rgba * 255.0;
       float segID = _segID.x*1000.0 + _segID.y*100.0 + _segID.z*10.0 + _segID.w*1.0;

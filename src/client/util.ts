@@ -16,6 +16,7 @@ import {
     uniforms,
     gui,
 } from './client'
+import { terrainDimensions } from './constants'
 // import * as fs from 'fs'
 
 const pixelCount = 7617024
@@ -66,10 +67,14 @@ let metaState = {
     polygonSelection: true,
     segEnabled: true,
     region: '1',
+    quadrant: 0
 }
 if (window.location.hash) {
     if (window.location.hash.search('region') != -1) {
         metaState.region = window.location.hash[window.location.hash.search('region') + 7]
+        if (metaState.region == '4') {
+            alert("Region 4 not supported!")
+        }
     }
     if (window.location.hash.search('BFS') != -1) {
         var bfs = window.location.hash[window.location.hash.search('BFS') + 4]
@@ -84,6 +89,24 @@ if (window.location.hash) {
             metaState.segEnabled = false
         }
     }
+    if (window.location.hash.search('quadrant') != -1) {
+        metaState.quadrant = parseInt(window.location.hash[window.location.hash.search('quadrant') + 9])
+    }
+}
+const regionDimensions = terrainDimensions[metaState.region]
+let regionBounds = [0, regionDimensions[0], 0, regionDimensions[1]]
+if (metaState.quadrant == 1) {
+    regionBounds[1] = Math.floor(regionDimensions[0] / 2)
+    regionBounds[3] = Math.floor(regionDimensions[1] / 2)
+} else if (metaState.quadrant == 2) {
+    regionBounds[0] = Math.ceil(regionDimensions[0] / 2)
+    regionBounds[3] = Math.floor(regionDimensions[1] / 2) 
+} else if (metaState.quadrant == 3) {
+    regionBounds[1] = Math.floor(regionDimensions[0] / 2)
+    regionBounds[2] = Math.ceil(regionDimensions[1] / 2)
+} else if (metaState.quadrant == 4) {
+    regionBounds[0] = Math.ceil(regionDimensions[0] / 2)
+    regionBounds[2] = Math.ceil(regionDimensions[1] / 2)
 }
 
 const sessionData: sessionDataType = {
@@ -198,6 +221,35 @@ function startSession() {
     // event.preventDefault()
     // ;(event.target as HTMLButtonElement).style.display = 'none'
     sessionData.sessionStart = new Date()
+    new TWEEN.Tween(controls.target)
+    .to(
+        {
+            x: (regionBounds[1] + regionBounds[0]) / 2,
+            y: regionDimensions[1] - 1 - (regionBounds[2] + regionBounds[3]) / 2,
+            z: 0,
+        },
+        1000
+    )
+    .easing(TWEEN.Easing.Cubic.Out)
+    .onUpdate(() => {
+        controls.update()
+    })
+    .start()
+
+    new TWEEN.Tween(camera.position)
+    .to(
+        {
+            x: (regionBounds[1] + regionBounds[0]) / 2,
+            y: regionDimensions[1] - 1 - (regionBounds[2] + regionBounds[3]) / 2,
+            z: 1000,
+        },
+        1000
+    )
+    .easing(TWEEN.Easing.Cubic.Out)
+    .onUpdate(() => {
+        camera.updateProjectionMatrix()
+    })
+    .start()
     startUp()
 }
 
@@ -241,7 +293,6 @@ function hideModal() {
     ;(document.getElementById('ui-menu') as HTMLElement).style.display = 'block'
     let userId = (document.getElementById('studentId') as HTMLInputElement).value
     sessionData.name = userId
-    gui.close()
     startSession()
 }
 
@@ -279,7 +330,7 @@ function doubleClickHandler(event: MouseEvent) {
                 {
                     x: point.x,
                     y: point.y,
-                    z: point.z + 800,
+                    z: point.z + 600,
                 },
                 1000
             )
@@ -398,6 +449,8 @@ function initVis() {
 
 export {
     metaState,
+    regionBounds,
+    regionDimensions,
     resetCamera,
     startSession,
     endSession,
