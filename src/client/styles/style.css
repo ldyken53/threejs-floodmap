@@ -203,6 +203,13 @@ input[type='submit'] {
     border: none;
 }
 
+.outList2 {
+    position: absolute;
+    top: 70px;
+    left: 10px;
+    border: none;
+}
+
 ul li b {
     box-shadow: 2px 2px 5px #524e4e;
     padding: 15px;

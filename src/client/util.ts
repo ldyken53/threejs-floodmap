@@ -278,7 +278,7 @@ function doubleClickHandler(event: MouseEvent) {
                 {
                     x: point.x,
                     y: point.y,
-                    z: point.z + 1000,
+                    z: point.z + 500,
                 },
                 1000
             )
@@ -313,33 +313,25 @@ function toggleAnnoation() {
     button1.addEventListener('click', setActiveButton)
     button2.addEventListener('click', setActiveButton)
     document.body.appendChild(li)
+    var li2 = document.createElement('li')
+    li2.classList.add('cr', 'customList', 'outList2')
 
-    let ULelement = document.getElementsByTagName('ul')[2]
-    if (ULelement) {
-        var li2 = document.createElement('li')
-        li2.classList.add('cr', 'customList')
-        let span2 = document.createElement('span')
-        span2.classList.add('property-name')
-        span2.innerHTML = 'Brush Style'
-        li2.appendChild(span2)
-        let div2 = document.createElement('div')
-        div2.classList.add('btn-group', 'btn-group-toggle')
-        button3 = document.createElement('button')
-        button3.classList.add('ci', 'btn', 'active')
-        button3.setAttribute('data-myid', 'fill')
-        button3.innerHTML = 'FILL'
-        button4 = document.createElement('button')
-        button4.classList.add('ci', 'btn')
-        button4.setAttribute('data-myid', 'clear')
-        button4.innerHTML = 'UNDO'
-        div2.appendChild(button3)
-        div2.appendChild(button4)
-        li2.appendChild(div2)
-        ULelement.prepend(li2)
-        // ULelement.prepend(li)
-        button3.addEventListener('click', setActiveButton2)
-        button4.addEventListener('click', setActiveButton2)
-    }
+    let div2 = document.createElement('div')
+    div2.classList.add('btn-group', 'btn-group-toggle')
+    button3 = document.createElement('button')
+    button3.classList.add('ci', 'btn', 'active')
+    button3.setAttribute('data-myid', 'fill')
+    button3.innerHTML = 'FILL'
+    button4 = document.createElement('button')
+    button4.classList.add('ci', 'btn')
+    button4.setAttribute('data-myid', 'clear')
+    button4.innerHTML = 'UNDO'
+    div2.appendChild(button3)
+    div2.appendChild(button4)
+    li2.appendChild(div2)
+    button3.addEventListener('click', setActiveButton2)
+    button4.addEventListener('click', setActiveButton2)
+    document.body.appendChild(li2)
 }
 
 function updateUniform(input: any) {

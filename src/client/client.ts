@@ -90,6 +90,12 @@ if (Developer) {
                 flood = event.flood
                 clear = event.clear
             }
+            if (event.brushSize) {
+                params.brushSize = event.brushSize
+            }
+            if (event.persistanceThreshold) {
+                params.pers = event.persistanceThreshold
+            }
             eventFunction[event.label](x, y, flood, clear, event.linePoints)
         }
     }
@@ -201,7 +207,7 @@ controls.dampingFactor = 1.25
 controls.enableDamping = true
 controls.maxPolarAngle = Math.PI / 1.5
 controls.minPolarAngle = 1.2
-controls.minDistance = 1000
+controls.minDistance = 0
 controls.maxAzimuthAngle = 0.8
 controls.minAzimuthAngle = -0.65
 
@@ -316,93 +322,93 @@ viewFolder
         params.brushSize = value
     })
 
-viewFolder
-    .add(
-        {
-            x: () => {
-                camera.position.set(regionDimensions[0] / 2, regionDimensions[1] / 2, 2000)
-                controls.target = new THREE.Vector3(
-                    regionDimensions[0] / 2,
-                    regionDimensions[1] / 2,
-                    -2000
-                )
-            },
-        },
-        'x'
-    )
-    .name('Camera to Birds Eye View')
-viewFolder
-    .add(
-        {
-            x: () => {
-                camera.position.set(-500, regionDimensions[1] / 2, 500)
-                camera.up.set(0, 0, 1)
-                controls.dispose()
-                controls = new OrbitControls(camera, renderer.domElement)
-                controls.target = new THREE.Vector3(
-                    regionDimensions[0] / 2,
-                    regionDimensions[1] / 2,
-                    -1000
-                )
-            },
-        },
-        'x'
-    )
-    .name('Camera to Left View')
-viewFolder
-    .add(
-        {
-            x: () => {
-                camera.position.set(regionDimensions[0] + 500, regionDimensions[1] / 2, 500)
-                camera.up.set(0, 0, 1)
-                controls.dispose()
-                controls = new OrbitControls(camera, renderer.domElement)
-                controls.target = new THREE.Vector3(
-                    regionDimensions[0] / 2,
-                    regionDimensions[1] / 2,
-                    -1000
-                )
-            },
-        },
-        'x'
-    )
-    .name('Camera to Right View')
-viewFolder
-    .add(
-        {
-            x: () => {
-                camera.position.set(regionDimensions[0] / 2, regionDimensions[1] + 500, 500)
-                camera.up.set(0, 0, 1)
-                controls.dispose()
-                controls = new OrbitControls(camera, renderer.domElement)
-                controls.target = new THREE.Vector3(
-                    regionDimensions[0] / 2,
-                    regionDimensions[1] / 2,
-                    -1000
-                )
-            },
-        },
-        'x'
-    )
-    .name('Camera to Top View')
-viewFolder
-    .add(
-        {
-            x: () => {
-                camera.position.set(regionDimensions[0] / 2, -500, 500)
-                camera.up.set(0, 0, 1)
-                controls.dispose()
-                controls = new OrbitControls(camera, renderer.domElement)
-                controls.target = new THREE.Vector3(
-                    regionDimensions[0] / 2,
-                    regionDimensions[1] / 2,
-                    -1000
-                )
-            },
-        },
-        'x'
-    )
-    .name('Camera to Bottom View')
+// viewFolder
+//     .add(
+//         {
+//             x: () => {
+//                 camera.position.set(regionDimensions[0] / 2, regionDimensions[1] / 2, 2000)
+//                 controls.target = new THREE.Vector3(
+//                     regionDimensions[0] / 2,
+//                     regionDimensions[1] / 2,
+//                     -2000
+//                 )
+//             },
+//         },
+//         'x'
+//     )
+//     .name('Camera to Birds Eye View')
+// viewFolder
+//     .add(
+//         {
+//             x: () => {
+//                 camera.position.set(-500, regionDimensions[1] / 2, 500)
+//                 camera.up.set(0, 0, 1)
+//                 controls.dispose()
+//                 controls = new OrbitControls(camera, renderer.domElement)
+//                 controls.target = new THREE.Vector3(
+//                     regionDimensions[0] / 2,
+//                     regionDimensions[1] / 2,
+//                     -1000
+//                 )
+//             },
+//         },
+//         'x'
+//     )
+//     .name('Camera to Left View')
+// viewFolder
+//     .add(
+//         {
+//             x: () => {
+//                 camera.position.set(regionDimensions[0] + 500, regionDimensions[1] / 2, 500)
+//                 camera.up.set(0, 0, 1)
+//                 controls.dispose()
+//                 controls = new OrbitControls(camera, renderer.domElement)
+//                 controls.target = new THREE.Vector3(
+//                     regionDimensions[0] / 2,
+//                     regionDimensions[1] / 2,
+//                     -1000
+//                 )
+//             },
+//         },
+//         'x'
+//     )
+//     .name('Camera to Right View')
+// viewFolder
+//     .add(
+//         {
+//             x: () => {
+//                 camera.position.set(regionDimensions[0] / 2, regionDimensions[1] + 500, 500)
+//                 camera.up.set(0, 0, 1)
+//                 controls.dispose()
+//                 controls = new OrbitControls(camera, renderer.domElement)
+//                 controls.target = new THREE.Vector3(
+//                     regionDimensions[0] / 2,
+//                     regionDimensions[1] / 2,
+//                     -1000
+//                 )
+//             },
+//         },
+//         'x'
+//     )
+//     .name('Camera to Top View')
+// viewFolder
+//     .add(
+//         {
+//             x: () => {
+//                 camera.position.set(regionDimensions[0] / 2, -500, 500)
+//                 camera.up.set(0, 0, 1)
+//                 controls.dispose()
+//                 controls = new OrbitControls(camera, renderer.domElement)
+//                 controls.target = new THREE.Vector3(
+//                     regionDimensions[0] / 2,
+//                     regionDimensions[1] / 2,
+//                     -1000
+//                 )
+//             },
+//         },
+//         'x'
+//     )
+//     .name('Camera to Bottom View')
 
 viewFolder.open()
 // meshFolder.open()
@@ -970,10 +976,6 @@ function onWindowResize() {
 
 function animate() {
     requestAnimationFrame(animate)
-    if (camera.position.z <= 600) {
-        camera.position.z = 600
-        camera.updateProjectionMatrix()
-    }
     if (!Developer || overRideControl) {
         controls.update()
     }
