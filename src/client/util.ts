@@ -354,7 +354,7 @@ function doubleClickHandler(event: MouseEvent) {
 
 function toggleAnnoation() {
     var li = document.createElement('li')
-    li.classList.add('cr', 'customList', 'outList')
+    li.classList.add('customList', 'outList')
     // let span = document.createElement('span')
     // span.classList.add('property-name')
     // span.innerHTML = 'Annotate'
@@ -376,7 +376,7 @@ function toggleAnnoation() {
     button2.addEventListener('click', setActiveButton)
     document.body.appendChild(li)
     var li2 = document.createElement('li')
-    li2.classList.add('cr', 'customList', 'outList2')
+    li2.classList.add('customList', 'outList2')
 
     let div2 = document.createElement('div')
     div2.classList.add('btn-group', 'btn-group-toggle')

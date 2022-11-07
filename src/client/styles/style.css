@@ -220,6 +220,10 @@ ul li b {
     text-transform: uppercase;
 }
 
+.cr {
+    background: #1a1a1a7a !important;
+}
+
 .mouse-icon {
     font-size: 30px;
     margin-right: 10px;
