@@ -47,7 +47,7 @@ let host = ""
 if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
     host = ""
 } else {
-    host = "https://ldyken53.b-cdn.net/"
+    host = "https://floodmap.b-cdn.net/"
 }
 
 let _readstateFile: () => {}
