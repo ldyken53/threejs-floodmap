@@ -278,7 +278,7 @@ function doubleClickHandler(event: MouseEvent) {
                 {
                     x: point.x,
                     y: point.y,
-                    z: point.z + 500,
+                    z: point.z + 800,
                 },
                 1000
             )
