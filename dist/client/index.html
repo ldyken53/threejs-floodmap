@@ -31,18 +31,19 @@
             <h2>Thank you for finishing the study</h2>
             <form enctype="multipart/form-data" method="post" name="fileinfo">
                 <p style="font-style: italic">
-                    If you clicked finish button accidently, go back by pressing
-                    <b>cancel</b> button and continue your study, otherwise upload json file
-                    downloaded when you cliked <b>Finish</b> button
+                    <!-- If you clicked finish button accidently, go back by pressing
+                    <b>cancel</b> button and continue your study, otherwise \ -->
+                    Remember to upload all files
+                    downloaded when you clicked <b>Finish</b> button to Canvas!
                 </p>
-
+                <!--
                 <hr />
                 <p style="color: red">
-                    Note: Please Upload the latest downloaded files only ( if you cancel or have
+                    Note: Please Upload to Canvas the latest downloaded files only ( if you cancel or have
                     cancelled)
                 </p>
                 <p id="uploadState" style="color: red"></p>
-                <!-- <p>
+                <p>
                 <div style="display:inline-block; margin-top: 50px; font-style: italic;">
                 <label class="custom-upload-button" id="submit">
                     submit
@@ -50,8 +51,8 @@
                 </label>
                 
             </div>
-            </p> -->
-                <button id="cancel" class="button_red">Cancel</button>
+            </p> 
+                <button id="cancel" class="button_red">Cancel</button> -->
             </form>
         </div>
 
@@ -126,7 +127,7 @@
             </ul>
         </div>
         <script type="module" src="bundle.js"></script>
-        <script>
+        <!-- <script> 
             // const form = document.forms.namedItem('fileinfo')
             // const formWrapper = document.getElementById('uploadForm')
             // form.addEventListener('submit', async (event) => {
@@ -158,6 +159,6 @@
             //     document.getElementById('upload-message').innerHTML =
             //         'Thank you for taking part in this study, Your data has been saved, You can close this tab in browser'
             // })
-        </script>
+        </script> -->
     </body>
 </html>

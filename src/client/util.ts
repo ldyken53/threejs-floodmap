@@ -97,16 +97,16 @@ const regionDimensions = terrainDimensions[metaState.region]
 let regionBounds = [0, regionDimensions[0], 0, regionDimensions[1]]
 if (metaState.quadrant == 1) {
     regionBounds[1] = Math.floor(regionDimensions[0] / 2)
-    regionBounds[3] = Math.floor(regionDimensions[1] / 2)
+    regionBounds[2] = Math.ceil(regionDimensions[1] / 2)
 } else if (metaState.quadrant == 2) {
     regionBounds[0] = Math.ceil(regionDimensions[0] / 2)
-    regionBounds[3] = Math.floor(regionDimensions[1] / 2) 
+    regionBounds[2] = Math.ceil(regionDimensions[1] / 2)
 } else if (metaState.quadrant == 3) {
     regionBounds[1] = Math.floor(regionDimensions[0] / 2)
-    regionBounds[2] = Math.ceil(regionDimensions[1] / 2)
+    regionBounds[3] = Math.floor(regionDimensions[1] / 2) 
 } else if (metaState.quadrant == 4) {
     regionBounds[0] = Math.ceil(regionDimensions[0] / 2)
-    regionBounds[2] = Math.ceil(regionDimensions[1] / 2)
+    regionBounds[3] = Math.floor(regionDimensions[1] / 2) 
 }
 
 const sessionData: sessionDataType = {
@@ -225,7 +225,7 @@ function startSession() {
     .to(
         {
             x: (regionBounds[1] + regionBounds[0]) / 2,
-            y: regionDimensions[1] - 1 - (regionBounds[2] + regionBounds[3]) / 2,
+            y: (regionBounds[2] + regionBounds[3]) / 2,
             z: 0,
         },
         1000
@@ -240,7 +240,7 @@ function startSession() {
     .to(
         {
             x: (regionBounds[1] + regionBounds[0]) / 2,
-            y: regionDimensions[1] - 1 - (regionBounds[2] + regionBounds[3]) / 2,
+            y: (regionBounds[2] + regionBounds[3]) / 2,
             z: 1000,
         },
         1000
