@@ -20,6 +20,7 @@ import {
 import { terrainDimensions } from './constants'
 import './styles/style.css'
 import * as tiff from 'tiff'
+import { Console } from 'console'
 
 let Developer = false
 let overRideControl = false
@@ -28,6 +29,10 @@ var data: Float32Array
 const regionDimensions = terrainDimensions[metaState.region]
 let _fetchData: any
 let mesh: THREE.Mesh
+
+let isSegmentationDone = false
+let isModelLoaded = false
+let isSatelliteImageLoaded = false
 
 const scene = new THREE.Scene()
 // const blurs = [0, 1, 2];
@@ -38,12 +43,21 @@ const pers = [0.02, 0.04, 0.06, 0.08, 0.1]
 var meshes: { [key: string]: Mesh } = {}
 
 let _readstateFile: () => {}
-let eventFunction : {[key: string]: any } = {
+let eventFunction: { [key: string]: any } = {
     BFS: (x: number, y: number, flood: boolean, clear: boolean) => BFSHandler(x, y, flood, clear),
-    brush: (x: number, y: number, flood: boolean, clear: boolean) => brushHandler('t', x, y, flood, clear),
-    polygonSelector: (x: number, y: number, flood: boolean, clear: boolean) => polygonSelectionHandler(x, y, flood, clear),
-    polygonFill: (x: number, y: number, flood: boolean, clear: boolean, linePoints: Array<number>) => polygonFillHandler(flood, clear, linePoints),
-    segmentation: (x: number, y: number, flood: boolean, clear: boolean) => segAnnotationHandler('s', x, y, flood, clear),
+    brush: (x: number, y: number, flood: boolean, clear: boolean) =>
+        brushHandler('t', x, y, flood, clear),
+    polygonSelector: (x: number, y: number, flood: boolean, clear: boolean) =>
+        polygonSelectionHandler(x, y, flood, clear),
+    polygonFill: (
+        x: number,
+        y: number,
+        flood: boolean,
+        clear: boolean,
+        linePoints: Array<number>
+    ) => polygonFillHandler(flood, clear, linePoints),
+    segmentation: (x: number, y: number, flood: boolean, clear: boolean) =>
+        segAnnotationHandler('s', x, y, flood, clear),
     connectedSegmentation: (x: number, y: number, flood: boolean, clear: boolean) =>
         connectedSegAnnotationHandler('d', x, y, flood, clear),
 }
@@ -101,6 +115,7 @@ var persDatas: {
 
 var persTextures: { [key: number]: THREE.Texture } = {}
 var segsMax: { [key: number]: number } = {}
+let mappedMaxMap: { [key: number]: number } = {}
 async function getPersistence() {
     // axios
     //     .get(`http://localhost:5000/test`)
@@ -147,6 +162,7 @@ async function getPersistence() {
             })
     }
     console.timeEnd('process')
+    isSegmentationDone = true
 
     if (Developer) {
         _readstateFile()
@@ -183,6 +199,11 @@ let controls = new OrbitControls(camera, renderer.domElement)
 controls.target = new THREE.Vector3(regionDimensions[0] / 2, regionDimensions[1] / 2, -2000)
 controls.dampingFactor = 1.25
 controls.enableDamping = true
+controls.maxPolarAngle = Math.PI / 1.5
+controls.minPolarAngle = 1.2
+controls.minDistance = 1000
+controls.maxAzimuthAngle = 0.8
+controls.minAzimuthAngle = -0.65
 
 var canvas = document.createElement('canvas')
 canvas.width = regionDimensions[0]
@@ -195,7 +216,7 @@ var params = {
     blur: 0,
     dimension: true,
     annotation: true,
-    brushSize: 30,
+    brushSize: 8,
     pers: 0.06,
     persShow: false,
     guide: 0,
@@ -278,6 +299,23 @@ viewFolder
     })
     .name('Show Borders')
 // viewFolder.add(params, 'brushSize', 1, 50, 1)
+
+let sizeMap = {
+    brushSize: {
+        '4x4': 4,
+        '8x8': 8,
+        '16x16': 16,
+        '32x32': 32,
+    },
+}
+
+viewFolder
+    .add(sizeMap, 'brushSize', sizeMap.brushSize)
+    .setValue(8)
+    .onChange((value) => {
+        params.brushSize = value
+    })
+
 viewFolder
     .add(
         {
@@ -388,12 +426,12 @@ function segSelect(x: number, y: number, color: string) {
 }
 
 function connectedSegSelect(x: number, y: number, flood: boolean, clear: boolean) {
-    var color = "blue"
+    var color = 'blue'
     if (flood) {
-        color = "red"  
+        color = 'red'
     }
     if (clear) {
-        color = "clear"
+        color = 'clear'
     }
     visited = new Map()
     BFS(x, y, 'BFS_Segment', color)
@@ -485,9 +523,9 @@ function BFS(x: number, y: number, direction: string, color: string) {
         y = stack.pop()!
         x = stack.pop()!
         let [fillX, fillY] = fillFunction[_direction](x, y)
-        if (color == "clear") {
+        if (color == 'clear') {
             sessionData.annotatedPixelCount--
-            context!.clearRect(fillX, fillY, 1, 1) 
+            context!.clearRect(fillX, fillY, 1, 1)
         } else {
             sessionData.annotatedPixelCount++
             context!.fillRect(fillX, fillY, 1, 1)
@@ -584,23 +622,23 @@ function BFSHandler(x: number, y: number, flood: boolean, clear: boolean) {
     logMyState('f', 'BFS', flood, clear, camera, pointer, x, y)
     sessionData.numberofClick++
     visited = new Map()
-    var type = "BFS_Hill"
-    var color = "blue"
+    var type = 'BFS_Hill'
+    var color = 'blue'
     if (flood) {
-        type = "BFS_Down"
-        color = "red"
+        type = 'BFS_Down'
+        color = 'red'
     }
     if (clear) {
-        color = "clear"
+        color = 'clear'
     }
     BFS(x, y, type, color)
 }
 
 function brushHandler(key: string, x: number, y: number, flood: boolean, clear: boolean) {
     sessionData.numberofClick++
-    context!.fillStyle = "blue"
+    context!.fillStyle = 'blue'
     if (flood) {
-        context!.fillStyle = "red"    
+        context!.fillStyle = 'red'
     }
     if (clear) {
         context!.clearRect(
@@ -608,9 +646,10 @@ function brushHandler(key: string, x: number, y: number, flood: boolean, clear: 
             y - Math.floor(params.brushSize / 2),
             params.brushSize,
             params.brushSize
-        ) 
+        )
         sessionData.annotatedPixelCount -= params.brushSize * params.brushSize
     } else {
+        console.log(params.brushSize)
         context!.fillRect(
             x - Math.floor(params.brushSize / 2),
             y - Math.floor(params.brushSize / 2),
@@ -626,9 +665,9 @@ function brushHandler(key: string, x: number, y: number, flood: boolean, clear: 
 
 function polygonSelectionHandler(x: number, y: number, flood: boolean, clear: boolean) {
     sessionData.numberofClick++
-    context!.fillStyle = "blue"
+    context!.fillStyle = 'blue'
     if (flood) {
-        context!.fillStyle = "red"
+        context!.fillStyle = 'red'
     }
     if (clear) {
         var cy = polyPoints.pop()!
@@ -644,20 +683,31 @@ function polygonSelectionHandler(x: number, y: number, flood: boolean, clear: bo
     annotationTexture.needsUpdate = true
 }
 
-function polygonFillHandler(flood : boolean, clear : boolean, linePoints?: Array<number>) {
+function polygonFillHandler(flood: boolean, clear: boolean, linePoints?: Array<number>) {
     sessionData.numberofClick++
     if (linePoints) {
         polyPoints = linePoints
     }
-    var type = "BFS_Hill"
-    var color = "blue"
+    var type = 'BFS_Hill'
+    var color = 'blue'
     if (flood) {
-        color = "red"  
-        type = "BFS_Down"  
+        color = 'red'
+        type = 'BFS_Down'
     }
     context!.fillStyle = color
     context!.beginPath()
-    logMyState('o', 'polygonFill', flood, clear, camera, undefined, undefined, undefined, undefined, polyPoints)
+    logMyState(
+        'o',
+        'polygonFill',
+        flood,
+        clear,
+        camera,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        polyPoints
+    )
     context!.moveTo(polyPoints[0], regionDimensions[1] - 1 - polyPoints[1])
     for (var i = 2; i < polyPoints.length; i += 2) {
         context!.lineTo(polyPoints[i], regionDimensions[1] - 1 - polyPoints[i + 1])
@@ -665,12 +715,12 @@ function polygonFillHandler(flood : boolean, clear : boolean, linePoints?: Array
     }
     context!.closePath()
     if (clear) {
-        color = "clear"
+        color = 'clear'
         context!.globalCompositeOperation = 'destination-out'
         context!.fill()
         // second pass, the actual painting, with the desired color
         context!.globalCompositeOperation = 'source-over'
-        context!.fillStyle = 'rgba(0,0,0,0)'        
+        context!.fillStyle = 'rgba(0,0,0,0)'
     }
     context!.fill()
     var linePixels: Array<number> = []
@@ -754,14 +804,20 @@ function segAnnotationHandler(key: string, x: number, y: number, flood: boolean,
         color = 'red'
     }
     if (clear) {
-        color = "clear"
+        color = 'clear'
     }
     context!.fillStyle = color
     logMyState(key, 'segmentation', flood, clear, camera, pointer, x, y)
     segSelect(x, y, color)
 }
 
-function connectedSegAnnotationHandler(key: string, x: number, y: number, flood: boolean, clear: boolean) {
+function connectedSegAnnotationHandler(
+    key: string,
+    x: number,
+    y: number,
+    flood: boolean,
+    clear: boolean
+) {
     sessionData.numberofClick++
     logMyState(key, 'connectedSegmentation', flood, clear, camera, pointer, x, y)
     connectedSegSelect(x, y, flood, clear)
@@ -769,9 +825,9 @@ function connectedSegAnnotationHandler(key: string, x: number, y: number, flood:
 
 const onKeyPress = (event: KeyboardEvent) => {
     if (event.key == 'z') {
-        var eve;
+        var eve
         for (var i = gameState.length - 1; i > 0; i--) {
-            if (!(gameState[i]['mouseEvent'].undone) && !(gameState[i]['mouseEvent'].clear)) {
+            if (!gameState[i]['mouseEvent'].undone && !gameState[i]['mouseEvent'].clear) {
                 sessionData.numberofUndo++
                 gameState[i]['mouseEvent'].undone = true
                 eve = gameState[i]['mouseEvent']
@@ -782,9 +838,9 @@ const onKeyPress = (event: KeyboardEvent) => {
             eventFunction[eve.label](eve.x, eve.y, eve.flood, !eve.clear, eve.linePoints)
         }
     } else if (event.key == 'r') {
-        var eve;
+        var eve
         for (var i = gameState.length - 1; i > 0; i--) {
-            if (!(gameState[i]['mouseEvent'].redone) && gameState[i]['mouseEvent'].clear) {
+            if (!gameState[i]['mouseEvent'].redone && gameState[i]['mouseEvent'].clear) {
                 sessionData.numberofRedo++
                 gameState[i]['mouseEvent'].redone = true
                 eve = gameState[i]['mouseEvent']
@@ -795,14 +851,16 @@ const onKeyPress = (event: KeyboardEvent) => {
             eventFunction[eve.label](eve.x, eve.y, eve.flood, !eve.clear, eve.linePoints)
         }
     }
-    
+
     if (event.repeat && skip) {
         return
     }
     skip = true
 
     if (event.key == 'm') {
+        console.log('m pressed')
         ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
+        ;(document.getElementById('exploration') as HTMLButtonElement).innerHTML = 'Continue ->'
     } else if (event.key == 'g' && metaState.segEnabled) {
         hoverHandler()
     } else if (event.key == 'f' && metaState.BFS) {
@@ -824,8 +882,7 @@ const onKeyPress = (event: KeyboardEvent) => {
     } else if (event.key == 'd' && metaState.segEnabled) {
         let [x, y] = performRayCasting()
         connectedSegAnnotationHandler('d', x, y, params.flood, params.clear)
-
-    } 
+    }
 }
 const onKeyUp = (event: KeyboardEvent) => {
     if (event.key == 'g') {
@@ -855,37 +912,46 @@ satelliteLoader.load(
             fragmentShader: terrainShader._FS,
         })
         const terrainLoader = new STLLoader()
-        ;[2, 3].forEach((x) => {
-            terrainLoader.load(
-                `stl/${x}Dregion${metaState.region}.stl`,
-                function (geometry) {
-                    // geometry.computeBoundingBox()
-                    // geometry.computeVertexNormals()
-                    mesh = new THREE.Mesh(geometry, meshMaterial)
-                    mesh.receiveShadow = true
-                    mesh.castShadow = true
-                    mesh.position.set(0, 0, -100)
-                    meshes[x] = mesh
-                    if (x == 3) {
-                        scene.add(mesh)
-                        console.log(scene)
-                    }
-                },
-                (xhr) => {
-                    // console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
-                },
-                (error) => {
-                    console.log(error)
+        ;[2, 3].forEach(async (x) => {
+            try {
+                let response: THREE.BufferGeometry = await terrainLoader.loadAsync(
+                    `stl/${x}Dregion${metaState.region}.stl`
+                )
+                mesh = new THREE.Mesh(response, meshMaterial)
+                mesh.receiveShadow = true
+                mesh.castShadow = true
+                mesh.position.set(0, 0, -100)
+                meshes[x] = mesh
+                if (x == 3) {
+                    scene.add(mesh)
+                    console.log(scene)
                 }
-            )
-            setTimeout(function () {
-                ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
-                if (!Developer) {
-                    ;(document.getElementById('modal-wrapper') as HTMLElement).style.display =
-                        'block'
-                }
-            }, 2000)
+            } catch (e) {
+                console.error(`error on reading STL file ${x}Dregion${metaState.region}.stl`)
+            }
+            // geometry.computeBoundingBox()
+            // geometry.computeVertexNormals()
+
+            // .catch((error: any) => {
+            //     console.log(error)
+            // })
         })
+        setTimeout(function () {
+            const checkLoading = () => {
+                if (!isSegmentationDone) {
+                    console.log('loading on progress')
+                    window.setTimeout(checkLoading, 100)
+                } else {
+                    return true
+                }
+            }
+            checkLoading()
+            ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
+            if (!Developer) {
+                ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
+            }
+            // isModelLoaded = true
+        }, 5000)
     },
     undefined,
     function (err) {
@@ -904,6 +970,10 @@ function onWindowResize() {
 
 function animate() {
     requestAnimationFrame(animate)
+    if (camera.position.z <= 600) {
+        camera.position.z = 600
+        camera.updateProjectionMatrix()
+    }
     if (!Developer || overRideControl) {
         controls.update()
     }
@@ -925,7 +995,7 @@ function startState() {
         targetPosition: controls.target.clone(),
         time: new Date(),
         flood: true,
-        clear: false
+        clear: false,
     }
     gameState.push({ start: startStateData })
 }
@@ -953,4 +1023,5 @@ export {
     scene,
     params,
     uniforms,
+    gui,
 }

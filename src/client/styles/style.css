@@ -20,7 +20,7 @@ div {
 }
 
 .button_red {
-    padding: 10px 10px;
+    padding: 15px 10px;
     width: 120px;
     position: absolute;
     background-color: #fa6400;
@@ -50,8 +50,9 @@ div {
 } */
 
 #modal-wrapper {
-    position: fixed;
+    position: absolute;
     display: none;
+    overflow: auto;
     /* top: 15%;
     left: 35%; */
     width: 100%;
@@ -77,13 +78,23 @@ div {
 
 #modal-wrapper ul {
     list-style-type: none;
+    text-align: left;
+    /* display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; */
 }
 
 #modal-wrapper ul li {
-    padding: 17px 0 0 0;
+    padding: 35px 0 0 0;
+    /* min-width: 400px; */
 }
 .modal-body {
     padding: 20px;
+    margin: 0% 15%;
+    background: #bedeff;
+    text-align: center;
+    box-shadow: 12px 12px 10px #c7b4b4;
+    color: BLACK;
 }
 
 input[type='text'] {
@@ -160,7 +171,7 @@ input[type='submit'] {
 }
 .btn-group-toggle {
     border-radius: 8px;
-    border: 1px solid #212529;
+    /* border: 1px solid #212529; */
 }
 .btn-group-toggle .btn {
     /* margin: 3px 8px 3px 3px;
@@ -183,4 +194,62 @@ input[type='submit'] {
 .customList {
     border-left: 2px solid wheat;
     height: 37px !important;
+}
+
+.outList {
+    position: absolute;
+    top: 20px;
+    left: 10px;
+    border: none;
+}
+
+ul li b {
+    box-shadow: 2px 2px 5px #524e4e;
+    padding: 15px;
+    margin: 0 10px;
+    background: #3d3c3c;
+    color: white;
+    border-radius: 15px;
+    text-transform: uppercase;
+}
+
+.mouse-icon {
+    font-size: 30px;
+    margin-right: 10px;
+}
+
+.dat-instruction .btn-group-toggle {
+    display: flex;
+    flex-direction: row;
+}
+
+.top-group {
+    padding-left: 40px;
+}
+
+.top-group div {
+    padding-top: 10px;
+}
+
+.top-group div span {
+    margin: 10px;
+}
+
+.close-button {
+    font-size: 14px;
+}
+
+.inscene-ui {
+    position: absolute;
+    bottom: 20px;
+    left: 0px;
+    color: wheat;
+}
+
+.inscene-ui ul {
+    list-style-type: none;
+}
+
+.inscene-ui ul li {
+    padding: 17px 17px 17px 0px;
 }
