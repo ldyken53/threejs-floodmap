@@ -159,7 +159,7 @@ async function getPersistence() {
                     regionDimensions[1]
                 )
                 persTextures[pers[i]].needsUpdate = true
-                if (pers[i] == Math.round(params.pers * 100) / 100) {
+                if (pers[i] == persIndex[params.pers]) {
                     uniforms.persTexture.value = persTextures[pers[i]]
                     uniforms.segsMax.value = segsMax[pers[i]]
                 }
@@ -224,12 +224,19 @@ var params = {
     dimension: metaState.flat == 0,
     annotation: true,
     brushSize: 8,
-    pers: 0.06,
+    pers: 3,
     persShow: false,
     guide: 0,
     flood: true,
     dry: false,
     clear: false,
+}
+let persIndex : {[key: number]: number}= {
+    1: 0.1,
+    2: 0.08,
+    3: 0.06,
+    4: 0.04,
+    5: 0.02
 }
 // var persIndex = persToIndex[params.pers];
 
@@ -293,10 +300,10 @@ viewFolder
     .name('Show Annotation')
 if (metaState.segEnabled) {
     viewFolder
-    .add(params, 'pers', 0.02, 0.1, 0.02)
+    .add(params, 'pers', 1, 5, 1)
     .onFinishChange(() => {
-        uniforms.persTexture.value = persTextures[Math.round(params.pers * 100) / 100]
-        uniforms.segsMax.value = segsMax[Math.round(params.pers * 100) / 100]
+        uniforms.persTexture.value = persTextures[persIndex[params.pers]]
+        uniforms.segsMax.value = segsMax[persIndex[params.pers]]
     })
     .name('Segmentation Detail')
     viewFolder
@@ -421,8 +428,8 @@ viewFolder.open()
 
 function segSelect(x: number, y: number, color: string) {
     context!.fillStyle = color
-    var value = persDatas[Math.round(params.pers * 100) / 100][x + y * regionDimensions[0]]
-    var pixels = segsToPixels2[Math.round(params.pers * 100) / 100][value]
+    var value = persDatas[persIndex[params.pers]][x + y * regionDimensions[0]]
+    var pixels = segsToPixels2[persIndex[params.pers]][value]
     for (var i = 0; i < pixels.length; i++) {
         var x = pixels[i] % regionDimensions[0]
         var y = regionDimensions[1] - 1 - Math.floor(pixels[i] / regionDimensions[0])
@@ -484,28 +491,28 @@ const searchFunction = {
     },
     BFS_Segment: {
         E: (x: number, y: number, value: number) =>
-            persDatas[Math.round(params.pers * 100) / 100][x + 1 + y * regionDimensions[0]] ==
+            persDatas[persIndex[params.pers]][x + 1 + y * regionDimensions[0]] ==
             value,
         W: (x: number, y: number, value: number) =>
-            persDatas[Math.round(params.pers * 100) / 100][x - 1 + y * regionDimensions[0]] ==
+            persDatas[persIndex[params.pers]][x - 1 + y * regionDimensions[0]] ==
             value,
         N: (x: number, y: number, value: number) =>
-            persDatas[Math.round(params.pers * 100) / 100][x + (y + 1) * regionDimensions[0]] ==
+            persDatas[persIndex[params.pers]][x + (y + 1) * regionDimensions[0]] ==
             value,
         S: (x: number, y: number, value: number) =>
-            persDatas[Math.round(params.pers * 100) / 100][x + (y - 1) * regionDimensions[0]] ==
+            persDatas[persIndex[params.pers]][x + (y - 1) * regionDimensions[0]] ==
             value,
         EN: (x: number, y: number, value: number) =>
-            persDatas[Math.round(params.pers * 100) / 100][x + 1 + (y + 1) * regionDimensions[0]] ==
+            persDatas[persIndex[params.pers]][x + 1 + (y + 1) * regionDimensions[0]] ==
             value,
         WN: (x: number, y: number, value: number) =>
-            persDatas[Math.round(params.pers * 100) / 100][x - 1 + (y + 1) * regionDimensions[0]] ==
+            persDatas[persIndex[params.pers]][x - 1 + (y + 1) * regionDimensions[0]] ==
             value,
         SW: (x: number, y: number, value: number) =>
-            persDatas[Math.round(params.pers * 100) / 100][x - 1 + (y - 1) * regionDimensions[0]] ==
+            persDatas[persIndex[params.pers]][x - 1 + (y - 1) * regionDimensions[0]] ==
             value,
         SE: (x: number, y: number, value: number) =>
-            persDatas[Math.round(params.pers * 100) / 100][x + 1 + (y - 1) * regionDimensions[0]] ==
+            persDatas[persIndex[params.pers]][x + 1 + (y - 1) * regionDimensions[0]] ==
             value,
     },
 }
@@ -514,7 +521,7 @@ const valueFunction = {
     BFS_Down: (x: number, y: number) => data[x + y * regionDimensions[0]],
     BFS_Hill: (x: number, y: number) => data[x + y * regionDimensions[0]],
     BFS_Segment: (x: number, y: number) =>
-        persDatas[Math.round(params.pers * 100) / 100][x + y * regionDimensions[0]],
+        persDatas[persIndex[params.pers]][x + y * regionDimensions[0]],
 }
 
 const fillFunction = {
@@ -633,7 +640,7 @@ function performRayCasting() {
 
 function hoverHandler() {
     let [x, y] = performRayCasting()
-    let localId = persDatas[Math.round(params.pers * 100) / 100][x + y * regionDimensions[0]]
+    let localId = persDatas[persIndex[params.pers]][x + y * regionDimensions[0]]
     uniforms.hoverValue.value = localId
     params.guide = 1
     uniforms.guide.value = params.guide
