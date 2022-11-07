@@ -59,7 +59,7 @@ let eventFunction: { [key: string]: any } = {
     segmentation: (x: number, y: number, flood: boolean, clear: boolean) =>
         segAnnotationHandler('s', x, y, flood, clear),
     connectedSegmentation: (x: number, y: number, flood: boolean, clear: boolean) =>
-        connectedSegAnnotationHandler('d', x, y, flood, clear),
+        connectedSegAnnotationHandler('s', x, y, flood, clear),
 }
 if (Developer) {
     ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'none'
@@ -600,10 +600,16 @@ function rfpart(x: number) {
 const pointer = new THREE.Vector2()
 const raycaster = new THREE.Raycaster()
 var skip = true
+var skipCounter = 0
 const onMouseMove = (event: MouseEvent) => {
     pointer.x = (event.clientX / window.innerWidth) * 2 - 1
     pointer.y = -(event.clientY / window.innerHeight) * 2 + 1
-    skip = false
+    if (skipCounter == 4) {
+        skip = false
+        skipCounter = 0
+    } else {
+        skipCounter++
+    }
 }
 var polyPoints: Array<number> = []
 
@@ -655,7 +661,6 @@ function brushHandler(key: string, x: number, y: number, flood: boolean, clear: 
         )
         sessionData.annotatedPixelCount -= params.brushSize * params.brushSize
     } else {
-        console.log(params.brushSize)
         context!.fillRect(
             x - Math.floor(params.brushSize / 2),
             y - Math.floor(params.brushSize / 2),
@@ -829,6 +834,7 @@ function connectedSegAnnotationHandler(
     connectedSegSelect(x, y, flood, clear)
 }
 
+let [lastX, lastY] = [0, 0]
 const onKeyPress = (event: KeyboardEvent) => {
     if (event.key == 'z') {
         var eve
@@ -874,20 +880,84 @@ const onKeyPress = (event: KeyboardEvent) => {
         BFSHandler(x, y, params.flood, params.clear)
     } else if (event.key == 't' && metaState.brushSelection) {
         let [x, y] = performRayCasting()
-        y = regionDimensions[1] - y
-        brushHandler('t', x, y, params.flood, params.clear)
+        if (event.repeat) {
+            var linePixels = []
+            var x0 = lastX
+            var y0 = lastY
+            var x1 = x
+            var y1 = y
+            var steep: boolean = Math.abs(y1 - y0) > Math.abs(x1 - x0)
+            if (steep) {
+                ;[x0, y0] = [y0, x0]
+                ;[x1, y1] = [y1, x1]
+            }
+            if (x0 > x1) {
+                ;[x0, x1] = [x1, x0]
+                ;[y0, y1] = [y1, y0]
+            }
+            var dx = x1 - x0
+            var dy = y1 - y0
+            var gradient
+            if (dx == 0) {
+                gradient = 1
+            } else {
+                gradient = dy / dx
+            }
+            var xend = x0
+            var yend = y0
+            var xpxl1 = xend
+            var ypxl1 = yend
+            if (steep) {
+                linePixels.push(ypxl1, xpxl1)
+                linePixels.push(ypxl1 + 1, xpxl1)
+            } else {
+                linePixels.push(xpxl1, ypxl1)
+                linePixels.push(xpxl1, ypxl1 + 1)
+            }
+            var intery = yend + gradient
+            xend = x1
+            yend = y1
+            var xpxl2 = xend
+            var ypxl2 = yend
+            if (steep) {
+                linePixels.push(ypxl2, xpxl2)
+                linePixels.push(ypxl2 + 1, xpxl2)
+            } else {
+                linePixels.push(xpxl2, ypxl2)
+                linePixels.push(xpxl2, ypxl2 + 1)
+            }
+            if (steep) {
+                for (var z = xpxl1 + 1; z < xpxl2; z++) {
+                    linePixels.push(Math.floor(intery), z)
+                    linePixels.push(Math.floor(intery) + 1, z)
+                    intery = intery + gradient
+                }
+            } else {
+                for (var z = xpxl1 + 1; z < xpxl2; z++) {
+                    linePixels.push(z, Math.floor(intery))
+                    linePixels.push(z, Math.floor(intery) + 1)
+                    intery = intery + gradient
+                }
+            }
+            for (var i = 0; i < linePixels.length; i += 2) {
+                brushHandler('t', linePixels[i], regionDimensions[1] - 1 - linePixels[i + 1], params.flood, params.clear)
+            }
+        }
+        lastX = x
+        lastY = y
+        brushHandler('t', x, regionDimensions[1] - 1 - y, params.flood, params.clear)
     } else if (event.key == 'p' && metaState.polygonSelection) {
         let [x, y] = performRayCasting()
         // y = regionDimensions[1] - y
         polygonSelectionHandler(x, y, params.flood, params.clear)
     } else if (event.key == 'o' && metaState.polygonSelection) {
         polygonFillHandler(params.flood, params.clear)
+    // } else if (event.key == 's' && metaState.segEnabled) {
+    //     let [x, y] = performRayCasting()
+    //     segAnnotationHandler('s', x, y, params.flood, params.clear)
     } else if (event.key == 's' && metaState.segEnabled) {
         let [x, y] = performRayCasting()
-        segAnnotationHandler('s', x, y, params.flood, params.clear)
-    } else if (event.key == 'd' && metaState.segEnabled) {
-        let [x, y] = performRayCasting()
-        connectedSegAnnotationHandler('d', x, y, params.flood, params.clear)
+        connectedSegAnnotationHandler('s', x, y, params.flood, params.clear)
     }
 }
 const onKeyUp = (event: KeyboardEvent) => {

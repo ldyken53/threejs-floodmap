@@ -241,6 +241,7 @@ function hideModal() {
     ;(document.getElementById('ui-menu') as HTMLElement).style.display = 'block'
     let userId = (document.getElementById('studentId') as HTMLInputElement).value
     sessionData.name = userId
+    gui.close()
     startSession()
 }
 
@@ -342,7 +343,6 @@ function updateUniform(input: any) {
 
 function setActiveButton(event: MouseEvent) {
     event.preventDefault()
-    hideSetting()
     button1.classList.remove('active')
     button2.classList.remove('active')
     ;(event.target as HTMLButtonElement).classList.add('active')
@@ -380,7 +380,7 @@ function init() {
     document.getElementById('exploration')?.addEventListener('click', hideModal)
     toggleAnnoation()
     renderer.domElement.addEventListener('dblclick', doubleClickHandler, true)
-    renderer.domElement.addEventListener('click', hideSetting, false)
+    // renderer.domElement.addEventListener('click', hideSetting, false)
 }
 
 function hideSetting() {
