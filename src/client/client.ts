@@ -32,6 +32,7 @@ let _fetchData: any
 let mesh: THREE.Mesh
 
 let isSegmentationDone = false
+let isSTLDone = false
 let isModelLoaded = false
 let isSatelliteImageLoaded = false
 
@@ -179,6 +180,9 @@ async function getPersistence() {
     )
     console.timeEnd('process')
     isSegmentationDone = true
+    if (isSTLDone) {
+        ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
+    }
 
     if (Developer) {
         _readstateFile()
@@ -1030,11 +1034,13 @@ satelliteLoader.load(
                     if (x == 3) {
                         scene.add(mesh)
                         console.log(scene)
+                        isSTLDone = true
                     }
                 } else {
                     if (x == 2) {
                         scene.add(mesh)
                         console.log(scene)
+                        isSTLDone = true
                     }
                 }
 
@@ -1049,8 +1055,9 @@ satelliteLoader.load(
             // })
         })
         setTimeout(function () {
-            while (!isSegmentationDone) {}
-            ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
+            if (isSegmentationDone) {
+                ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
+            }
             if (!Developer) {
                 ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
             }
