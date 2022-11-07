@@ -128,7 +128,8 @@ async function getPersistence() {
     //     .get(`http://localhost:5000/test`)
     console.time('process')
     for (var i = 0; i < pers.length; i++) {
-        await fetch(`img/segmentation_region${metaState.region}_pers${pers[i]}`)
+        if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+            await fetch(`img/segmentation_region${metaState.region}_pers${pers[i]}`)
             .then((r) => r.arrayBuffer())
             .then((response) => {
                 persDatas[pers[i]] = new Int16Array(response)
@@ -167,6 +168,11 @@ async function getPersistence() {
             .catch((error) => {
                 console.log(error)
             })
+        } else {
+            axios.get(`https://ldyken53.b-cdn.net/img/segmentation_region${metaState.region}_pers${pers[i]}`).then((res) => console.log(res))
+        }
+
+        
     }
     console.timeEnd('process')
     isSegmentationDone = true
