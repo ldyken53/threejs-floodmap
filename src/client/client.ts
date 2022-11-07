@@ -1049,15 +1049,7 @@ satelliteLoader.load(
             // })
         })
         setTimeout(function () {
-            const checkLoading = () => {
-                if (!isSegmentationDone) {
-                    console.log('loading on progress')
-                    window.setTimeout(checkLoading, 100)
-                } else {
-                    return true
-                }
-            }
-            checkLoading()
+            while (!isSegmentationDone) {}
             ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
             if (!Developer) {
                 ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
