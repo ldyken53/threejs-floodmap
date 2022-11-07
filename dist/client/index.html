@@ -3,11 +3,11 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Three.js Flood Annotation</title>
-        <link
+        <title>Terrain Annotation</title>
+        <!-- <link
             href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
             rel="stylesheet"
-        />
+        /> -->
         <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
@@ -33,8 +33,8 @@
                 <p style="font-style: italic">
                     <!-- If you clicked finish button accidently, go back by pressing
                     <b>cancel</b> button and continue your study, otherwise \ -->
-                    Remember to upload all files
-                    downloaded when you clicked <b>Finish</b> button to Canvas!
+                    Remember to upload all files downloaded when you clicked <b>Finish</b> button to
+                    Canvas!
                 </p>
                 <!--
                 <hr />
@@ -113,7 +113,10 @@
                     </div>
                     <div id="menuSegmentation">
                         <li>Press <b>g</b> to highlight the segmentation under current point</li>
-                        <li>Press <b>s</b> to annotate the connected segmentation under current point</li>
+                        <li>
+                            Press <b>s</b> to annotate the connected segmentation under current
+                            point
+                        </li>
                     </div>
                     <li>Press <b>z</b> to undo the most recent annotation</li>
                     <li>Press <b>r</b> to redo the most recent undo</li>
@@ -128,15 +131,19 @@
 
         <div class="inscene-ui">
             <ul>
-                <li id="BFS"><b>f</b> BFS</li>
-                <li id="polygonSelection"><b>p</b> Polygon Selection</li>
-                <li id="polygonSelection2"><b>o</b> Polygon Fill </li>
-                <li id="segEnabled"><b>s</b> Segmentation Select</li>
-                <li><b>z</b> Undo</li>
-                <li><b>r</b> Redo</li>
+                <li>
+                    <p class="title">Key: Function</p>
+                    <hr />
+                </li>
+                <li id="BFS"><b>f :</b> BFS</li>
+                <li id="polygonSelection"><b>p :</b> Polygon Selection</li>
+                <li id="polygonSelection2"><b>o :</b> Polygon Fill</li>
+                <li id="segEnabled"><b>s :</b> Segmentation Select</li>
+                <li><b>z :</b> Undo</li>
+                <li><b>r :</b> Redo</li>
 
                 <!-- <li>Press <b>s</b> to annotate the full segmentation under current point</li> -->
-                <li><b>m</b> Menu</li>
+                <li><b>m :</b> Menu</li>
                 <!-- <li>Press <b>g</b> to highlight the full segmentation under current point</li> -->
                 <!-- <li>Press <b>d</b> to annotate the connected segmentation under current point</li> -->
             </ul>
