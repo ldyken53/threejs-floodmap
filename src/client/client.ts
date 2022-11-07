@@ -134,49 +134,49 @@ async function getPersistence() {
     // axios
     //     .get(`http://localhost:5000/test`)
     console.time('process')
-    for (var i = 0; i < pers.length; i++) {
-        await fetch(`${host}img/segmentation_region${metaState.region}_pers${pers[i]}.data`)
-        .then((r) => r.arrayBuffer())
-        .then((response) => {
-            persDatas[pers[i]] = new Int16Array(response)
-            // segsMax[pers[i]] = response.data[pers[i]].max
-            // persDatas[pers[i]] = response.data[pers[i]].array
-            var max = 0
-            var imageData = new Uint8Array(4 * persDatas[pers[i]].length)
-            segsToPixels2[pers[i]] = {}
-            for (var x = 0; x < persDatas[pers[i]].length; x++) {
-                var segID = persDatas[pers[i]][x]
-                if (segID > max) {
-                    max = segID
+    await Promise.all(
+        pers.map(async (thresh) => {
+            await fetch(`${host}img/segmentation_region${metaState.region}_pers${thresh}.data`)
+            .then((r) => r.arrayBuffer())
+            .then((response) => {
+                persDatas[thresh] = new Int16Array(response)
+                // segsMax[thresh] = response.data[thresh].max
+                // persDatas[thresh] = response.data[thresh].array
+                var max = 0
+                var imageData = new Uint8Array(4 * persDatas[thresh].length)
+                segsToPixels2[thresh] = {}
+                for (var x = 0; x < persDatas[thresh].length; x++) {
+                    var segID = persDatas[thresh][x]
+                    if (segID > max) {
+                        max = segID
+                    }
+                    imageData[x * 4] = Math.floor(segID / 1000)
+                    imageData[x * 4 + 1] = Math.floor((segID % 1000) / 100)
+                    imageData[x * 4 + 2] = Math.floor((segID % 100) / 10)
+                    imageData[x * 4 + 3] = segID % 10
+                    // if (segsToPixels2[thresh][segID]) {
+                    //     segsToPixels2[thresh][segID].push(x)
+                    // } else {
+                    //     segsToPixels2[thresh][segID] = [x]
+                    // }
                 }
-                imageData[x * 4] = Math.floor(segID / 1000)
-                imageData[x * 4 + 1] = Math.floor((segID % 1000) / 100)
-                imageData[x * 4 + 2] = Math.floor((segID % 100) / 10)
-                imageData[x * 4 + 3] = segID % 10
-                // if (segsToPixels2[pers[i]][segID]) {
-                //     segsToPixels2[pers[i]][segID].push(x)
-                // } else {
-                //     segsToPixels2[pers[i]][segID] = [x]
-                // }
-            }
-            segsMax[pers[i]] = max
-            persTextures[pers[i]] = new THREE.DataTexture(
-                imageData,
-                regionDimensions[0],
-                regionDimensions[1]
-            )
-            persTextures[pers[i]].needsUpdate = true
-            if (pers[i] == persIndex[params.pers]) {
-                uniforms.persTexture.value = persTextures[pers[i]]
-                uniforms.segsMax.value = segsMax[pers[i]]
-            }
+                segsMax[thresh] = max
+                persTextures[thresh] = new THREE.DataTexture(
+                    imageData,
+                    regionDimensions[0],
+                    regionDimensions[1]
+                )
+                persTextures[thresh].needsUpdate = true
+                if (thresh == persIndex[params.pers]) {
+                    uniforms.persTexture.value = persTextures[thresh]
+                    uniforms.segsMax.value = segsMax[thresh]
+                }
+            })
+            .catch((error) => {
+                console.log(error)
+            })
         })
-        .catch((error) => {
-            console.log(error)
-        })
-
-        
-    }
+    )
     console.timeEnd('process')
     isSegmentationDone = true
 
