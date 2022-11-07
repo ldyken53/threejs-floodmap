@@ -221,7 +221,7 @@ var context = canvas.getContext('2d')
 const gui = new GUI({ width: window.innerWidth / 5 })
 var params = {
     blur: 0,
-    dimension: true,
+    dimension: metaState.flat == 0,
     annotation: true,
     brushSize: 8,
     pers: 0.06,
@@ -234,7 +234,7 @@ var params = {
 // var persIndex = persToIndex[params.pers];
 
 var uniforms = {
-    z: { value: 500 },
+    z: { value: metaState.flat == 0 ? 500 : 0 },
     diffuseTexture: { type: 't', value: new THREE.Texture() },
     annotationTexture: { type: 't', value: annotationTexture },
     persTexture: { type: 't', value: new THREE.Texture() },
@@ -266,7 +266,8 @@ const viewFolder = gui.addFolder('Settings')
 //         viewFolder.updateDisplay()
 //     })
 //     .name('Annotate Dry Area')
-viewFolder
+if (metaState.flat == 0) {
+    viewFolder
     .add(params, 'dimension')
     .onChange(() => {
         scene.remove(scene.children[0])
@@ -279,6 +280,7 @@ viewFolder
         }
     })
     .name('3D View')
+}
 viewFolder
     .add(params, 'annotation')
     .onChange(() => {
@@ -289,23 +291,25 @@ viewFolder
         }
     })
     .name('Show Annotation')
-viewFolder
+if (metaState.segEnabled) {
+    viewFolder
     .add(params, 'pers', 0.02, 0.1, 0.02)
     .onFinishChange(() => {
         uniforms.persTexture.value = persTextures[Math.round(params.pers * 100) / 100]
         uniforms.segsMax.value = segsMax[Math.round(params.pers * 100) / 100]
     })
     .name('Segmentation Detail')
-viewFolder
-    .add(params, 'persShow')
-    .onChange(() => {
-        if (params.persShow) {
-            uniforms.persShow.value = 2
-        } else {
-            uniforms.persShow.value = 0
-        }
-    })
-    .name('Show Borders')
+    viewFolder
+        .add(params, 'persShow')
+        .onChange(() => {
+            if (params.persShow) {
+                uniforms.persShow.value = 2
+            } else {
+                uniforms.persShow.value = 0
+            }
+        })
+        .name('Show Borders')
+}
 // viewFolder.add(params, 'brushSize', 1, 50, 1)
 
 let sizeMap = {
@@ -1006,10 +1010,18 @@ satelliteLoader.load(
                 mesh.castShadow = true
                 mesh.position.set(0, 0, -100)
                 meshes[x] = mesh
-                if (x == 3) {
-                    scene.add(mesh)
-                    console.log(scene)
+                if (metaState.flat == 0) {
+                    if (x == 3) {
+                        scene.add(mesh)
+                        console.log(scene)
+                    }
+                } else {
+                    if (x == 2) {
+                        scene.add(mesh)
+                        console.log(scene)
+                    }
                 }
+
             } catch (e) {
                 console.error(`error on reading STL file ${x}Dregion${metaState.region}.stl`)
             }
@@ -1054,8 +1066,8 @@ function onWindowResize() {
 
 function animate() {
     requestAnimationFrame(animate)
-    if (camera.position.z <= 200) {
-        camera.position.z = 200
+    if (camera.position.z <= 100) {
+        camera.position.z = 100
         camera.updateProjectionMatrix()
     }
     if (!Developer || overRideControl) {

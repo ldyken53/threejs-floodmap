@@ -67,7 +67,8 @@ let metaState = {
     polygonSelection: true,
     segEnabled: true,
     region: '1',
-    quadrant: 0
+    quadrant: 0,
+    flat: 0
 }
 if (window.location.hash) {
     if (window.location.hash.search('region') != -1) {
@@ -79,6 +80,10 @@ if (window.location.hash) {
     if (window.location.hash.search('BFS') != -1) {
         var bfs = window.location.hash[window.location.hash.search('BFS') + 4]
         if (bfs == '0') {
+            document.getElementById('BFS')!.style.display = 'none'
+            document.getElementById('polygonSelection')!.style.display = 'none'
+            document.getElementById('polygonSelection2')!.style.display = 'none'
+            document.getElementById('menuBFS')!.style.display = 'none'
             metaState.BFS = false
             metaState.polygonSelection = false
         }
@@ -86,11 +91,16 @@ if (window.location.hash) {
     if (window.location.hash.search('segmentation') != -1) {
         var seg = window.location.hash[window.location.hash.search('segmentation') + 13]
         if (seg == '0') {
+            document.getElementById('segEnabled')!.style.display = 'none'
+            document.getElementById('menuSegmentation')!.style.display = 'none'
             metaState.segEnabled = false
         }
     }
     if (window.location.hash.search('quadrant') != -1) {
         metaState.quadrant = parseInt(window.location.hash[window.location.hash.search('quadrant') + 9])
+    }
+    if (window.location.hash.search('flat') != -1) {
+        metaState.flat = parseInt(window.location.hash[window.location.hash.search('flat') + 5])
     }
 }
 const regionDimensions = terrainDimensions[metaState.region]
