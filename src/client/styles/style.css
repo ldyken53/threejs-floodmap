@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Bungee&family=Bungee+Spice&family=Roboto:wght@300;400;500&display=swap');
 
+@import url('https://fonts.googleapis.com/css2?family=Bungee&family=Bungee+Spice&family=Roboto:wght@300;400;500&display=swap');
+
 *,
 *:before,
 *:after {
@@ -265,8 +267,6 @@ ul li b {
 
 .inscene-ui ul {
     list-style-type: none;
-    padding-left: 0px;
-    font-size: 14px;
 }
 
 .inscene-ui ul li {
@@ -277,6 +277,13 @@ ul li b {
 .inscene-ui b {
     background: transparent;
     box-shadow: none;
+}
+
+.inscene-ui .title {
+    margin: 0px 20px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffa204;
 }
 
 .inscene-ui .title {

@@ -278,7 +278,6 @@ function endSession(event: Event) {
 }
 
 function downloadSession(event: Event) {
-    ;(document.getElementById('download') as HTMLElement).style.display = 'none'
     const _data = JSON.stringify(gameState)
     const _fileName = 'session_' + sessionData.name + '.json'
     download(_fileName, _data)
@@ -387,7 +386,7 @@ function toggleAnnoation() {
     button4 = document.createElement('button')
     button4.classList.add('ci', 'btn')
     button4.setAttribute('data-myid', 'clear')
-    button4.innerHTML = 'UNDO'
+    button4.innerHTML = 'ERASE'
     div2.appendChild(button3)
     div2.appendChild(button4)
     li2.appendChild(div2)

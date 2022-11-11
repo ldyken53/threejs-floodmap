@@ -32,6 +32,7 @@ let _fetchData: any
 let mesh: THREE.Mesh
 
 let isSegmentationDone = false
+let isSTLDone = false
 let isModelLoaded = false
 let isSatelliteImageLoaded = false
 
@@ -42,6 +43,13 @@ const scene = new THREE.Scene()
 const pers = [0.02, 0.04, 0.06, 0.08, 0.1]
 // const pers = [0.06]
 var meshes: { [key: string]: Mesh } = {}
+
+let host = ""
+if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+    host = ""
+} else {
+    host = "https://floodmap.b-cdn.net/"
+}
 
 let _readstateFile: () => {}
 let eventFunction: { [key: string]: any } = {
@@ -102,7 +110,7 @@ if (Developer) {
     }
 }
 
-fetch(`img/elevation${metaState.region}.tiff`).then((res) =>
+fetch(`${host}img/elevation${metaState.region}.tiff`).then((res) =>
     res.arrayBuffer().then(function (arr) {
         var tif = tiff.decode(arr)
         data = tif[0].data as Float32Array
@@ -127,18 +135,19 @@ async function getPersistence() {
     // axios
     //     .get(`http://localhost:5000/test`)
     console.time('process')
-    for (var i = 0; i < pers.length; i++) {
-        await fetch(`img/segmentation_region${metaState.region}_pers${pers[i]}`)
+    await Promise.all(
+        pers.map(async (thresh) => {
+            await fetch(`${host}img/segmentation_region${metaState.region}_pers${thresh}.data`)
             .then((r) => r.arrayBuffer())
             .then((response) => {
-                persDatas[pers[i]] = new Int16Array(response)
-                // segsMax[pers[i]] = response.data[pers[i]].max
-                // persDatas[pers[i]] = response.data[pers[i]].array
+                persDatas[thresh] = new Int16Array(response)
+                // segsMax[thresh] = response.data[thresh].max
+                // persDatas[thresh] = response.data[thresh].array
                 var max = 0
-                var imageData = new Uint8Array(4 * persDatas[pers[i]].length)
-                segsToPixels2[pers[i]] = {}
-                for (var x = 0; x < persDatas[pers[i]].length; x++) {
-                    var segID = persDatas[pers[i]][x]
+                var imageData = new Uint8Array(4 * persDatas[thresh].length)
+                segsToPixels2[thresh] = {}
+                for (var x = 0; x < persDatas[thresh].length; x++) {
+                    var segID = persDatas[thresh][x]
                     if (segID > max) {
                         max = segID
                     }
@@ -146,30 +155,34 @@ async function getPersistence() {
                     imageData[x * 4 + 1] = Math.floor((segID % 1000) / 100)
                     imageData[x * 4 + 2] = Math.floor((segID % 100) / 10)
                     imageData[x * 4 + 3] = segID % 10
-                    // if (segsToPixels2[pers[i]][segID]) {
-                    //     segsToPixels2[pers[i]][segID].push(x)
+                    // if (segsToPixels2[thresh][segID]) {
+                    //     segsToPixels2[thresh][segID].push(x)
                     // } else {
-                    //     segsToPixels2[pers[i]][segID] = [x]
+                    //     segsToPixels2[thresh][segID] = [x]
                     // }
                 }
-                segsMax[pers[i]] = max
-                persTextures[pers[i]] = new THREE.DataTexture(
+                segsMax[thresh] = max
+                persTextures[thresh] = new THREE.DataTexture(
                     imageData,
                     regionDimensions[0],
                     regionDimensions[1]
                 )
-                persTextures[pers[i]].needsUpdate = true
-                if (pers[i] == persIndex[params.pers]) {
-                    uniforms.persTexture.value = persTextures[pers[i]]
-                    uniforms.segsMax.value = segsMax[pers[i]]
+                persTextures[thresh].needsUpdate = true
+                if (thresh == persIndex[params.pers]) {
+                    uniforms.persTexture.value = persTextures[thresh]
+                    uniforms.segsMax.value = segsMax[thresh]
                 }
             })
             .catch((error) => {
                 console.log(error)
             })
-    }
+        })
+    )
     console.timeEnd('process')
     isSegmentationDone = true
+    if (isSTLDone) {
+        ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
+    }
 
     if (Developer) {
         _readstateFile()
@@ -333,23 +346,23 @@ viewFolder
     .setValue(8)
     .onChange((value) => {
         params.brushSize = value
-    })
+    }).name("Brush Size")
 
-// viewFolder
-//     .add(
-//         {
-//             x: () => {
-//                 camera.position.set(regionDimensions[0] / 2, regionDimensions[1] / 2, 2000)
-//                 controls.target = new THREE.Vector3(
-//                     regionDimensions[0] / 2,
-//                     regionDimensions[1] / 2,
-//                     -2000
-//                 )
-//             },
-//         },
-//         'x'
-//     )
-//     .name('Camera to Birds Eye View')
+viewFolder
+    .add(
+        {
+            x: () => {
+                camera.position.set(regionDimensions[0] / 2, regionDimensions[1] / 2, 2000)
+                controls.target = new THREE.Vector3(
+                    regionDimensions[0] / 2,
+                    regionDimensions[1] / 2,
+                    -2000
+                )
+            },
+        },
+        'x'
+    )
+    .name('Reset Camera View')
 // viewFolder
 //     .add(
 //         {
@@ -1021,11 +1034,13 @@ satelliteLoader.load(
                     if (x == 3) {
                         scene.add(mesh)
                         console.log(scene)
+                        isSTLDone = true
                     }
                 } else {
                     if (x == 2) {
                         scene.add(mesh)
                         console.log(scene)
+                        isSTLDone = true
                     }
                 }
 
@@ -1040,16 +1055,9 @@ satelliteLoader.load(
             // })
         })
         setTimeout(function () {
-            const checkLoading = () => {
-                if (!isSegmentationDone) {
-                    console.log('loading on progress')
-                    window.setTimeout(checkLoading, 100)
-                } else {
-                    return true
-                }
+            if (isSegmentationDone) {
+                ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
             }
-            checkLoading()
-            ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
             if (!Developer) {
                 ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
             }

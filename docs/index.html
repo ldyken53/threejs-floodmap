@@ -3,11 +3,11 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Terrain Annotation</title>
-        <!-- <link
+        <title>Three.js Flood Annotation</title>
+        <link
             href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
             rel="stylesheet"
-        /> -->
+        />
         <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
@@ -96,7 +96,7 @@
                     <div class="dat-instruction" style="text-align: left">
                         <div class="btn-group btn-group-toggle">
                             <button class="ci btn active">FILL</button>
-                            <button class="ci btn">UNDO</button>
+                            <button class="ci btn">ERASE</button>
                             <p style="margin-left: 5px">
                                 Select between two in UI to either annotate areas or clear previous
                                 annotation with brush options
@@ -118,6 +118,7 @@
                             point
                         </li>
                     </div>
+                    <li>Press <b>t</b> to use the brush tool</li>
                     <li>Press <b>z</b> to undo the most recent annotation</li>
                     <li>Press <b>r</b> to redo the most recent undo</li>
                     <li>Press <b>m</b> to bring this menu back</li>
@@ -131,19 +132,15 @@
 
         <div class="inscene-ui">
             <ul>
-                <li>
-                    <p class="title">Key: Function</p>
-                    <hr />
-                </li>
-                <li id="BFS"><b>f :</b> BFS</li>
-                <li id="polygonSelection"><b>p :</b> Polygon Selection</li>
-                <li id="polygonSelection2"><b>o :</b> Polygon Fill</li>
-                <li id="segEnabled"><b>s :</b> Segmentation Select</li>
-                <li><b>z :</b> Undo</li>
-                <li><b>r :</b> Redo</li>
+                <li id="BFS"><b>f</b> BFS</li>
+                <li id="polygonSelection"><b>p</b> Polygon Selection</li>
+                <li id="polygonSelection2"><b>o</b> Polygon Fill </li>
+                <li id="segEnabled"><b>s</b> Segmentation Select</li>
+                <li><b>z</b> Undo</li>
+                <li><b>r</b> Redo</li>
 
                 <!-- <li>Press <b>s</b> to annotate the full segmentation under current point</li> -->
-                <li><b>m :</b> Menu</li>
+                <li><b>m</b> Menu</li>
                 <!-- <li>Press <b>g</b> to highlight the full segmentation under current point</li> -->
                 <!-- <li>Press <b>d</b> to annotate the connected segmentation under current point</li> -->
             </ul>
