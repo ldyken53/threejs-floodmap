@@ -348,21 +348,21 @@ viewFolder
         params.brushSize = value
     }).name("Brush Size")
 
-// viewFolder
-//     .add(
-//         {
-//             x: () => {
-//                 camera.position.set(regionDimensions[0] / 2, regionDimensions[1] / 2, 2000)
-//                 controls.target = new THREE.Vector3(
-//                     regionDimensions[0] / 2,
-//                     regionDimensions[1] / 2,
-//                     -2000
-//                 )
-//             },
-//         },
-//         'x'
-//     )
-//     .name('Camera to Birds Eye View')
+viewFolder
+    .add(
+        {
+            x: () => {
+                camera.position.set(regionDimensions[0] / 2, regionDimensions[1] / 2, 2000)
+                controls.target = new THREE.Vector3(
+                    regionDimensions[0] / 2,
+                    regionDimensions[1] / 2,
+                    -2000
+                )
+            },
+        },
+        'x'
+    )
+    .name('Reset Camera View')
 // viewFolder
 //     .add(
 //         {
