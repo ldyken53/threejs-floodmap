@@ -94,6 +94,7 @@ if (window.location.hash) {
         var seg = window.location.hash[window.location.hash.search('segmentation') + 13]
         if (seg == '0') {
             document.getElementById('segEnabled')!.style.display = 'none'
+            document.getElementById('segEnabled2')!.style.display = 'none'
             document.getElementById('menuSegmentation')!.style.display = 'none'
             metaState.segEnabled = false
         }

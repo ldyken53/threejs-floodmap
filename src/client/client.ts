@@ -352,12 +352,34 @@ viewFolder
     .add(
         {
             x: () => {
-                camera.position.set(regionDimensions[0] / 2, regionDimensions[1] / 2, 2000)
-                controls.target = new THREE.Vector3(
-                    regionDimensions[0] / 2,
-                    regionDimensions[1] / 2,
-                    -2000
+                new TWEEN.Tween(controls.target)
+                .to(
+                    {
+                        x: (regionBounds[1] + regionBounds[0]) / 2,
+                        y: (regionBounds[2] + regionBounds[3]) / 2,
+                        z: 0,
+                    },
+                    1000
                 )
+                .easing(TWEEN.Easing.Cubic.Out)
+                .onUpdate(() => {
+                    controls.update()
+                })
+                .start()
+                new TWEEN.Tween(camera.position)
+                    .to(
+                        {
+                            x: (regionBounds[1] + regionBounds[0]) / 2,
+                            y: (regionBounds[2] + regionBounds[3]) / 2,
+                            z: 2000,
+                        },
+                        1000
+                    )
+                    .easing(TWEEN.Easing.Cubic.Out)
+                    .onUpdate(() => {
+                        camera.updateProjectionMatrix()
+                    })
+                    .start()
             },
         },
         'x'
