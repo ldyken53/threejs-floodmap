@@ -17,8 +17,10 @@ import {
     gui,
 } from './client'
 import { terrainDimensions } from './constants'
+import * as JSZip from 'jszip'
 // import * as fs from 'fs'
 
+var zip: JSZip = new JSZip()
 const pixelCount = 7617024
 let button1: HTMLButtonElement, button2: HTMLButtonElement
 let button3: HTMLButtonElement, button4: HTMLButtonElement
@@ -68,13 +70,13 @@ let metaState = {
     segEnabled: true,
     region: '1',
     quadrant: 0,
-    flat: 0
+    flat: 0,
 }
 if (window.location.hash) {
     if (window.location.hash.search('region') != -1) {
         metaState.region = window.location.hash[window.location.hash.search('region') + 7]
         if (metaState.region == '4') {
-            alert("Region 4 not supported!")
+            alert('Region 4 not supported!')
         }
     }
     if (window.location.hash.search('BFS') != -1) {
@@ -97,7 +99,9 @@ if (window.location.hash) {
         }
     }
     if (window.location.hash.search('quadrant') != -1) {
-        metaState.quadrant = parseInt(window.location.hash[window.location.hash.search('quadrant') + 9])
+        metaState.quadrant = parseInt(
+            window.location.hash[window.location.hash.search('quadrant') + 9]
+        )
     }
     if (window.location.hash.search('flat') != -1) {
         metaState.flat = parseInt(window.location.hash[window.location.hash.search('flat') + 5])
@@ -113,10 +117,10 @@ if (metaState.quadrant == 1) {
     regionBounds[2] = Math.ceil(regionDimensions[1] / 2)
 } else if (metaState.quadrant == 3) {
     regionBounds[1] = Math.floor(regionDimensions[0] / 2)
-    regionBounds[3] = Math.floor(regionDimensions[1] / 2) 
+    regionBounds[3] = Math.floor(regionDimensions[1] / 2)
 } else if (metaState.quadrant == 4) {
     regionBounds[0] = Math.ceil(regionDimensions[0] / 2)
-    regionBounds[3] = Math.floor(regionDimensions[1] / 2) 
+    regionBounds[3] = Math.floor(regionDimensions[1] / 2)
 }
 
 const sessionData: sessionDataType = {
@@ -232,34 +236,34 @@ function startSession() {
     // ;(event.target as HTMLButtonElement).style.display = 'none'
     sessionData.sessionStart = new Date()
     new TWEEN.Tween(controls.target)
-    .to(
-        {
-            x: (regionBounds[1] + regionBounds[0]) / 2,
-            y: (regionBounds[2] + regionBounds[3]) / 2,
-            z: 0,
-        },
-        1000
-    )
-    .easing(TWEEN.Easing.Cubic.Out)
-    .onUpdate(() => {
-        controls.update()
-    })
-    .start()
+        .to(
+            {
+                x: (regionBounds[1] + regionBounds[0]) / 2,
+                y: (regionBounds[2] + regionBounds[3]) / 2,
+                z: 0,
+            },
+            1000
+        )
+        .easing(TWEEN.Easing.Cubic.Out)
+        .onUpdate(() => {
+            controls.update()
+        })
+        .start()
 
     new TWEEN.Tween(camera.position)
-    .to(
-        {
-            x: (regionBounds[1] + regionBounds[0]) / 2,
-            y: (regionBounds[2] + regionBounds[3]) / 2,
-            z: 1000,
-        },
-        1000
-    )
-    .easing(TWEEN.Easing.Cubic.Out)
-    .onUpdate(() => {
-        camera.updateProjectionMatrix()
-    })
-    .start()
+        .to(
+            {
+                x: (regionBounds[1] + regionBounds[0]) / 2,
+                y: (regionBounds[2] + regionBounds[3]) / 2,
+                z: 1000,
+            },
+            1000
+        )
+        .easing(TWEEN.Easing.Cubic.Out)
+        .onUpdate(() => {
+            camera.updateProjectionMatrix()
+        })
+        .start()
     startUp()
 }
 
@@ -280,20 +284,33 @@ function endSession(event: Event) {
 function downloadSession(event: Event) {
     const _data = JSON.stringify(gameState)
     const _fileName = 'session_' + sessionData.name + '.json'
-    download(_fileName, _data)
+    zip.file(_fileName, _data)
+    // download(_fileName, _data)
     const _metadata = JSON.stringify(sessionData)
     const _metaFileName = 'meta_session_' + sessionData.name + '.json'
-    download(_metaFileName, _metadata)
+    // download(_metaFileName, _metadata)
+    zip.file(_metaFileName, _metadata)
     let imageName = 'annotatedImg.png'
     if (sessionData.name) {
         imageName = 'annotatedImg_' + sessionData.name + '.png'
     }
+
     var url = canvas.toDataURL()
+    var index = url.indexOf(',')
+    if (index !== -1) {
+        url = url.substring(index + 1, url.length)
+    }
+    zip.file(imageName, url, { base64: true })
+    zip.generateAsync({
+        type: 'base64',
+    }).then(function (content) {
+        window.location.href = 'data:application/zip;base64,' + content
+    })
     var link = document.createElement('a')
     link.setAttribute('href', url)
     link.setAttribute('target', '_blank')
     link.setAttribute('download', imageName)
-    link.click()
+    // link.click()
     ;(document.getElementById('uploadForm') as HTMLFormElement).style.display = 'block'
 }
 
