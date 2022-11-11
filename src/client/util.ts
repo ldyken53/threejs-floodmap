@@ -278,7 +278,6 @@ function endSession(event: Event) {
 }
 
 function downloadSession(event: Event) {
-    ;(document.getElementById('download') as HTMLElement).style.display = 'none'
     const _data = JSON.stringify(gameState)
     const _fileName = 'session_' + sessionData.name + '.json'
     download(_fileName, _data)
