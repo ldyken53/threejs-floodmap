@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Bungee&family=Bungee+Spice&family=Roboto:wght@300;400;500&display=swap');
+
 *,
 *:before,
 *:after {
@@ -17,6 +19,10 @@ span,
 button,
 div {
     font-family: 'Roboto', sans-serif !important;
+}
+
+ul {
+    list-style-type: none;
 }
 
 .button_red {
@@ -259,8 +265,23 @@ ul li b {
 
 .inscene-ui ul {
     list-style-type: none;
+    padding-left: 0px;
+    font-size: 14px;
 }
 
 .inscene-ui ul li {
-    padding: 17px 17px 17px 0px;
+    /* padding: 5px 17px 5px 0px; */
+    font-family: 'Bungee', cursive;
+}
+
+.inscene-ui b {
+    background: transparent;
+    box-shadow: none;
+}
+
+.inscene-ui .title {
+    margin: 0px 20px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffa204;
 }
