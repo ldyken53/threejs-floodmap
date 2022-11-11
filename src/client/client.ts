@@ -346,7 +346,7 @@ viewFolder
     .setValue(8)
     .onChange((value) => {
         params.brushSize = value
-    })
+    }).name("Brush Size")
 
 // viewFolder
 //     .add(
