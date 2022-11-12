@@ -377,6 +377,7 @@ function doubleClickHandler(event: MouseEvent) {
 }
 
 function toggleAnnoation() {
+    var ul_button = document.createElement('ul')
     var li = document.createElement('li')
     li.classList.add('customList', 'outList')
     // let span = document.createElement('span')
@@ -398,10 +399,10 @@ function toggleAnnoation() {
     li.appendChild(div)
     button1.addEventListener('click', setActiveButton)
     button2.addEventListener('click', setActiveButton)
-    document.body.appendChild(li)
+    ul_button.appendChild(li)
+    // document.body.appendChild(li)
     var li2 = document.createElement('li')
     li2.classList.add('customList', 'outList2')
-
     let div2 = document.createElement('div')
     div2.classList.add('btn-group', 'btn-group-toggle')
     button3 = document.createElement('button')
@@ -417,7 +418,8 @@ function toggleAnnoation() {
     li2.appendChild(div2)
     button3.addEventListener('click', setActiveButton2)
     button4.addEventListener('click', setActiveButton2)
-    document.body.appendChild(li2)
+    ul_button.appendChild(li2)
+    document.body.appendChild(ul_button)
 }
 
 function updateUniform(input: any) {
