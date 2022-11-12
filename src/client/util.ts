@@ -305,7 +305,15 @@ function downloadSession(event: Event) {
     zip.generateAsync({
         type: 'base64',
     }).then(function (content) {
-        window.location.href = 'data:application/zip;base64,' + content
+        var link = document.createElement('a')
+        link.href = 'data:application/zip;base64,' + content
+        if (sessionData.name == null || sessionData.name == '') {
+            sessionData.name = 'anonymous'
+        }
+        link.download = sessionData.name + '-annotation'
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
     })
     var link = document.createElement('a')
     link.setAttribute('href', url)
