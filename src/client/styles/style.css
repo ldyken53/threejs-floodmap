@@ -263,6 +263,7 @@ ul li b {
     bottom: 20px;
     left: 0px;
     color: wheat;
+    user-select: none;
 }
 
 .inscene-ui ul {
