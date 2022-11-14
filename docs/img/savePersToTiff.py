@@ -16,8 +16,9 @@ from topologytoolkit import (
 
 if __name__ == '__main__':
 
-    pers = [0.02, 0.04, 0.06, 0.08, 0.1]
-    for j in range(1, 10):
+    pers = [0.015, 0.01]
+    regions = [1, 2, 3, 5, 6, 7, 8, 9]
+    for j in regions:
         pread = vtkTIFFReader()
         pread.SetFileName(f"./elevation{j}.tiff")
 
@@ -43,7 +44,7 @@ if __name__ == '__main__':
             tree.Update()
             test = vtk_to_numpy(tree.GetOutput(2).GetPointData().GetArray(2))
             print(j, i, np.max(test))
-            test.astype('int16').tofile(f"segmentation_region{j}_pers{i}")
+            test.astype('int16').tofile(f"segmentation_region{j}_pers{i}.data")
             # response = {"array": test.astype('int16').tolist(), "max": int(np.max(test))}
             # json_object = json.dumps(response)
             # with open(f"segmentation_region{j}_pers{i}.json", "w") as outfile:

@@ -40,7 +40,7 @@ const scene = new THREE.Scene()
 // const blurs = [0, 1, 2];
 // const zs = [100, 200, 300, 400, 500];
 
-const pers = [0.02, 0.04, 0.06, 0.08, 0.1]
+const pers = [0.01, 0.015, 0.02, 0.04, 0.06, 0.08, 0.1]
 // const pers = [0.06]
 var meshes: { [key: string]: Mesh } = {}
 
@@ -249,7 +249,9 @@ let persIndex : {[key: number]: number}= {
     2: 0.08,
     3: 0.06,
     4: 0.04,
-    5: 0.02
+    5: 0.02,
+    6: 0.015,
+    7: 0.01
 }
 // var persIndex = persToIndex[params.pers];
 
@@ -313,7 +315,7 @@ viewFolder
     .name('Show Annotation')
 if (metaState.segEnabled) {
     viewFolder
-    .add(params, 'pers', 1, 5, 1)
+    .add(params, 'pers', 1, 7, 1)
     .onFinishChange(() => {
         uniforms.persTexture.value = persTextures[persIndex[params.pers]]
         uniforms.segsMax.value = segsMax[persIndex[params.pers]]
@@ -352,12 +354,34 @@ viewFolder
     .add(
         {
             x: () => {
-                camera.position.set(regionDimensions[0] / 2, regionDimensions[1] / 2, 2000)
-                controls.target = new THREE.Vector3(
-                    regionDimensions[0] / 2,
-                    regionDimensions[1] / 2,
-                    -2000
+                new TWEEN.Tween(controls.target)
+                .to(
+                    {
+                        x: (regionBounds[1] + regionBounds[0]) / 2,
+                        y: (regionBounds[2] + regionBounds[3]) / 2,
+                        z: 0,
+                    },
+                    1000
                 )
+                .easing(TWEEN.Easing.Cubic.Out)
+                .onUpdate(() => {
+                    controls.update()
+                })
+                .start()
+                new TWEEN.Tween(camera.position)
+                    .to(
+                        {
+                            x: (regionBounds[1] + regionBounds[0]) / 2,
+                            y: (regionBounds[2] + regionBounds[3]) / 2,
+                            z: 2000,
+                        },
+                        1000
+                    )
+                    .easing(TWEEN.Easing.Cubic.Out)
+                    .onUpdate(() => {
+                        camera.updateProjectionMatrix()
+                    })
+                    .start()
             },
         },
         'x'

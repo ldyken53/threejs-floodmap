@@ -107,9 +107,9 @@
 
                 <ul style="text-align: left">
                     <div id="menuBFS">
-                        <li>Press <b>f</b> to run point BFS from current point</li>
+                        <li>Press <b>f</b> to annotate current point and connected down/up-stream pixels</li>
                         <li>Press <b>p</b> to select points for polygon selection</li>
-                        <li>Press <b>o</b> to annotate with BFS on the selected polygon</li>
+                        <li>Press <b>o</b> to annotate selected polygon and connected down/up-stream pixels</li>
                     </div>
                     <div id="menuSegmentation">
                         <li>Press <b>g</b> to highlight the segmentation under current point</li>
@@ -120,7 +120,7 @@
                     </div>
                     <li>Press <b>t</b> to use the brush tool</li>
                     <li>Press <b>z</b> to undo the most recent annotation</li>
-                    <li>Press <b>r</b> to redo the most recent undo</li>
+                    <li>Press <b>r</b> to redo the most recent undo or erase</li>
                     <li>Press <b>m</b> to bring this menu back</li>
                     <!-- <li>
                         Press <b>d</b> to annotate the connected segmentation under current point
@@ -132,10 +132,12 @@
 
         <div class="inscene-ui">
             <ul>
-                <li id="BFS"><b>f</b> BFS</li>
+                <li id="BFS"><b>f</b> Area Fill</li>
                 <li id="polygonSelection"><b>p</b> Polygon Selection</li>
                 <li id="polygonSelection2"><b>o</b> Polygon Fill </li>
-                <li id="segEnabled"><b>s</b> Segmentation Select</li>
+                <li id="segEnabled"><b>g</b> Segmentation Highlight</li>
+                <li id="segEnabled2"><b>s</b> Segmentation Fill</li>
+                <li><b>t</b> Brush Fill</li>
                 <li><b>z</b> Undo</li>
                 <li><b>r</b> Redo</li>
 
