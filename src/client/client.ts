@@ -684,7 +684,6 @@ function hoverHandler() {
 }
 
 function BFSHandler(x: number, y: number, flood: boolean, clear: boolean) {
-    logMyState('f', 'BFS', flood, clear, camera, pointer, x, y)
     sessionData.numberofClick++
     visited = new Map()
     var type = 'BFS_Hill'
@@ -697,6 +696,7 @@ function BFSHandler(x: number, y: number, flood: boolean, clear: boolean) {
         color = 'clear'
     }
     BFS(x, y, type, color)
+    logMyState('f', 'BFS', flood, clear, camera, pointer, x, y)
 }
 
 function brushHandler(key: string, x: number, y: number, flood: boolean, clear: boolean) {
@@ -760,18 +760,6 @@ function polygonFillHandler(flood: boolean, clear: boolean, linePoints?: Array<n
     }
     context!.fillStyle = color
     context!.beginPath()
-    logMyState(
-        'o',
-        'polygonFill',
-        flood,
-        clear,
-        camera,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        polyPoints
-    )
     context!.moveTo(polyPoints[0], regionDimensions[1] - 1 - polyPoints[1])
     for (var i = 2; i < polyPoints.length; i += 2) {
         context!.lineTo(polyPoints[i], regionDimensions[1] - 1 - polyPoints[i + 1])
@@ -857,6 +845,18 @@ function polygonFillHandler(flood: boolean, clear: boolean, linePoints?: Array<n
     for (var i = 0; i < linePixels.length; i += 2) {
         BFS(linePixels[i], linePixels[i + 1], type, color)
     }
+    logMyState(
+        'o',
+        'polygonFill',
+        flood,
+        clear,
+        camera,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        polyPoints
+    )
     polyPoints = []
     annotationTexture.needsUpdate = true
 }
@@ -871,8 +871,8 @@ function segAnnotationHandler(key: string, x: number, y: number, flood: boolean,
         color = 'clear'
     }
     context!.fillStyle = color
-    logMyState(key, 'segmentation', flood, clear, camera, pointer, x, y)
     segSelect(x, y, color)
+    logMyState(key, 'segmentation', flood, clear, camera, pointer, x, y)
 }
 
 function connectedSegAnnotationHandler(
@@ -883,8 +883,8 @@ function connectedSegAnnotationHandler(
     clear: boolean
 ) {
     sessionData.numberofClick++
-    logMyState(key, 'connectedSegmentation', flood, clear, camera, pointer, x, y)
     connectedSegSelect(x, y, flood, clear)
+    logMyState(key, 'connectedSegmentation', flood, clear, camera, pointer, x, y)
 }
 
 let [lastX, lastY] = [0, 0]

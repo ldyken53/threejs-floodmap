@@ -57,6 +57,7 @@ interface gameEventType {
     cameraPosition: THREE.Vector3
     targetPosition: THREE.Vector3
     time: Date
+    annotatedPixelCount?: number
 }
 
 interface gameStateType {
@@ -176,6 +177,7 @@ function logMyState(
             cameraPosition: camera.position.clone(),
             targetPosition: controls.target.clone(),
             time: new Date(),
+            annotatedPixelCount: sessionData.annotatedPixelCount
         }
     }
 
@@ -190,6 +192,7 @@ function logMyState(
             targetPosition: controls.target.clone(),
             time: new Date(),
             linePoints: linePoints,
+            annotatedPixelCount: sessionData.annotatedPixelCount
         }
     } else {
         stateData = {
@@ -206,6 +209,7 @@ function logMyState(
             time: new Date(),
             brushSize: brushSize,
             persistanceThreshold: params.pers,
+            annotatedPixelCount: sessionData.annotatedPixelCount
         }
     }
     gameState.push({ mouseEvent: stateData })
@@ -277,7 +281,7 @@ function endSession(event: Event) {
         sessionData.sessionStart!.valueOf() - sessionData.sessionEnd!.valueOf()
     )
     sessionData['totalSessionTime_M:S:MS'] = convertToSecMins(totalSessionTime)
-    if (sessionData.annotatedPixelCount > 0.9 * pixelCount) {
+    if (sessionData.annotatedPixelCount > 0.75 * pixelCount) {
         sessionData.wasCompleted = true
     }
 }
