@@ -24,7 +24,7 @@ import './styles/style.css'
 import * as tiff from 'tiff'
 import { Console } from 'console'
 
-let Developer = false
+let Developer = true
 let overRideControl = false
 var data: Float32Array
 
@@ -71,9 +71,13 @@ let eventFunction: { [key: string]: any } = {
         connectedSegAnnotationHandler('s', x, y, flood, clear),
 }
 if (Developer) {
-    ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'none'
+    function delay(time : number) {
+        return new Promise(resolve => setTimeout(resolve, time));
+      }
+
     _readstateFile = async () => {
         const array = await readstateFile()
+        console.log("test")
         let startUp = array[0].start
         let _cameraPosition = startUp.cameraPosition
         let _target = startUp.targetPosition
@@ -81,12 +85,13 @@ if (Developer) {
         controls.target.set(_target.x, _target.y, _target.z)
         controls.update()
         for (let i = 1, _length = array.length; i < _length; i++) {
+            await delay(100)
             let event = array[i].mouseEvent
-            let _cameraPosition = event.cameraPosition
-            let _target = event.targetPosition
-            camera.position.set(_cameraPosition.x, _cameraPosition.y, _cameraPosition.z)
-            controls.target.set(_target.x, _target.y, _target.z)
-            controls.update()
+            // let _cameraPosition = event.cameraPosition
+            // let _target = event.targetPosition
+            // camera.position.set(_cameraPosition.x, _cameraPosition.y, _cameraPosition.z)
+            // controls.target.set(_target.x, _target.y, _target.z)
+            // controls.update()
             let x, y, flood, clear
             if (event.x == undefined) {
                 x = 0
@@ -182,10 +187,6 @@ async function getPersistence() {
     isSegmentationDone = true
     if (isSTLDone) {
         ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
-    }
-
-    if (Developer) {
-        _readstateFile()
     }
 }
 getPersistence()
@@ -1031,6 +1032,7 @@ function startUp() {
         ;(document.getElementById('uploadForm') as HTMLFormElement).style.display = 'none'
         ;(document.getElementById('download') as HTMLElement).style.display = 'block'
     })
+    _readstateFile()
 }
 
 const satelliteLoader = new THREE.TextureLoader()
@@ -1082,9 +1084,7 @@ satelliteLoader.load(
             if (isSegmentationDone) {
                 ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
             }
-            if (!Developer) {
-                ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
-            }
+            ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
             // isModelLoaded = true
         }, 5000)
     },
@@ -1109,7 +1109,7 @@ function animate() {
         camera.position.z = 100
         camera.updateProjectionMatrix()
     }
-    if (!Developer || overRideControl) {
+    if (!overRideControl) {
         controls.update()
     }
     TWEEN.update()
@@ -1158,5 +1158,5 @@ export {
     scene,
     params,
     uniforms,
-    gui,
+    gui
 }
