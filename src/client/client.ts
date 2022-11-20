@@ -77,16 +77,20 @@ if (Developer) {
 
     _readstateFile = async () => {
         const array = await readstateFile()
-        console.log("test")
         let startUp = array[0].start
         let _cameraPosition = startUp.cameraPosition
         let _target = startUp.targetPosition
         camera.position.set(_cameraPosition.x, _cameraPosition.y, _cameraPosition.z)
         controls.target.set(_target.x, _target.y, _target.z)
         controls.update()
-        for (let i = 1, _length = array.length; i < _length; i++) {
-            await delay(100)
+        for (let i = 1; i < array.length; i++) {
             let event = array[i].mouseEvent
+            if (event.label != "brush") {
+                await delay(50)
+            }
+            if (i % 1000 == 0) {
+                console.log(i / array.length)
+            }
             // let _cameraPosition = event.cameraPosition
             // let _target = event.targetPosition
             // camera.position.set(_cameraPosition.x, _cameraPosition.y, _cameraPosition.z)
@@ -96,14 +100,12 @@ if (Developer) {
             if (event.x == undefined) {
                 x = 0
                 y = 0
-                flood = true
-                clear = false
             } else {
                 x = event.x
                 y = event.y
-                flood = event.flood
-                clear = event.clear
             }
+            flood = event.flood
+            clear = event.clear
             if (event.brushSize) {
                 params.brushSize = event.brushSize
             }
