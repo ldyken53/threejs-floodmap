@@ -159,7 +159,8 @@ function logMyState(
     x?: number,
     y?: number,
     brushSize?: number,
-    linePoints?: Array<number>
+    linePoints?: Array<number>,
+    time?: Date
 ) {
     let tempS: string = event
 
@@ -176,7 +177,7 @@ function logMyState(
             aspectRatio: camera.aspect,
             cameraPosition: camera.position.clone(),
             targetPosition: controls.target.clone(),
-            time: new Date(),
+            time: time ? time : new Date(),
             annotatedPixelCount: sessionData.annotatedPixelCount
         }
     }
@@ -190,7 +191,7 @@ function logMyState(
             keyPressed: key,
             cameraPosition: camera.position.clone(),
             targetPosition: controls.target.clone(),
-            time: new Date(),
+            time: time ? time : new Date(),
             linePoints: linePoints,
             annotatedPixelCount: sessionData.annotatedPixelCount
         }
@@ -206,7 +207,7 @@ function logMyState(
             aspectRatio: camera.aspect,
             cameraPosition: camera.position.clone(),
             targetPosition: controls.target.clone(),
-            time: new Date(),
+            time: time ? time : new Date(),
             brushSize: brushSize,
             persistanceThreshold: params.pers,
             annotatedPixelCount: sessionData.annotatedPixelCount
@@ -215,7 +216,9 @@ function logMyState(
     gameState.push({ mouseEvent: stateData })
 }
 
-function download(filename: string, text: string) {
+function checkpoint() {
+    const text = JSON.stringify(gameState)
+    const filename = 'checkpoint_' + sessionData.name + '.json'
     var element = document.createElement('a')
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text))
     element.setAttribute('download', filename)
@@ -239,7 +242,19 @@ function resetCamera(controls: any) {
 function startSession() {
     // event.preventDefault()
     // ;(event.target as HTMLButtonElement).style.display = 'none'
-    sessionData.sessionStart = new Date()
+    let startStateData = {
+        label: 'start',
+        aspectRatio: camera.aspect,
+        cameraPosition: camera.position.clone(),
+        targetPosition: controls.target.clone(),
+        time: new Date(),
+        flood: true,
+        clear: false,
+    }
+    gameState.push({ start: startStateData })
+    if (!sessionData.sessionStart) {
+        sessionData.sessionStart = new Date()
+    }
     new TWEEN.Tween(controls.target)
         .to(
             {
@@ -469,6 +484,7 @@ function init() {
     // document.getElementById('start')?.addEventListener('click', startSession)
     document.getElementById('end')?.addEventListener('click', endSession)
     document.getElementById('download')?.addEventListener('click', downloadSession)
+    document.getElementById('checkpoint')?.addEventListener('click', checkpoint)
     document.getElementById('exploration')?.addEventListener('click', hideModal)
     toggleAnnoation()
     renderer.domElement.addEventListener('dblclick', doubleClickHandler, true)

@@ -24,7 +24,7 @@ import './styles/style.css'
 import * as tiff from 'tiff'
 import { Console } from 'console'
 
-let Developer = true
+let Developer = false
 let overRideControl = false
 var data: Float32Array
 
@@ -51,7 +51,7 @@ if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
     host = "https://floodmap.b-cdn.net/"
 }
 
-let _readstateFile: () => {}
+
 let eventFunction: { [key: string]: any } = {
     BFS: (x: number, y: number, flood: boolean, clear: boolean) => BFSHandler(x, y, flood, clear),
     brush: (x: number, y: number, flood: boolean, clear: boolean) =>
@@ -70,52 +70,74 @@ let eventFunction: { [key: string]: any } = {
     connectedSegmentation: (x: number, y: number, flood: boolean, clear: boolean) =>
         connectedSegAnnotationHandler('s', x, y, flood, clear),
 }
-if (Developer) {
-    function delay(time : number) {
-        return new Promise(resolve => setTimeout(resolve, time));
-      }
 
-    _readstateFile = async () => {
-        const array = await readstateFile()
-        let startUp = array[0].start
-        let _cameraPosition = startUp.cameraPosition
-        let _target = startUp.targetPosition
-        camera.position.set(_cameraPosition.x, _cameraPosition.y, _cameraPosition.z)
-        controls.target.set(_target.x, _target.y, _target.z)
-        controls.update()
-        for (let i = 1; i < array.length; i++) {
-            let event = array[i].mouseEvent
-            if (event.label != "brush") {
-                await delay(50)
-            }
-            if (i % 1000 == 0) {
-                console.log(i / array.length)
-            }
-            // let _cameraPosition = event.cameraPosition
-            // let _target = event.targetPosition
-            // camera.position.set(_cameraPosition.x, _cameraPosition.y, _cameraPosition.z)
-            // controls.target.set(_target.x, _target.y, _target.z)
-            // controls.update()
-            let x, y, flood, clear
-            if (event.x == undefined) {
-                x = 0
-                y = 0
-            } else {
-                x = event.x
-                y = event.y
-            }
-            flood = event.flood
-            clear = event.clear
-            if (event.brushSize) {
-                params.brushSize = event.brushSize
-            }
-            if (event.persistanceThreshold) {
-                params.pers = event.persistanceThreshold
-            }
-            eventFunction[event.label](x, y, flood, clear, event.linePoints)
+function delay(time : number) {
+    return new Promise(resolve => setTimeout(resolve, time));
+    }
+
+let time : Date | undefined = undefined;
+
+let _readstateFile = async (array : any[]) => {
+    sessionData.sessionStart = new Date(array[0].start.time)
+    for (let i = 0; i < array.length; i++) {
+        if (array[i].start) {
+            gameState.push({ start: array[i].start })
+            continue
         }
+        let event = array[i].mouseEvent
+        // if (event.label != "brush") {
+        //     await delay(50)
+        // }
+        // if (i % 1000 == 0) {
+        //     console.log(i / array.length)
+        // }
+        // let _cameraPosition = event.cameraPosition
+        // let _target = event.targetPosition
+        // camera.position.set(_cameraPosition.x, _cameraPosition.y, _cameraPosition.z)
+        // controls.target.set(_target.x, _target.y, _target.z)
+        // controls.update()
+        let x, y, flood, clear
+        if (event.x == undefined) {
+            x = 0
+            y = 0
+        } else {
+            x = event.x
+            y = event.y
+        }
+        flood = event.flood
+        clear = event.clear
+        if (event.brushSize) {
+            params.brushSize = event.brushSize
+        }
+        if (event.persistanceThreshold) {
+            params.pers = event.persistanceThreshold
+        }
+        time = event.time;
+        eventFunction[event.label](x, y, flood, clear, event.linePoints)
+    }
+    time = undefined
+}
+
+;(document.getElementById('upload') as HTMLElement).oninput = () => {
+    if ((document.getElementById('upload') as HTMLInputElement).files) {
+        let file = (document.getElementById('upload') as HTMLInputElement).files![0];
+        ;(document.getElementById('loader') as HTMLElement).style.display = 'block'
+        ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'none'
+        var fr = new FileReader()
+
+        fr.onload = async function(e) { 
+            var result = JSON.parse(e.target!.result as string)
+            console.log(result)
+            await _readstateFile(result)
+            ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
+            ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
+        }
+      
+        fr.readAsText(file)
+        ;(document.getElementById('upload') as HTMLInputElement).files = null
     }
 }
+
 
 fetch(`${host}img/elevation${metaState.region}.tiff`).then((res) =>
     res.arrayBuffer().then(function (arr) {
@@ -188,7 +210,12 @@ async function getPersistence() {
     console.timeEnd('process')
     isSegmentationDone = true
     if (isSTLDone) {
+        if (Developer) {
+            const array = await readstateFile()
+            await _readstateFile(array)
+        }
         ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
+        ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
     }
 }
 getPersistence()
@@ -699,7 +726,7 @@ function BFSHandler(x: number, y: number, flood: boolean, clear: boolean) {
         color = 'clear'
     }
     BFS(x, y, type, color)
-    logMyState('f', 'BFS', flood, clear, camera, pointer, x, y)
+    logMyState('f', 'BFS', flood, clear, camera, pointer, x, y, undefined, undefined, time)
 }
 
 function brushHandler(key: string, x: number, y: number, flood: boolean, clear: boolean) {
@@ -727,7 +754,7 @@ function brushHandler(key: string, x: number, y: number, flood: boolean, clear: 
     }
     annotationTexture.needsUpdate = true
     // uniforms.annotationTexture.value = annotationTexture
-    logMyState(key, 'brush', flood, clear, camera, pointer, x, y, params.brushSize)
+    logMyState(key, 'brush', flood, clear, camera, pointer, x, y, params.brushSize, undefined, time)
 }
 
 function polygonSelectionHandler(x: number, y: number, flood: boolean, clear: boolean) {
@@ -746,7 +773,7 @@ function polygonSelectionHandler(x: number, y: number, flood: boolean, clear: bo
         context!.fillRect(x - 2, regionDimensions[1] - 1 - y - 2, 4, 4)
         sessionData.annotatedPixelCount += 16 //follow this with the line selection to minimize the double counting
     }
-    logMyState('p', 'polygonSelector', flood, clear, camera, pointer, x, y, params.brushSize)
+    logMyState('p', 'polygonSelector', flood, clear, camera, pointer, x, y, params.brushSize, undefined, time)
     annotationTexture.needsUpdate = true
 }
 
@@ -858,7 +885,8 @@ function polygonFillHandler(flood: boolean, clear: boolean, linePoints?: Array<n
         undefined,
         undefined,
         undefined,
-        polyPoints
+        polyPoints,
+        time
     )
     polyPoints = []
     annotationTexture.needsUpdate = true
@@ -875,7 +903,7 @@ function segAnnotationHandler(key: string, x: number, y: number, flood: boolean,
     }
     context!.fillStyle = color
     segSelect(x, y, color)
-    logMyState(key, 'segmentation', flood, clear, camera, pointer, x, y)
+    logMyState(key, 'segmentation', flood, clear, camera, pointer, x, y, undefined, undefined, time)
 }
 
 function connectedSegAnnotationHandler(
@@ -887,7 +915,7 @@ function connectedSegAnnotationHandler(
 ) {
     sessionData.numberofClick++
     connectedSegSelect(x, y, flood, clear)
-    logMyState(key, 'connectedSegmentation', flood, clear, camera, pointer, x, y)
+    logMyState(key, 'connectedSegmentation', flood, clear, camera, pointer, x, y, undefined, undefined, time)
 }
 
 let [lastX, lastY] = [0, 0]
@@ -1026,7 +1054,7 @@ const onKeyUp = (event: KeyboardEvent) => {
     }
 }
 
-function startUp() {
+async function startUp() {
     window.addEventListener('mousemove', onMouseMove)
     window.addEventListener('keydown', onKeyPress)
     window.addEventListener('keyup', onKeyUp)
@@ -1034,7 +1062,6 @@ function startUp() {
         ;(document.getElementById('uploadForm') as HTMLFormElement).style.display = 'none'
         ;(document.getElementById('download') as HTMLElement).style.display = 'block'
     })
-    _readstateFile()
 }
 
 const satelliteLoader = new THREE.TextureLoader()
@@ -1082,11 +1109,15 @@ satelliteLoader.load(
             //     console.log(error)
             // })
         })
-        setTimeout(function () {
+        setTimeout(async function () {
             if (isSegmentationDone) {
+                if (Developer) {
+                    const array = await readstateFile()
+                    await _readstateFile(array)
+                }
                 ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
+                ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
             }
-            ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
             // isModelLoaded = true
         }, 5000)
     },
@@ -1124,19 +1155,6 @@ function render() {
     renderer.render(scene, camera)
 }
 
-function startState() {
-    let startStateData = {
-        label: 'start',
-        aspectRatio: camera.aspect,
-        cameraPosition: camera.position.clone(),
-        targetPosition: controls.target.clone(),
-        time: new Date(),
-        flood: true,
-        clear: false,
-    }
-    gameState.push({ start: startStateData })
-}
-
 function getCameraLastStage() {
     return {
         position: camera.position.clone(),
@@ -1144,7 +1162,6 @@ function getCameraLastStage() {
     }
 }
 
-startState()
 animate()
 
 export {
