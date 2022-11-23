@@ -6,6 +6,7 @@ import { terrainShader } from './shaders/terrain-shader'
 import { GUI } from 'dat.gui'
 import { Mesh } from 'three'
 import axios from 'axios'
+import Stats from 'three/examples/jsm/libs/stats.module'
 import {
     metaState,
     init,
@@ -17,12 +18,11 @@ import {
     readstateFile,
     toggleAnnoation,
     regionBounds,
-    regionDimensions
+    regionDimensions,
 } from './util'
 import { terrainDimensions } from './constants'
 import './styles/style.css'
 import * as tiff from 'tiff'
-import { Console } from 'console'
 
 let Developer = false
 let overRideControl = false
@@ -44,11 +44,11 @@ const pers = [0.01, 0.015, 0.02, 0.04, 0.06, 0.08, 0.1]
 // const pers = [0.06]
 var meshes: { [key: string]: Mesh } = {}
 
-let host = ""
-if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
-    host = ""
+let host = ''
+if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+    host = ''
 } else {
-    host = "https://floodmap.b-cdn.net/"
+    host = 'https://floodmap.b-cdn.net/'
 }
 
 let _readstateFile: () => {}
@@ -70,6 +70,15 @@ let eventFunction: { [key: string]: any } = {
     connectedSegmentation: (x: number, y: number, flood: boolean, clear: boolean) =>
         connectedSegAnnotationHandler('s', x, y, flood, clear),
 }
+function sleep(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+const stats_mb = Stats()
+stats_mb.showPanel(2)
+stats_mb.domElement.style.cssText = 'position:absolute;top:250px;right:50px;'
+document.body.appendChild(stats_mb.domElement)
+
 if (Developer) {
     ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'none'
     _readstateFile = async () => {
@@ -106,6 +115,7 @@ if (Developer) {
                 params.pers = event.persistanceThreshold
             }
             eventFunction[event.label](x, y, flood, clear, event.linePoints)
+            sleep(100)
         }
     }
 }
@@ -132,53 +142,40 @@ var persTextures: { [key: number]: THREE.Texture } = {}
 var segsMax: { [key: number]: number } = {}
 let mappedMaxMap: { [key: number]: number } = {}
 async function getPersistence() {
-    // axios
-    //     .get(`http://localhost:5000/test`)
-    console.time('process')
     await Promise.all(
         pers.map(async (thresh) => {
             await fetch(`${host}img/segmentation_region${metaState.region}_pers${thresh}.data`)
-            .then((r) => r.arrayBuffer())
-            .then((response) => {
-                persDatas[thresh] = new Int16Array(response)
-                // segsMax[thresh] = response.data[thresh].max
-                // persDatas[thresh] = response.data[thresh].array
-                var max = 0
-                var imageData = new Uint8Array(4 * persDatas[thresh].length)
-                segsToPixels2[thresh] = {}
-                for (var x = 0; x < persDatas[thresh].length; x++) {
-                    var segID = persDatas[thresh][x]
-                    if (segID > max) {
-                        max = segID
+                .then((r) => r.arrayBuffer())
+                .then((response) => {
+                    persDatas[thresh] = new Int16Array(response)
+                    var max = 0
+                    var imageData = new Uint8Array(4 * persDatas[thresh].length)
+                    segsToPixels2[thresh] = {}
+                    for (var x = 0; x < persDatas[thresh].length; x++) {
+                        var segID = persDatas[thresh][x]
+                        if (segID > max) {
+                            max = segID
+                        }
+                        imageData[x * 4] = Math.floor(segID / 1000)
+                        imageData[x * 4 + 1] = Math.floor((segID % 1000) / 100)
+                        imageData[x * 4 + 2] = Math.floor((segID % 100) / 10)
+                        imageData[x * 4 + 3] = segID % 10
                     }
-                    imageData[x * 4] = Math.floor(segID / 1000)
-                    imageData[x * 4 + 1] = Math.floor((segID % 1000) / 100)
-                    imageData[x * 4 + 2] = Math.floor((segID % 100) / 10)
-                    imageData[x * 4 + 3] = segID % 10
-                    // if (segsToPixels2[thresh][segID]) {
-                    //     segsToPixels2[thresh][segID].push(x)
-                    // } else {
-                    //     segsToPixels2[thresh][segID] = [x]
-                    // }
-                }
-                segsMax[thresh] = max
-                persTextures[thresh] = new THREE.DataTexture(
-                    imageData,
-                    regionDimensions[0],
-                    regionDimensions[1]
-                )
-                persTextures[thresh].needsUpdate = true
-                if (thresh == persIndex[params.pers]) {
-                    uniforms.persTexture.value = persTextures[thresh]
-                    uniforms.segsMax.value = segsMax[thresh]
-                }
-            })
-            .catch((error) => {
-                console.log(error)
-            })
+                    segsMax[thresh] = max
+                    persTextures[thresh] = new THREE.DataTexture(
+                        imageData,
+                        regionDimensions[0],
+                        regionDimensions[1]
+                    )
+                    persTextures[thresh].needsUpdate = true
+                    if (thresh == persIndex[params.pers]) {
+                        uniforms.persTexture.value = persTextures[thresh]
+                        uniforms.segsMax.value = segsMax[thresh]
+                    }
+                })
+                .catch((error) => {})
         })
     )
-    console.timeEnd('process')
     isSegmentationDone = true
     if (isSTLDone) {
         ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
@@ -195,15 +192,8 @@ persLoader.load(
         uniforms.colormap.value = texture
     },
     undefined,
-    function (err) {
-        console.error('An error happened.')
-    }
+    function (err) {}
 )
-// const light = new THREE.SpotLight()
-// light.position.set(4000, 4000, 20)
-// scene.add(light)
-// const ambient = new THREE.AmbientLight( 0x404040 ); // soft white light
-// scene.add( ambient );
 
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 5000)
 camera.position.set(regionDimensions[0] / 2, regionDimensions[1] / 2, 2000)
@@ -244,14 +234,14 @@ var params = {
     dry: false,
     clear: false,
 }
-let persIndex : {[key: number]: number}= {
+let persIndex: { [key: number]: number } = {
     1: 0.1,
     2: 0.08,
     3: 0.06,
     4: 0.04,
     5: 0.02,
     6: 0.015,
-    7: 0.01
+    7: 0.01,
 }
 // var persIndex = persToIndex[params.pers];
 
@@ -269,39 +259,24 @@ var uniforms = {
     dimensions: { type: 'vec2', value: regionDimensions },
     dry: { type: 'bool', value: params.dry },
     flood: { type: 'bool', value: params.flood },
-    quadrant: { value: metaState.quadrant }
+    quadrant: { value: metaState.quadrant },
 }
 const viewFolder = gui.addFolder('Settings')
 
-// viewFolder
-//     .add(params, 'flood')
-//     .onChange(() => {
-//         params.dry = !params.flood
-//         viewFolder.updateDisplay()
-//     })
-//     .name('Annotate Flood')
-
-// viewFolder
-//     .add(params, 'dry')
-//     .onChange(() => {
-//         params.flood = !params.dry
-//         viewFolder.updateDisplay()
-//     })
-//     .name('Annotate Dry Area')
 if (metaState.flat == 0) {
     viewFolder
-    .add(params, 'dimension')
-    .onChange(() => {
-        scene.remove(scene.children[0])
-        if (params.dimension) {
-            uniforms.z.value = 500
-            scene.add(meshes[3])
-        } else {
-            uniforms.z.value = 0
-            scene.add(meshes[2])
-        }
-    })
-    .name('3D View')
+        .add(params, 'dimension')
+        .onChange(() => {
+            scene.remove(scene.children[0])
+            if (params.dimension) {
+                uniforms.z.value = 500
+                scene.add(meshes[3])
+            } else {
+                uniforms.z.value = 0
+                scene.add(meshes[2])
+            }
+        })
+        .name('3D View')
 }
 viewFolder
     .add(params, 'annotation')
@@ -315,12 +290,12 @@ viewFolder
     .name('Show Annotation')
 if (metaState.segEnabled) {
     viewFolder
-    .add(params, 'pers', 1, 7, 1)
-    .onFinishChange(() => {
-        uniforms.persTexture.value = persTextures[persIndex[params.pers]]
-        uniforms.segsMax.value = segsMax[persIndex[params.pers]]
-    })
-    .name('Segmentation Detail')
+        .add(params, 'pers', 1, 7, 1)
+        .onFinishChange(() => {
+            uniforms.persTexture.value = persTextures[persIndex[params.pers]]
+            uniforms.segsMax.value = segsMax[persIndex[params.pers]]
+        })
+        .name('Segmentation Detail')
     viewFolder
         .add(params, 'persShow')
         .onChange(() => {
@@ -348,26 +323,27 @@ viewFolder
     .setValue(8)
     .onChange((value) => {
         params.brushSize = value
-    }).name("Brush Size")
+    })
+    .name('Brush Size')
 
 viewFolder
     .add(
         {
             x: () => {
                 new TWEEN.Tween(controls.target)
-                .to(
-                    {
-                        x: (regionBounds[1] + regionBounds[0]) / 2,
-                        y: (regionBounds[2] + regionBounds[3]) / 2,
-                        z: 0,
-                    },
-                    1000
-                )
-                .easing(TWEEN.Easing.Cubic.Out)
-                .onUpdate(() => {
-                    controls.update()
-                })
-                .start()
+                    .to(
+                        {
+                            x: (regionBounds[1] + regionBounds[0]) / 2,
+                            y: (regionBounds[2] + regionBounds[3]) / 2,
+                            z: 0,
+                        },
+                        1000
+                    )
+                    .easing(TWEEN.Easing.Cubic.Out)
+                    .onUpdate(() => {
+                        controls.update()
+                    })
+                    .start()
                 new TWEEN.Tween(camera.position)
                     .to(
                         {
@@ -387,81 +363,9 @@ viewFolder
         'x'
     )
     .name('Reset Camera View')
-// viewFolder
-//     .add(
-//         {
-//             x: () => {
-//                 camera.position.set(-500, regionDimensions[1] / 2, 500)
-//                 camera.up.set(0, 0, 1)
-//                 controls.dispose()
-//                 controls = new OrbitControls(camera, renderer.domElement)
-//                 controls.target = new THREE.Vector3(
-//                     regionDimensions[0] / 2,
-//                     regionDimensions[1] / 2,
-//                     -1000
-//                 )
-//             },
-//         },
-//         'x'
-//     )
-//     .name('Camera to Left View')
-// viewFolder
-//     .add(
-//         {
-//             x: () => {
-//                 camera.position.set(regionDimensions[0] + 500, regionDimensions[1] / 2, 500)
-//                 camera.up.set(0, 0, 1)
-//                 controls.dispose()
-//                 controls = new OrbitControls(camera, renderer.domElement)
-//                 controls.target = new THREE.Vector3(
-//                     regionDimensions[0] / 2,
-//                     regionDimensions[1] / 2,
-//                     -1000
-//                 )
-//             },
-//         },
-//         'x'
-//     )
-//     .name('Camera to Right View')
-// viewFolder
-//     .add(
-//         {
-//             x: () => {
-//                 camera.position.set(regionDimensions[0] / 2, regionDimensions[1] + 500, 500)
-//                 camera.up.set(0, 0, 1)
-//                 controls.dispose()
-//                 controls = new OrbitControls(camera, renderer.domElement)
-//                 controls.target = new THREE.Vector3(
-//                     regionDimensions[0] / 2,
-//                     regionDimensions[1] / 2,
-//                     -1000
-//                 )
-//             },
-//         },
-//         'x'
-//     )
-//     .name('Camera to Top View')
-// viewFolder
-//     .add(
-//         {
-//             x: () => {
-//                 camera.position.set(regionDimensions[0] / 2, -500, 500)
-//                 camera.up.set(0, 0, 1)
-//                 controls.dispose()
-//                 controls = new OrbitControls(camera, renderer.domElement)
-//                 controls.target = new THREE.Vector3(
-//                     regionDimensions[0] / 2,
-//                     regionDimensions[1] / 2,
-//                     -1000
-//                 )
-//             },
-//         },
-//         'x'
-//     )
-//     .name('Camera to Bottom View')
+
 
 viewFolder.open()
-// meshFolder.open()
 
 function segSelect(x: number, y: number, color: string) {
     context!.fillStyle = color
@@ -528,29 +432,21 @@ const searchFunction = {
     },
     BFS_Segment: {
         E: (x: number, y: number, value: number) =>
-            persDatas[persIndex[params.pers]][x + 1 + y * regionDimensions[0]] ==
-            value,
+            persDatas[persIndex[params.pers]][x + 1 + y * regionDimensions[0]] == value,
         W: (x: number, y: number, value: number) =>
-            persDatas[persIndex[params.pers]][x - 1 + y * regionDimensions[0]] ==
-            value,
+            persDatas[persIndex[params.pers]][x - 1 + y * regionDimensions[0]] == value,
         N: (x: number, y: number, value: number) =>
-            persDatas[persIndex[params.pers]][x + (y + 1) * regionDimensions[0]] ==
-            value,
+            persDatas[persIndex[params.pers]][x + (y + 1) * regionDimensions[0]] == value,
         S: (x: number, y: number, value: number) =>
-            persDatas[persIndex[params.pers]][x + (y - 1) * regionDimensions[0]] ==
-            value,
+            persDatas[persIndex[params.pers]][x + (y - 1) * regionDimensions[0]] == value,
         EN: (x: number, y: number, value: number) =>
-            persDatas[persIndex[params.pers]][x + 1 + (y + 1) * regionDimensions[0]] ==
-            value,
+            persDatas[persIndex[params.pers]][x + 1 + (y + 1) * regionDimensions[0]] == value,
         WN: (x: number, y: number, value: number) =>
-            persDatas[persIndex[params.pers]][x - 1 + (y + 1) * regionDimensions[0]] ==
-            value,
+            persDatas[persIndex[params.pers]][x - 1 + (y + 1) * regionDimensions[0]] == value,
         SW: (x: number, y: number, value: number) =>
-            persDatas[persIndex[params.pers]][x - 1 + (y - 1) * regionDimensions[0]] ==
-            value,
+            persDatas[persIndex[params.pers]][x - 1 + (y - 1) * regionDimensions[0]] == value,
         SE: (x: number, y: number, value: number) =>
-            persDatas[persIndex[params.pers]][x + 1 + (y - 1) * regionDimensions[0]] ==
-            value,
+            persDatas[persIndex[params.pers]][x + 1 + (y - 1) * regionDimensions[0]] == value,
     },
 }
 
@@ -578,7 +474,12 @@ function BFS(x: number, y: number, direction: string, color: string) {
     while (stack.length > 0) {
         y = stack.pop()!
         x = stack.pop()!
-        if (x < regionBounds[0] || x > regionBounds[1] || y < regionBounds[2] || y > regionBounds[3]) {
+        if (
+            x < regionBounds[0] ||
+            x > regionBounds[1] ||
+            y < regionBounds[2] ||
+            y > regionBounds[3]
+        ) {
             continue
         }
         let [fillX, fillY] = fillFunction[_direction](x, y)
@@ -932,7 +833,14 @@ const onKeyPress = (event: KeyboardEvent) => {
         BFSHandler(x, y, params.flood, params.clear)
     } else if (event.key == 't' && metaState.brushSelection) {
         let [x, y] = performRayCasting()
-        if (!(x < regionBounds[0] || x > regionBounds[1] || y < regionBounds[2] || y > regionBounds[3])) {
+        if (
+            !(
+                x < regionBounds[0] ||
+                x > regionBounds[1] ||
+                y < regionBounds[2] ||
+                y > regionBounds[3]
+            )
+        ) {
             if (event.repeat) {
                 var linePixels = []
                 var x0 = lastX
@@ -993,7 +901,13 @@ const onKeyPress = (event: KeyboardEvent) => {
                     }
                 }
                 for (var i = 0; i < linePixels.length; i += 2) {
-                    brushHandler('t', linePixels[i], regionDimensions[1] - 1 - linePixels[i + 1], params.flood, params.clear)
+                    brushHandler(
+                        't',
+                        linePixels[i],
+                        regionDimensions[1] - 1 - linePixels[i + 1],
+                        params.flood,
+                        params.clear
+                    )
                 }
             }
             lastX = x
@@ -1002,15 +916,22 @@ const onKeyPress = (event: KeyboardEvent) => {
         }
     } else if (event.key == 'p' && metaState.polygonSelection) {
         let [x, y] = performRayCasting()
-        if (!(x < regionBounds[0] || x > regionBounds[1] || y < regionBounds[2] || y > regionBounds[3])) {
-        // y = regionDimensions[1] - y
+        if (
+            !(
+                x < regionBounds[0] ||
+                x > regionBounds[1] ||
+                y < regionBounds[2] ||
+                y > regionBounds[3]
+            )
+        ) {
+            // y = regionDimensions[1] - y
             polygonSelectionHandler(x, y, params.flood, params.clear)
         }
     } else if (event.key == 'o' && metaState.polygonSelection) {
         polygonFillHandler(params.flood, params.clear)
-    // } else if (event.key == 's' && metaState.segEnabled) {
-    //     let [x, y] = performRayCasting()
-    //     segAnnotationHandler('s', x, y, params.flood, params.clear)
+        // } else if (event.key == 's' && metaState.segEnabled) {
+        //     let [x, y] = performRayCasting()
+        //     segAnnotationHandler('s', x, y, params.flood, params.clear)
     } else if (event.key == 's' && metaState.segEnabled) {
         let [x, y] = performRayCasting()
         connectedSegAnnotationHandler('s', x, y, params.flood, params.clear)
@@ -1057,20 +978,17 @@ satelliteLoader.load(
                 if (metaState.flat == 0) {
                     if (x == 3) {
                         scene.add(mesh)
-                        console.log(scene)
+
                         isSTLDone = true
                     }
                 } else {
                     if (x == 2) {
                         scene.add(mesh)
-                        console.log(scene)
+
                         isSTLDone = true
                     }
                 }
-
-            } catch (e) {
-                console.error(`error on reading STL file ${x}Dregion${metaState.region}.stl`)
-            }
+            } catch (e) {}
             // geometry.computeBoundingBox()
             // geometry.computeVertexNormals()
 
@@ -1080,18 +998,15 @@ satelliteLoader.load(
         })
         setTimeout(function () {
             if (isSegmentationDone) {
+                // display menu and hide the loader animation when the segmentation file loading is done
                 ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
-            }
-            if (!Developer) {
                 ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
             }
             // isModelLoaded = true
         }, 5000)
     },
     undefined,
-    function (err) {
-        console.error('An error happened.')
-    }
+    function (err) {}
 )
 
 window.addEventListener('resize', onWindowResize, false)
@@ -1105,6 +1020,7 @@ function onWindowResize() {
 
 function animate() {
     requestAnimationFrame(animate)
+    stats_mb.update()
     if (camera.position.z <= 100) {
         camera.position.z = 100
         camera.updateProjectionMatrix()
@@ -1113,8 +1029,6 @@ function animate() {
         controls.update()
     }
     TWEEN.update()
-    // let position = new THREE.Vector3()
-    // camera.getWorldPosition(position)
     render()
 }
 

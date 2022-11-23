@@ -18,6 +18,8 @@ import {
 } from './client'
 import { terrainDimensions } from './constants'
 import * as JSZip from 'jszip'
+import * as THREE from 'three'
+import { time } from 'console'
 // import * as fs from 'fs'
 
 var zip: JSZip = new JSZip()
@@ -39,6 +41,12 @@ interface sessionDataType {
     numberofRedo: number
     metaState: Object
 }
+
+interface annotationTimeType {
+    [key: number]: number
+}
+
+let annotationTimeTable: annotationTimeType = {}
 
 interface gameEventType {
     label: string
@@ -144,10 +152,22 @@ const gameState: Array<gameStateType> = []
 
 async function readstateFile() {
     let _fetchData: any
-    const response = await fetch('./data/test2.json')
+    const response = await fetch('./data/session_saugat.json')
     _fetchData = await response.json()
     return _fetchData
 }
+
+async function readMetaFile() {
+    let _fetchData: any
+    const response = await fetch('./data/meta_session_saugat.json')
+    _fetchData = await response.json()
+    return _fetchData
+}
+
+;(async () => {
+    let result = await readMetaFile()
+    
+})()
 
 function logMyState(
     key: string,
@@ -177,7 +197,7 @@ function logMyState(
             cameraPosition: camera.position.clone(),
             targetPosition: controls.target.clone(),
             time: new Date(),
-            annotatedPixelCount: sessionData.annotatedPixelCount
+            annotatedPixelCount: sessionData.annotatedPixelCount,
         }
     }
 
@@ -192,7 +212,7 @@ function logMyState(
             targetPosition: controls.target.clone(),
             time: new Date(),
             linePoints: linePoints,
-            annotatedPixelCount: sessionData.annotatedPixelCount
+            annotatedPixelCount: sessionData.annotatedPixelCount,
         }
     } else {
         stateData = {
@@ -209,7 +229,7 @@ function logMyState(
             time: new Date(),
             brushSize: brushSize,
             persistanceThreshold: params.pers,
-            annotatedPixelCount: sessionData.annotatedPixelCount
+            annotatedPixelCount: sessionData.annotatedPixelCount,
         }
     }
     gameState.push({ mouseEvent: stateData })
@@ -325,6 +345,7 @@ function downloadSession(event: Event) {
     link.setAttribute('download', imageName)
     // link.click()
     ;(document.getElementById('uploadForm') as HTMLFormElement).style.display = 'block'
+    disposeHierarchy(scene, disposeNode)
 }
 
 function hideModal() {
@@ -346,6 +367,7 @@ function doubleClickHandler(event: MouseEvent) {
     let ndcX = (event.clientX / renderer.domElement.clientWidth) * 2 - 1
     let ndcY = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1
     raycaster.setFromCamera({ x: ndcX, y: ndcY }, camera)
+
     const intersection = raycaster.intersectObjects(scene.children, true)
     if (intersection.length > 0) {
         const point = intersection[0].point //this is not local cordinate point rather world cordinate
@@ -488,6 +510,67 @@ function initVis() {
     ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
 }
 
+function makeContinousData(data: any, gap: number) {
+    let timeIndex: Array<any> = Object.keys(data)
+    let lastIndex = Math.ceil(+timeIndex[timeIndex.length - 1] / 3)
+    let result = new Array(lastIndex).fill(0)
+    for (let key in data) {
+        let key1 = Math.floor(+key / gap)
+        result[key1] += +data[key]
+    }
+    convertArrayIntoCSV(result)
+}
+
+function convertArrayIntoCSV(data: any) {
+    const fields = ['time', 'pixel_counts']
+    let result = fields.join(',') + '\n'
+
+    data.forEach((element: number, index: number) => {
+        let row = [index, element]
+        result += row.join(',') + '\n'
+    })
+
+    downloadCSV(result, '3sGap')
+}
+
+function convertToCSV(timedata: any) {
+    const fields = ['time', 'pixel_counts']
+    let result = fields.join(',') + '\n'
+    for (let key in timedata) {
+        const localData = [key, timedata[key]]
+        result += localData.join(',') + '\n'
+    }
+    downloadCSV(result, 'eventTime')
+}
+
+function downloadCSV(csv_data: any, name: string) {
+    var hiddenElement = document.createElement('a')
+    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv_data)
+    hiddenElement.target = '_blank'
+    hiddenElement.download = name + '.csv'
+    hiddenElement.click()
+}
+
+function disposeNode(node: any) {
+    if (node instanceof THREE.Mesh) {
+        if (node.geometry) {
+            node.geometry.dispose()
+        }
+
+        if (node.material) {
+            node.material.dispose()
+        }
+    }
+} // disposeNode
+
+function disposeHierarchy(node: any, callback: any) {
+    for (var i = node.children.length - 1; i >= 0; i--) {
+        var child = node.children[i]
+        disposeHierarchy(child, callback)
+        callback(child)
+    }
+}
+
 export {
     metaState,
     regionBounds,
@@ -502,5 +585,9 @@ export {
     logMyState,
     getLocalCordinate,
     readstateFile,
+    readMetaFile,
     toggleAnnoation,
+    annotationTimeTable,
+    makeContinousData,
+    convertToCSV,
 }

@@ -1,1 +1,3313 @@
-[{"start":{"label":"start","aspectRatio":2.1052631578947367,"cameraPosition":{"x":2052,"y":927.9999999999999,"z":1999.9999999999998},"targetPosition":{"x":2052,"y":928,"z":-2000},"time":"2022-11-07T01:05:39.471Z","flood":true,"clear":false}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2510,"y":613,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:02.431Z","brushSize":"32","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2672,"y":660,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:03.068Z","brushSize":"32","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2390,"y":727,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:03.491Z","brushSize":"32","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2575,"y":787,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:03.889Z","brushSize":"32","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2360,"y":532,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:04.257Z","brushSize":"32","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2570,"y":649,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:07.111Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2617,"y":710,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:07.575Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2624,"y":728,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:08.088Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2628,"y":730,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:08.184Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2628,"y":732,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:08.220Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2629,"y":733,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:08.255Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2635,"y":737,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:08.290Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2636,"y":738,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:08.341Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2638,"y":740,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:08.376Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2643,"y":745,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:08.411Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2659,"y":753,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:08.453Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2662,"y":754,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:08.488Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2662,"y":755,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:08.524Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2677,"y":758,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:08.582Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2685,"y":763,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:08.617Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2697,"y":765,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:08.652Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2708,"y":766,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:08.686Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2713,"y":766,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:08.721Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2714,"y":766,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:08.836Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2715,"y":766,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:08.872Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2720,"y":766,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:08.907Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2725,"y":764,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:08.942Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2733,"y":762,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:08.977Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2741,"y":760,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:09.012Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2747,"y":757,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:09.047Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2754,"y":757,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:09.082Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2760,"y":755,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:09.117Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2767,"y":754,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:09.152Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2771,"y":754,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:09.208Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2776,"y":754,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:09.243Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2778,"y":754,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:09.278Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2781,"y":754,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:09.313Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2786,"y":754,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:09.348Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2787,"y":754,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:09.383Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2791,"y":754,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:09.463Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2791,"y":755,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:09.498Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2791,"y":760,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:09.606Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2788,"y":762,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:09.641Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2788,"y":763,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:09.701Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2783,"y":764,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:09.736Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2782,"y":765,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:09.770Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2775,"y":765,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:09.805Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2769,"y":765,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:09.840Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2760,"y":765,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:09.875Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2752,"y":765,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:09.910Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2747,"y":766,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:09.945Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2746,"y":767,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:09.980Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2742,"y":768,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:10.015Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2737,"y":769,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:10.050Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2733,"y":770,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:10.085Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2727,"y":772,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:10.119Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2724,"y":775,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:10.162Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2722,"y":775,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:10.197Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2719,"y":778,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:10.258Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2718,"y":779,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:10.293Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2718,"y":780,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:10.328Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2717,"y":781,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:10.400Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2715,"y":783,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:10.435Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2715,"y":786,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:10.470Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2716,"y":787,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:10.505Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2717,"y":787,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:10.559Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2723,"y":787,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:10.594Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2727,"y":787,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:10.660Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2731,"y":787,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:10.698Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2732,"y":787,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:10.733Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2740,"y":787,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:10.829Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2745,"y":787,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:10.892Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2746,"y":787,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:10.928Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2753,"y":788,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:10.964Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2753,"y":789,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:10.999Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2753,"y":790,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:11.034Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2749,"y":793,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:11.159Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2741,"y":794,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:11.195Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2740,"y":797,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:11.230Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2733,"y":799,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:11.265Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2727,"y":800,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:11.325Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2722,"y":801,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:11.362Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2717,"y":801,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:11.397Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2716,"y":803,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:11.433Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2712,"y":803,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:11.468Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2701,"y":805,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:11.503Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2684,"y":807,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:11.539Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":false,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2684,"y":807,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:11.588Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2408,"y":525,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:15.056Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2265,"y":528,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:15.559Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2256,"y":530,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:15.594Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2339,"y":531,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:16.959Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2374,"y":528,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:17.461Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2372,"y":527,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:17.901Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2369,"y":527,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:17.936Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2363,"y":527,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:17.972Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2359,"y":526,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:18.007Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2356,"y":526,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:18.186Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2354,"y":528,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:18.221Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2350,"y":528,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:18.265Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2358,"y":527,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:18.489Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2370,"y":526,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:18.524Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2371,"y":526,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:18.560Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2374,"y":526,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:18.595Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2376,"y":526,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:18.631Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2372,"y":526,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:18.726Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2354,"y":526,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:18.762Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2345,"y":525,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:18.798Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2344,"y":525,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:18.833Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2345,"y":525,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:18.978Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2364,"y":526,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:19.025Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2373,"y":526,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:19.060Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2369,"y":526,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:19.152Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2357,"y":526,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:19.187Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2347,"y":526,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:19.223Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2346,"y":526,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:19.258Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2350,"y":528,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:19.309Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2377,"y":527,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:19.345Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2385,"y":527,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:19.380Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2383,"y":528,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:19.421Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2367,"y":531,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:19.456Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2350,"y":530,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:19.491Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2348,"y":530,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:19.527Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2354,"y":530,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:19.581Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2386,"y":530,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:19.616Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2391,"y":530,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:19.652Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2372,"y":531,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:19.687Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2344,"y":530,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:19.722Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2343,"y":530,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:19.757Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2346,"y":531,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:19.793Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2363,"y":531,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:19.828Z","brushSize":"4","persistanceThreshold":0.06}},{"mouseEvent":{"label":"brush","flood":true,"clear":true,"clickPosition":{"x":0.8895833333333334,"y":-0.9166666666666667},"keyPressed":"t","x":2364,"y":531,"aspectRatio":2.1052631578947367,"cameraPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":445.0829636109139},"targetPosition":{"x":2390.2954445421833,"y":1122.127343703678,"z":-54.917036389086206},"time":"2022-11-07T01:06:19.863Z","brushSize":"4","persistanceThreshold":0.06}}]
+[
+    {
+        "start": {
+            "label": "start",
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": { "x": 2052, "y": 927.9999999999999, "z": 1999.9999999999998 },
+            "targetPosition": { "x": 2052, "y": 928, "z": -2000 },
+            "time": "2022-11-07T01:05:39.471Z",
+            "flood": true,
+            "clear": false
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2510,
+            "y": 613,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:02.431Z",
+            "brushSize": "32",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2672,
+            "y": 660,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:03.068Z",
+            "brushSize": "32",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2390,
+            "y": 727,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:03.491Z",
+            "brushSize": "32",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2575,
+            "y": 787,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:03.889Z",
+            "brushSize": "32",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2360,
+            "y": 532,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:04.257Z",
+            "brushSize": "32",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2570,
+            "y": 649,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:07.111Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2617,
+            "y": 710,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:07.575Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2624,
+            "y": 728,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:08.088Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2628,
+            "y": 730,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:08.184Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2628,
+            "y": 732,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:08.220Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2629,
+            "y": 733,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:08.255Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2635,
+            "y": 737,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:08.290Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2636,
+            "y": 738,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:08.341Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2638,
+            "y": 740,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:08.376Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2643,
+            "y": 745,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:08.411Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2659,
+            "y": 753,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:08.453Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2662,
+            "y": 754,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:08.488Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2662,
+            "y": 755,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:08.524Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2677,
+            "y": 758,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:08.582Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2685,
+            "y": 763,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:08.617Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2697,
+            "y": 765,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:08.652Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2708,
+            "y": 766,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:08.686Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2713,
+            "y": 766,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:08.721Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2714,
+            "y": 766,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:08.836Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2715,
+            "y": 766,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:08.872Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2720,
+            "y": 766,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:08.907Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2725,
+            "y": 764,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:08.942Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2733,
+            "y": 762,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:08.977Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2741,
+            "y": 760,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:09.012Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2747,
+            "y": 757,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:09.047Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2754,
+            "y": 757,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:09.082Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2760,
+            "y": 755,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:09.117Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2767,
+            "y": 754,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:09.152Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2771,
+            "y": 754,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:09.208Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2776,
+            "y": 754,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:09.243Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2778,
+            "y": 754,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:09.278Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2781,
+            "y": 754,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:09.313Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2786,
+            "y": 754,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:09.348Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2787,
+            "y": 754,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:09.383Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2791,
+            "y": 754,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:09.463Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2791,
+            "y": 755,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:09.498Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2791,
+            "y": 760,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:09.606Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2788,
+            "y": 762,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:09.641Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2788,
+            "y": 763,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:09.701Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2783,
+            "y": 764,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:09.736Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2782,
+            "y": 765,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:09.770Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2775,
+            "y": 765,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:09.805Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2769,
+            "y": 765,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:09.840Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2760,
+            "y": 765,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:09.875Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2752,
+            "y": 765,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:09.910Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2747,
+            "y": 766,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:09.945Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2746,
+            "y": 767,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:09.980Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2742,
+            "y": 768,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:10.015Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2737,
+            "y": 769,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:10.050Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2733,
+            "y": 770,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:10.085Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2727,
+            "y": 772,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:10.119Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2724,
+            "y": 775,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:10.162Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2722,
+            "y": 775,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:10.197Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2719,
+            "y": 778,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:10.258Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2718,
+            "y": 779,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:10.293Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2718,
+            "y": 780,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:10.328Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2717,
+            "y": 781,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:10.400Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2715,
+            "y": 783,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:10.435Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2715,
+            "y": 786,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:10.470Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2716,
+            "y": 787,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:10.505Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2717,
+            "y": 787,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:10.559Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2723,
+            "y": 787,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:10.594Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2727,
+            "y": 787,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:10.660Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2731,
+            "y": 787,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:10.698Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2732,
+            "y": 787,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:10.733Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2740,
+            "y": 787,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:10.829Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2745,
+            "y": 787,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:10.892Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2746,
+            "y": 787,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:10.928Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2753,
+            "y": 788,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:10.964Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2753,
+            "y": 789,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:10.999Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2753,
+            "y": 790,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:11.034Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2749,
+            "y": 793,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:11.159Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2741,
+            "y": 794,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:11.195Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2740,
+            "y": 797,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:11.230Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2733,
+            "y": 799,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:11.265Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2727,
+            "y": 800,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:11.325Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2722,
+            "y": 801,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:11.362Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2717,
+            "y": 801,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:11.397Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2716,
+            "y": 803,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:11.433Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2712,
+            "y": 803,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:11.468Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2701,
+            "y": 805,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:11.503Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2684,
+            "y": 807,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:11.539Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": false,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2684,
+            "y": 807,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:11.588Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2408,
+            "y": 525,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:15.056Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2265,
+            "y": 528,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:15.559Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2256,
+            "y": 530,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:15.594Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2339,
+            "y": 531,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:16.959Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2374,
+            "y": 528,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:17.461Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2372,
+            "y": 527,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:17.901Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2369,
+            "y": 527,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:17.936Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2363,
+            "y": 527,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:17.972Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2359,
+            "y": 526,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:18.007Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2356,
+            "y": 526,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:18.186Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2354,
+            "y": 528,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:18.221Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2350,
+            "y": 528,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:18.265Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2358,
+            "y": 527,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:18.489Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2370,
+            "y": 526,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:18.524Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2371,
+            "y": 526,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:18.560Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2374,
+            "y": 526,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:18.595Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2376,
+            "y": 526,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:18.631Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2372,
+            "y": 526,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:18.726Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2354,
+            "y": 526,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:18.762Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2345,
+            "y": 525,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:18.798Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2344,
+            "y": 525,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:18.833Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2345,
+            "y": 525,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:18.978Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2364,
+            "y": 526,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:19.025Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2373,
+            "y": 526,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:19.060Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2369,
+            "y": 526,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:19.152Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2357,
+            "y": 526,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:19.187Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2347,
+            "y": 526,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:19.223Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2346,
+            "y": 526,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:19.258Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2350,
+            "y": 528,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:19.309Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2377,
+            "y": 527,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:19.345Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2385,
+            "y": 527,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:19.380Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2383,
+            "y": 528,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:19.421Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2367,
+            "y": 531,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:19.456Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2350,
+            "y": 530,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:19.491Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2348,
+            "y": 530,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:19.527Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2354,
+            "y": 530,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:19.581Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2386,
+            "y": 530,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:19.616Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2391,
+            "y": 530,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:19.652Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2372,
+            "y": 531,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:19.687Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2344,
+            "y": 530,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:19.722Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2343,
+            "y": 530,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:19.757Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2346,
+            "y": 531,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:19.793Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2363,
+            "y": 531,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:19.828Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    },
+    {
+        "mouseEvent": {
+            "label": "brush",
+            "flood": true,
+            "clear": true,
+            "clickPosition": { "x": 0.8895833333333334, "y": -0.9166666666666667 },
+            "keyPressed": "t",
+            "x": 2364,
+            "y": 531,
+            "aspectRatio": 2.1052631578947367,
+            "cameraPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": 445.0829636109139
+            },
+            "targetPosition": {
+                "x": 2390.2954445421833,
+                "y": 1122.127343703678,
+                "z": -54.917036389086206
+            },
+            "time": "2022-11-07T01:06:19.863Z",
+            "brushSize": "4",
+            "persistanceThreshold": 0.06
+        }
+    }
+]
