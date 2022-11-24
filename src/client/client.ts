@@ -1019,7 +1019,10 @@ function disposeUniform() {
             }
         }
     }
-    
+    for (let key in persTextures) {
+        persTextures[key].dispose()
+        persTextures[key] = new THREE.Texture()
+    }
 }
 
 window.addEventListener('resize', onWindowResize, false)
