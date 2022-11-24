@@ -15,6 +15,7 @@ import {
     params,
     uniforms,
     gui,
+    disposeUniform,
 } from './client'
 import { terrainDimensions } from './constants'
 import * as JSZip from 'jszip'
@@ -166,7 +167,6 @@ async function readMetaFile() {
 
 ;(async () => {
     let result = await readMetaFile()
-    
 })()
 
 function logMyState(
@@ -307,6 +307,7 @@ function endSession(event: Event) {
 }
 
 function downloadSession(event: Event) {
+    disposeUniform()
     const _data = JSON.stringify(gameState)
     const _fileName = 'session_' + sessionData.name + '.json'
     zip.file(_fileName, _data)
@@ -346,6 +347,8 @@ function downloadSession(event: Event) {
     // link.click()
     ;(document.getElementById('uploadForm') as HTMLFormElement).style.display = 'block'
     disposeHierarchy(scene, disposeNode)
+    renderer.renderLists.dispose()
+    disposeNode(scene)
 }
 
 function hideModal() {
@@ -552,16 +555,28 @@ function downloadCSV(csv_data: any, name: string) {
 }
 
 function disposeNode(node: any) {
+    scene.remove(node)
     if (node instanceof THREE.Mesh) {
         if (node.geometry) {
             node.geometry.dispose()
         }
 
         if (node.material) {
+            for (let key in node.material.uniforms) {
+                if (
+                    key == 'annotationTexture' ||
+                    key == 'colormap' ||
+                    key == 'diffuseTexture' ||
+                    key == 'persTexture'
+                ) {
+                    node.material.uniforms[key].value.dispose()
+                }
+            }
             node.material.dispose()
         }
+        node = null
     }
-} // disposeNode
+}
 
 function disposeHierarchy(node: any, callback: any) {
     for (var i = node.children.length - 1; i >= 0; i--) {

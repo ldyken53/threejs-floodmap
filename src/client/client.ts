@@ -364,7 +364,6 @@ viewFolder
     )
     .name('Reset Camera View')
 
-
 viewFolder.open()
 
 function segSelect(x: number, y: number, color: string) {
@@ -1009,6 +1008,20 @@ satelliteLoader.load(
     function (err) {}
 )
 
+function disposeUniform() {
+    type ObjectKeyUniforms = keyof typeof uniforms
+    for (let key in uniforms) {
+        if (uniforms[key as ObjectKeyUniforms]) {
+            let x: any = uniforms[key as ObjectKeyUniforms]
+            if (x['type'] !== undefined && x['type'] == 't') {
+                x['value'].dispose()
+                uniforms[key as ObjectKeyUniforms].value = new THREE.Texture()
+            }
+        }
+    }
+    
+}
+
 window.addEventListener('resize', onWindowResize, false)
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight
@@ -1073,4 +1086,5 @@ export {
     params,
     uniforms,
     gui,
+    disposeUniform,
 }
