@@ -56,6 +56,13 @@ let eventFunction: { [key: string]: any } = {
     BFS: (x: number, y: number, flood: boolean, clear: boolean) => BFSHandler(x, y, flood, clear),
     brush: (x: number, y: number, flood: boolean, clear: boolean) =>
         brushHandler('t', x, y, flood, clear),
+    brushLine: (
+        x: number,
+        y: number,
+        flood: boolean,
+        clear: boolean,
+        linePoints: Array<number>
+    ) => brushLineHandler(linePoints, flood, clear),
     polygonSelector: (x: number, y: number, flood: boolean, clear: boolean) =>
         polygonSelectionHandler(x, y, flood, clear),
     polygonFill: (
@@ -757,6 +764,35 @@ function brushHandler(key: string, x: number, y: number, flood: boolean, clear: 
     logMyState(key, 'brush', flood, clear, camera, pointer, x, y, params.brushSize, undefined, time)
 }
 
+function brushLineHandler(linePixels: Array<number>, flood: boolean, clear: boolean) {
+    sessionData.numberofClick++
+    context!.fillStyle = 'blue'
+    if (flood) {
+        context!.fillStyle = 'red'
+    }
+    for (var i = 0; i < linePixels.length; i += 2) {
+        if (clear) {
+            context!.clearRect(
+                linePixels[i] - Math.floor(params.brushSize / 2),
+                regionDimensions[1] - 1 - linePixels[i + 1] - Math.floor(params.brushSize / 2),
+                params.brushSize,
+                params.brushSize
+            )
+            sessionData.annotatedPixelCount -= params.brushSize * params.brushSize
+        } else {
+            context!.fillRect(
+                linePixels[i] - Math.floor(params.brushSize / 2),
+                regionDimensions[1] - 1 - linePixels[i + 1] - Math.floor(params.brushSize / 2),
+                params.brushSize,
+                params.brushSize
+            )
+            sessionData.annotatedPixelCount += params.brushSize * params.brushSize
+        }
+    }
+    annotationTexture.needsUpdate = true
+    logMyState('t', 'brushLine', flood, clear, camera, undefined, undefined, undefined, params.brushSize, linePixels, time)
+}
+
 function polygonSelectionHandler(x: number, y: number, flood: boolean, clear: boolean) {
     sessionData.numberofClick++
     context!.fillStyle = 'blue'
@@ -1023,9 +1059,7 @@ const onKeyPress = (event: KeyboardEvent) => {
                         intery = intery + gradient
                     }
                 }
-                for (var i = 0; i < linePixels.length; i += 2) {
-                    brushHandler('t', linePixels[i], regionDimensions[1] - 1 - linePixels[i + 1], params.flood, params.clear)
-                }
+                brushLineHandler(linePixels, params.flood, params.clear)
             }
             lastX = x
             lastY = y
