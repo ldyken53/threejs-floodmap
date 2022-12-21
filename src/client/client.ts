@@ -19,6 +19,7 @@ import {
     toggleAnnoation,
     regionBounds,
     regionDimensions,
+    disposeNode,
 } from './util'
 import { terrainDimensions } from './constants'
 import './styles/style.css'
@@ -29,7 +30,7 @@ let overRideControl = false
 var data: Float32Array
 
 let _fetchData: any
-let mesh: THREE.Mesh
+let mesh: THREE.Mesh | null
 
 let isSegmentationDone = false
 let isSTLDone = false
@@ -963,6 +964,7 @@ satelliteLoader.load(
             vertexShader: terrainShader._VS,
             fragmentShader: terrainShader._FS,
         })
+        texture.dispose()
         const terrainLoader = new STLLoader()
         ;[2, 3].forEach(async (x) => {
             try {
@@ -977,16 +979,17 @@ satelliteLoader.load(
                 if (metaState.flat == 0) {
                     if (x == 3) {
                         scene.add(mesh)
-
                         isSTLDone = true
                     }
                 } else {
                     if (x == 2) {
                         scene.add(mesh)
-
                         isSTLDone = true
                     }
                 }
+                mesh!.geometry.dispose()
+                // mesh!.material.dispose()
+                mesh = null
             } catch (e) {}
             // geometry.computeBoundingBox()
             // geometry.computeVertexNormals()
@@ -1020,7 +1023,7 @@ function disposeUniform() {
         }
     }
     for (let key in persTextures) {
-        persTextures[key].dispose()
+        // persTextures[key].dispose()
         persTextures[key] = new THREE.Texture()
     }
 }
@@ -1033,6 +1036,11 @@ function onWindowResize() {
     gui.width = window.innerWidth / 5
     render()
 }
+// window.onbeforeunload = function (e) {
+//     var e = e || window.event
+//     disposeUniform()
+//     disposeNode(scene.children[0])
+// }
 
 function animate() {
     requestAnimationFrame(animate)

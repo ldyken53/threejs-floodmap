@@ -360,8 +360,8 @@ function hideModal() {
 }
 
 function getLocalCordinate(_cordiante: THREE.Vector3) {
-    mesh.updateMatrixWorld()
-    const localPoint = mesh.worldToLocal(_cordiante)
+    mesh!.updateMatrixWorld()
+    const localPoint = mesh!.worldToLocal(_cordiante)
     return localPoint
 }
 
@@ -555,10 +555,10 @@ function downloadCSV(csv_data: any, name: string) {
 }
 
 function disposeNode(node: any) {
-    scene.remove(node)
     if (node instanceof THREE.Mesh) {
         if (node.geometry) {
             node.geometry.dispose()
+            node.geometry = undefined
         }
 
         if (node.material) {
@@ -573,8 +573,11 @@ function disposeNode(node: any) {
                 }
             }
             node.material.dispose()
+            node.material = undefined
         }
-        node = null
+
+        scene.remove(node)
+        node = undefined
     }
 }
 
@@ -605,4 +608,5 @@ export {
     annotationTimeTable,
     makeContinousData,
     convertToCSV,
+    disposeNode,
 }
