@@ -6,7 +6,6 @@ import { terrainShader } from './shaders/terrain-shader'
 import { GUI } from 'dat.gui'
 import { Mesh } from 'three'
 import axios from 'axios'
-import Stats from 'three/examples/jsm/libs/stats.module'
 import {
     metaState,
     init,
@@ -19,18 +18,18 @@ import {
     toggleAnnoation,
     regionBounds,
     regionDimensions,
-    disposeNode,
 } from './util'
 import { terrainDimensions } from './constants'
 import './styles/style.css'
 import * as tiff from 'tiff'
+import Stats from 'three/examples/jsm/libs/stats.module'
 
 let Developer = false
 let overRideControl = false
 var data: Float32Array
 
 let _fetchData: any
-let mesh: THREE.Mesh | null
+let mesh: THREE.Mesh
 
 let isSegmentationDone = false
 let isSTLDone = false
@@ -52,11 +51,17 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
     host = 'https://floodmap.b-cdn.net/'
 }
 
-let _readstateFile: () => {}
+const stats_mb = Stats()
+stats_mb.showPanel(2)
+stats_mb.domElement.style.cssText = 'position:absolute;top:250px;right:50px;'
+document.body.appendChild(stats_mb.domElement)
+
 let eventFunction: { [key: string]: any } = {
     BFS: (x: number, y: number, flood: boolean, clear: boolean) => BFSHandler(x, y, flood, clear),
     brush: (x: number, y: number, flood: boolean, clear: boolean) =>
         brushHandler('t', x, y, flood, clear),
+    brushLine: (x: number, y: number, flood: boolean, clear: boolean, linePoints: Array<number>) =>
+        brushLineHandler(linePoints, flood, clear),
     polygonSelector: (x: number, y: number, flood: boolean, clear: boolean) =>
         polygonSelectionHandler(x, y, flood, clear),
     polygonFill: (
@@ -71,53 +76,71 @@ let eventFunction: { [key: string]: any } = {
     connectedSegmentation: (x: number, y: number, flood: boolean, clear: boolean) =>
         connectedSegAnnotationHandler('s', x, y, flood, clear),
 }
-function sleep(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms))
+
+function delay(time: number) {
+    return new Promise((resolve) => setTimeout(resolve, time))
 }
 
-const stats_mb = Stats()
-stats_mb.showPanel(2)
-stats_mb.domElement.style.cssText = 'position:absolute;top:250px;right:50px;'
-document.body.appendChild(stats_mb.domElement)
+let time: Date | undefined = undefined
 
-if (Developer) {
-    ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'none'
-    _readstateFile = async () => {
-        const array = await readstateFile()
-        let startUp = array[0].start
-        let _cameraPosition = startUp.cameraPosition
-        let _target = startUp.targetPosition
-        camera.position.set(_cameraPosition.x, _cameraPosition.y, _cameraPosition.z)
-        controls.target.set(_target.x, _target.y, _target.z)
-        controls.update()
-        for (let i = 1, _length = array.length; i < _length; i++) {
-            let event = array[i].mouseEvent
-            let _cameraPosition = event.cameraPosition
-            let _target = event.targetPosition
-            camera.position.set(_cameraPosition.x, _cameraPosition.y, _cameraPosition.z)
-            controls.target.set(_target.x, _target.y, _target.z)
-            controls.update()
-            let x, y, flood, clear
-            if (event.x == undefined) {
-                x = 0
-                y = 0
-                flood = true
-                clear = false
-            } else {
-                x = event.x
-                y = event.y
-                flood = event.flood
-                clear = event.clear
-            }
-            if (event.brushSize) {
-                params.brushSize = event.brushSize
-            }
-            if (event.persistanceThreshold) {
-                params.pers = event.persistanceThreshold
-            }
-            eventFunction[event.label](x, y, flood, clear, event.linePoints)
-            sleep(100)
+let _readstateFile = async (array: any[]) => {
+    sessionData.sessionStart = new Date(array[0].start.time)
+    for (let i = 0; i < array.length; i++) {
+        if (array[i].start) {
+            gameState.push({ start: array[i].start })
+            continue
         }
+        let event = array[i].mouseEvent
+        // if (event.label != "brush") {
+        //     await delay(50)
+        // }
+        // if (i % 1000 == 0) {
+        //     console.log(i / array.length)
+        // }
+        // let _cameraPosition = event.cameraPosition
+        // let _target = event.targetPosition
+        // camera.position.set(_cameraPosition.x, _cameraPosition.y, _cameraPosition.z)
+        // controls.target.set(_target.x, _target.y, _target.z)
+        // controls.update()
+        let x, y, flood, clear
+        if (event.x == undefined) {
+            x = 0
+            y = 0
+        } else {
+            x = event.x
+            y = event.y
+        }
+        flood = event.flood
+        clear = event.clear
+        if (event.brushSize) {
+            params.brushSize = event.brushSize
+        }
+        if (event.persistanceThreshold) {
+            params.pers = event.persistanceThreshold
+        }
+        time = event.time
+        eventFunction[event.label](x, y, flood, clear, event.linePoints)
+    }
+    time = undefined
+}
+
+;(document.getElementById('upload') as HTMLElement).oninput = () => {
+    if ((document.getElementById('upload') as HTMLInputElement).files) {
+        let file = (document.getElementById('upload') as HTMLInputElement).files![0]
+        ;(document.getElementById('loader') as HTMLElement).style.display = 'block'
+        ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'none'
+        var fr = new FileReader()
+
+        fr.onload = async function (e) {
+            var result = JSON.parse(e.target!.result as string)
+            console.log(result)
+            await _readstateFile(result)
+            ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
+            ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
+        }
+
+        fr.readAsText(file)
+        ;(document.getElementById('upload') as HTMLInputElement).files = null
     }
 }
 
@@ -143,12 +166,17 @@ var persTextures: { [key: number]: THREE.Texture } = {}
 var segsMax: { [key: number]: number } = {}
 let mappedMaxMap: { [key: number]: number } = {}
 async function getPersistence() {
+    // axios
+    //     .get(`http://localhost:5000/test`)
+    console.time('process')
     await Promise.all(
         pers.map(async (thresh) => {
             await fetch(`${host}img/segmentation_region${metaState.region}_pers${thresh}.data`)
                 .then((r) => r.arrayBuffer())
                 .then((response) => {
                     persDatas[thresh] = new Int16Array(response)
+                    // segsMax[thresh] = response.data[thresh].max
+                    // persDatas[thresh] = response.data[thresh].array
                     var max = 0
                     var imageData = new Uint8Array(4 * persDatas[thresh].length)
                     segsToPixels2[thresh] = {}
@@ -161,6 +189,11 @@ async function getPersistence() {
                         imageData[x * 4 + 1] = Math.floor((segID % 1000) / 100)
                         imageData[x * 4 + 2] = Math.floor((segID % 100) / 10)
                         imageData[x * 4 + 3] = segID % 10
+                        // if (segsToPixels2[thresh][segID]) {
+                        //     segsToPixels2[thresh][segID].push(x)
+                        // } else {
+                        //     segsToPixels2[thresh][segID] = [x]
+                        // }
                     }
                     segsMax[thresh] = max
                     persTextures[thresh] = new THREE.DataTexture(
@@ -174,16 +207,20 @@ async function getPersistence() {
                         uniforms.segsMax.value = segsMax[thresh]
                     }
                 })
-                .catch((error) => {})
+                .catch((error) => {
+                    console.log(error)
+                })
         })
     )
+    console.timeEnd('process')
     isSegmentationDone = true
     if (isSTLDone) {
+        if (Developer) {
+            const array = await readstateFile()
+            await _readstateFile(array)
+        }
         ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
-    }
-
-    if (Developer) {
-        _readstateFile()
+        ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
     }
 }
 getPersistence()
@@ -193,8 +230,15 @@ persLoader.load(
         uniforms.colormap.value = texture
     },
     undefined,
-    function (err) {}
+    function (err) {
+        console.error('An error happened.')
+    }
 )
+// const light = new THREE.SpotLight()
+// light.position.set(4000, 4000, 20)
+// scene.add(light)
+// const ambient = new THREE.AmbientLight( 0x404040 ); // soft white light
+// scene.add( ambient );
 
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 5000)
 camera.position.set(regionDimensions[0] / 2, regionDimensions[1] / 2, 2000)
@@ -264,6 +308,21 @@ var uniforms = {
 }
 const viewFolder = gui.addFolder('Settings')
 
+// viewFolder
+//     .add(params, 'flood')
+//     .onChange(() => {
+//         params.dry = !params.flood
+//         viewFolder.updateDisplay()
+//     })
+//     .name('Annotate Flood')
+
+// viewFolder
+//     .add(params, 'dry')
+//     .onChange(() => {
+//         params.flood = !params.dry
+//         viewFolder.updateDisplay()
+//     })
+//     .name('Annotate Dry Area')
 if (metaState.flat == 0) {
     viewFolder
         .add(params, 'dimension')
@@ -364,8 +423,81 @@ viewFolder
         'x'
     )
     .name('Reset Camera View')
+// viewFolder
+//     .add(
+//         {
+//             x: () => {
+//                 camera.position.set(-500, regionDimensions[1] / 2, 500)
+//                 camera.up.set(0, 0, 1)
+//                 controls.dispose()
+//                 controls = new OrbitControls(camera, renderer.domElement)
+//                 controls.target = new THREE.Vector3(
+//                     regionDimensions[0] / 2,
+//                     regionDimensions[1] / 2,
+//                     -1000
+//                 )
+//             },
+//         },
+//         'x'
+//     )
+//     .name('Camera to Left View')
+// viewFolder
+//     .add(
+//         {
+//             x: () => {
+//                 camera.position.set(regionDimensions[0] + 500, regionDimensions[1] / 2, 500)
+//                 camera.up.set(0, 0, 1)
+//                 controls.dispose()
+//                 controls = new OrbitControls(camera, renderer.domElement)
+//                 controls.target = new THREE.Vector3(
+//                     regionDimensions[0] / 2,
+//                     regionDimensions[1] / 2,
+//                     -1000
+//                 )
+//             },
+//         },
+//         'x'
+//     )
+//     .name('Camera to Right View')
+// viewFolder
+//     .add(
+//         {
+//             x: () => {
+//                 camera.position.set(regionDimensions[0] / 2, regionDimensions[1] + 500, 500)
+//                 camera.up.set(0, 0, 1)
+//                 controls.dispose()
+//                 controls = new OrbitControls(camera, renderer.domElement)
+//                 controls.target = new THREE.Vector3(
+//                     regionDimensions[0] / 2,
+//                     regionDimensions[1] / 2,
+//                     -1000
+//                 )
+//             },
+//         },
+//         'x'
+//     )
+//     .name('Camera to Top View')
+// viewFolder
+//     .add(
+//         {
+//             x: () => {
+//                 camera.position.set(regionDimensions[0] / 2, -500, 500)
+//                 camera.up.set(0, 0, 1)
+//                 controls.dispose()
+//                 controls = new OrbitControls(camera, renderer.domElement)
+//                 controls.target = new THREE.Vector3(
+//                     regionDimensions[0] / 2,
+//                     regionDimensions[1] / 2,
+//                     -1000
+//                 )
+//             },
+//         },
+//         'x'
+//     )
+//     .name('Camera to Bottom View')
 
 viewFolder.open()
+// meshFolder.open()
 
 function segSelect(x: number, y: number, color: string) {
     context!.fillStyle = color
@@ -597,7 +729,7 @@ function BFSHandler(x: number, y: number, flood: boolean, clear: boolean) {
         color = 'clear'
     }
     BFS(x, y, type, color)
-    logMyState('f', 'BFS', flood, clear, camera, pointer, x, y)
+    logMyState('f', 'BFS', flood, clear, camera, pointer, x, y, undefined, undefined, time)
 }
 
 function brushHandler(key: string, x: number, y: number, flood: boolean, clear: boolean) {
@@ -625,7 +757,48 @@ function brushHandler(key: string, x: number, y: number, flood: boolean, clear: 
     }
     annotationTexture.needsUpdate = true
     // uniforms.annotationTexture.value = annotationTexture
-    logMyState(key, 'brush', flood, clear, camera, pointer, x, y, params.brushSize)
+    logMyState(key, 'brush', flood, clear, camera, pointer, x, y, params.brushSize, undefined, time)
+}
+
+function brushLineHandler(linePixels: Array<number>, flood: boolean, clear: boolean) {
+    sessionData.numberofClick++
+    context!.fillStyle = 'blue'
+    if (flood) {
+        context!.fillStyle = 'red'
+    }
+    for (var i = 0; i < linePixels.length; i += 2) {
+        if (clear) {
+            context!.clearRect(
+                linePixels[i] - Math.floor(params.brushSize / 2),
+                regionDimensions[1] - 1 - linePixels[i + 1] - Math.floor(params.brushSize / 2),
+                params.brushSize,
+                params.brushSize
+            )
+            sessionData.annotatedPixelCount -= params.brushSize * params.brushSize
+        } else {
+            context!.fillRect(
+                linePixels[i] - Math.floor(params.brushSize / 2),
+                regionDimensions[1] - 1 - linePixels[i + 1] - Math.floor(params.brushSize / 2),
+                params.brushSize,
+                params.brushSize
+            )
+            sessionData.annotatedPixelCount += params.brushSize * params.brushSize
+        }
+    }
+    annotationTexture.needsUpdate = true
+    logMyState(
+        't',
+        'brushLine',
+        flood,
+        clear,
+        camera,
+        undefined,
+        undefined,
+        undefined,
+        params.brushSize,
+        linePixels,
+        time
+    )
 }
 
 function polygonSelectionHandler(x: number, y: number, flood: boolean, clear: boolean) {
@@ -644,7 +817,19 @@ function polygonSelectionHandler(x: number, y: number, flood: boolean, clear: bo
         context!.fillRect(x - 2, regionDimensions[1] - 1 - y - 2, 4, 4)
         sessionData.annotatedPixelCount += 16 //follow this with the line selection to minimize the double counting
     }
-    logMyState('p', 'polygonSelector', flood, clear, camera, pointer, x, y, params.brushSize)
+    logMyState(
+        'p',
+        'polygonSelector',
+        flood,
+        clear,
+        camera,
+        pointer,
+        x,
+        y,
+        params.brushSize,
+        undefined,
+        time
+    )
     annotationTexture.needsUpdate = true
 }
 
@@ -756,7 +941,8 @@ function polygonFillHandler(flood: boolean, clear: boolean, linePoints?: Array<n
         undefined,
         undefined,
         undefined,
-        polyPoints
+        polyPoints,
+        time
     )
     polyPoints = []
     annotationTexture.needsUpdate = true
@@ -773,7 +959,7 @@ function segAnnotationHandler(key: string, x: number, y: number, flood: boolean,
     }
     context!.fillStyle = color
     segSelect(x, y, color)
-    logMyState(key, 'segmentation', flood, clear, camera, pointer, x, y)
+    logMyState(key, 'segmentation', flood, clear, camera, pointer, x, y, undefined, undefined, time)
 }
 
 function connectedSegAnnotationHandler(
@@ -785,7 +971,19 @@ function connectedSegAnnotationHandler(
 ) {
     sessionData.numberofClick++
     connectedSegSelect(x, y, flood, clear)
-    logMyState(key, 'connectedSegmentation', flood, clear, camera, pointer, x, y)
+    logMyState(
+        key,
+        'connectedSegmentation',
+        flood,
+        clear,
+        camera,
+        pointer,
+        x,
+        y,
+        undefined,
+        undefined,
+        time
+    )
 }
 
 let [lastX, lastY] = [0, 0]
@@ -900,15 +1098,7 @@ const onKeyPress = (event: KeyboardEvent) => {
                         intery = intery + gradient
                     }
                 }
-                for (var i = 0; i < linePixels.length; i += 2) {
-                    brushHandler(
-                        't',
-                        linePixels[i],
-                        regionDimensions[1] - 1 - linePixels[i + 1],
-                        params.flood,
-                        params.clear
-                    )
-                }
+                brushLineHandler(linePixels, params.flood, params.clear)
             }
             lastX = x
             lastY = y
@@ -944,7 +1134,7 @@ const onKeyUp = (event: KeyboardEvent) => {
     }
 }
 
-function startUp() {
+async function startUp() {
     window.addEventListener('mousemove', onMouseMove)
     window.addEventListener('keydown', onKeyPress)
     window.addEventListener('keyup', onKeyUp)
@@ -964,7 +1154,6 @@ satelliteLoader.load(
             vertexShader: terrainShader._VS,
             fragmentShader: terrainShader._FS,
         })
-        texture.dispose()
         const terrainLoader = new STLLoader()
         ;[2, 3].forEach(async (x) => {
             try {
@@ -979,18 +1168,19 @@ satelliteLoader.load(
                 if (metaState.flat == 0) {
                     if (x == 3) {
                         scene.add(mesh)
+                        console.log(scene)
                         isSTLDone = true
                     }
                 } else {
                     if (x == 2) {
                         scene.add(mesh)
+                        console.log(scene)
                         isSTLDone = true
                     }
                 }
-                mesh!.geometry.dispose()
-                // mesh!.material.dispose()
-                mesh = null
-            } catch (e) {}
+            } catch (e) {
+                console.error(`error on reading STL file ${x}Dregion${metaState.region}.stl`)
+            }
             // geometry.computeBoundingBox()
             // geometry.computeVertexNormals()
 
@@ -998,9 +1188,12 @@ satelliteLoader.load(
             //     console.log(error)
             // })
         })
-        setTimeout(function () {
+        setTimeout(async function () {
             if (isSegmentationDone) {
-                // display menu and hide the loader animation when the segmentation file loading is done
+                if (Developer) {
+                    const array = await readstateFile()
+                    await _readstateFile(array)
+                }
                 ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
                 ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
             }
@@ -1008,7 +1201,9 @@ satelliteLoader.load(
         }, 5000)
     },
     undefined,
-    function (err) {}
+    function (err) {
+        console.error('An error happened.')
+    }
 )
 
 function disposeUniform() {
@@ -1036,11 +1231,6 @@ function onWindowResize() {
     gui.width = window.innerWidth / 5
     render()
 }
-// window.onbeforeunload = function (e) {
-//     var e = e || window.event
-//     disposeUniform()
-//     disposeNode(scene.children[0])
-// }
 
 function animate() {
     requestAnimationFrame(animate)
@@ -1049,28 +1239,17 @@ function animate() {
         camera.position.z = 100
         camera.updateProjectionMatrix()
     }
-    if (!Developer || overRideControl) {
+    if (!overRideControl) {
         controls.update()
     }
     TWEEN.update()
+    // let position = new THREE.Vector3()
+    // camera.getWorldPosition(position)
     render()
 }
 
 function render() {
     renderer.render(scene, camera)
-}
-
-function startState() {
-    let startStateData = {
-        label: 'start',
-        aspectRatio: camera.aspect,
-        cameraPosition: camera.position.clone(),
-        targetPosition: controls.target.clone(),
-        time: new Date(),
-        flood: true,
-        clear: false,
-    }
-    gameState.push({ start: startStateData })
 }
 
 function getCameraLastStage() {
@@ -1080,7 +1259,6 @@ function getCameraLastStage() {
     }
 }
 
-startState()
 animate()
 
 export {
@@ -1097,5 +1275,4 @@ export {
     params,
     uniforms,
     gui,
-    disposeUniform,
 }

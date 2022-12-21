@@ -27,6 +27,7 @@
     <body>
         <div id="loader"></div>
         <div id="ui-menu">
+            <button class="session-terminal button_white" id="checkpoint">CHECKPOINT</button>
             <button class="session-terminal button_red" id="download">DOWNLOAD</button>
             <button class="session-terminal button_red" id="end">FINISH</button>
             <!-- <button class="session-terminal button_red" id="start">START</button> -->
@@ -39,7 +40,7 @@
                 <p style="font-style: italic">
                     <!-- If you clicked finish button accidently, go back by pressing
                     <b>cancel</b> button and continue your study, otherwise \ -->
-                    Remember to upload all files downloaded when you clicked <b>Finish</b> button to
+                    Remember to upload zip file downloaded when you clicked <b>Finish</b> button to
                     Canvas!
                 </p>
                 <!--
@@ -138,7 +139,11 @@
                         Press <b>d</b> to annotate the connected segmentation under current point
                     </li> -->
                 </ul>
-                <button id="exploration" class="button_red">Start !!!</button>
+                <label class="button_white">
+                    Load Annotation From Checkpoint
+                    <input type="file" id="upload" />
+                </label>
+                <button id="exploration" class="button_red">Start New!</button>
             </div>
         </div>
 

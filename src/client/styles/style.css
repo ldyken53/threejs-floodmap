@@ -42,11 +42,23 @@ ul {
     /* position: absolute;*/
 }
 
+.button_white {
+    padding: 15px 10px;
+    width: 120px;
+    background-color: whitesmoke;
+    color: gray;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
 #ui-menu {
     display: none;
     position: absolute;
     top: 93%;
-    left: 93%;
+    left: 83%;
 }
 
 .modal:target:before {
