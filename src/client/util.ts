@@ -198,7 +198,7 @@ function logMyState(
             cameraPosition: camera.position.clone(),
             targetPosition: controls.target.clone(),
             time: time ? time : new Date(),
-            annotatedPixelCount: sessionData.annotatedPixelCount
+            annotatedPixelCount: sessionData.annotatedPixelCount,
         }
     }
 

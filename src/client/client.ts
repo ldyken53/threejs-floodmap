@@ -23,7 +23,26 @@ import { terrainDimensions } from './constants'
 import './styles/style.css'
 import * as tiff from 'tiff'
 import Stats from 'three/examples/jsm/libs/stats.module'
+import * as unzip from './worker'
 
+unzip.intialize()
+
+// -------------------------------unzip ---------------------------
+
+// import { Archive } from 'libarchive.js/main.js'
+// Archive.init({
+//     workerUrl: 'libarchive.js/dist/worker-bundle.js',
+// })
+// ;(document.getElementById('file') as HTMLInputElement).addEventListener('change', async (e) => {
+//     let file = (e.currentTarget as HTMLInputElement).files?[0] as any
+//     let archive:any = await Archive.open(file)
+//     let obj = await archive.extractFiles()
+//     console.log(obj)
+// })
+
+// const worker = new Worker('.../src/client/worker.js')
+
+// worker.postMessage('i am in worker')
 let Developer = false
 let overRideControl = false
 var data: Float32Array
@@ -133,7 +152,7 @@ let _readstateFile = async (array: any[]) => {
 
         fr.onload = async function (e) {
             var result = JSON.parse(e.target!.result as string)
-            console.log(result)
+            // console.log(result)
             await _readstateFile(result)
             ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
             ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
@@ -1168,7 +1187,7 @@ satelliteLoader.load(
                 if (metaState.flat == 0) {
                     if (x == 3) {
                         scene.add(mesh)
-                        console.log(scene)
+                        // console.log(scene)
                         isSTLDone = true
                     }
                 } else {
@@ -1275,4 +1294,5 @@ export {
     params,
     uniforms,
     gui,
+    disposeUniform,
 }
