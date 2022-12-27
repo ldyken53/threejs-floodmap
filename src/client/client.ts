@@ -17,13 +17,32 @@ import {
     readstateFile,
     toggleAnnoation,
     regionBounds,
-    regionDimensions
+    regionDimensions,
 } from './util'
 import { terrainDimensions } from './constants'
 import './styles/style.css'
 import * as tiff from 'tiff'
-import { Console } from 'console'
+import Stats from 'three/examples/jsm/libs/stats.module'
+import * as unzip from './worker'
 
+unzip.intialize()
+
+// -------------------------------unzip ---------------------------
+
+// import { Archive } from 'libarchive.js/main.js'
+// Archive.init({
+//     workerUrl: 'libarchive.js/dist/worker-bundle.js',
+// })
+// ;(document.getElementById('file') as HTMLInputElement).addEventListener('change', async (e) => {
+//     let file = (e.currentTarget as HTMLInputElement).files?[0] as any
+//     let archive:any = await Archive.open(file)
+//     let obj = await archive.extractFiles()
+//     console.log(obj)
+// })
+
+// const worker = new Worker('.../src/client/worker.js')
+
+// worker.postMessage('i am in worker')
 let Developer = false
 let overRideControl = false
 var data: Float32Array
@@ -44,25 +63,24 @@ const pers = [0.01, 0.015, 0.02, 0.04, 0.06, 0.08, 0.1]
 // const pers = [0.06]
 var meshes: { [key: string]: Mesh } = {}
 
-let host = ""
-if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
-    host = ""
+let host = ''
+if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+    host = ''
 } else {
-    host = "https://floodmap.b-cdn.net/"
+    host = 'https://floodmap.b-cdn.net/'
 }
 
+const stats_mb = Stats()
+stats_mb.showPanel(2)
+stats_mb.domElement.style.cssText = 'position:absolute;top:250px;right:50px;'
+document.body.appendChild(stats_mb.domElement)
 
 let eventFunction: { [key: string]: any } = {
     BFS: (x: number, y: number, flood: boolean, clear: boolean) => BFSHandler(x, y, flood, clear),
     brush: (x: number, y: number, flood: boolean, clear: boolean) =>
         brushHandler('t', x, y, flood, clear),
-    brushLine: (
-        x: number,
-        y: number,
-        flood: boolean,
-        clear: boolean,
-        linePoints: Array<number>
-    ) => brushLineHandler(linePoints, flood, clear),
+    brushLine: (x: number, y: number, flood: boolean, clear: boolean, linePoints: Array<number>) =>
+        brushLineHandler(linePoints, flood, clear),
     polygonSelector: (x: number, y: number, flood: boolean, clear: boolean) =>
         polygonSelectionHandler(x, y, flood, clear),
     polygonFill: (
@@ -78,13 +96,13 @@ let eventFunction: { [key: string]: any } = {
         connectedSegAnnotationHandler('s', x, y, flood, clear),
 }
 
-function delay(time : number) {
-    return new Promise(resolve => setTimeout(resolve, time));
-    }
+function delay(time: number) {
+    return new Promise((resolve) => setTimeout(resolve, time))
+}
 
-let time : Date | undefined = undefined;
+let time: Date | undefined = undefined
 
-let _readstateFile = async (array : any[]) => {
+let _readstateFile = async (array: any[]) => {
     sessionData.sessionStart = new Date(array[0].start.time)
     for (let i = 0; i < array.length; i++) {
         if (array[i].start) {
@@ -119,7 +137,7 @@ let _readstateFile = async (array : any[]) => {
         if (event.persistanceThreshold) {
             params.pers = event.persistanceThreshold
         }
-        time = event.time;
+        time = event.time
         eventFunction[event.label](x, y, flood, clear, event.linePoints)
     }
     time = undefined
@@ -127,24 +145,23 @@ let _readstateFile = async (array : any[]) => {
 
 ;(document.getElementById('upload') as HTMLElement).oninput = () => {
     if ((document.getElementById('upload') as HTMLInputElement).files) {
-        let file = (document.getElementById('upload') as HTMLInputElement).files![0];
+        let file = (document.getElementById('upload') as HTMLInputElement).files![0]
         ;(document.getElementById('loader') as HTMLElement).style.display = 'block'
         ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'none'
         var fr = new FileReader()
 
-        fr.onload = async function(e) { 
+        fr.onload = async function (e) {
             var result = JSON.parse(e.target!.result as string)
-            console.log(result)
+            // console.log(result)
             await _readstateFile(result)
             ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
             ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
         }
-      
+
         fr.readAsText(file)
         ;(document.getElementById('upload') as HTMLInputElement).files = null
     }
 }
-
 
 fetch(`${host}img/elevation${metaState.region}.tiff`).then((res) =>
     res.arrayBuffer().then(function (arr) {
@@ -174,44 +191,44 @@ async function getPersistence() {
     await Promise.all(
         pers.map(async (thresh) => {
             await fetch(`${host}img/segmentation_region${metaState.region}_pers${thresh}.data`)
-            .then((r) => r.arrayBuffer())
-            .then((response) => {
-                persDatas[thresh] = new Int16Array(response)
-                // segsMax[thresh] = response.data[thresh].max
-                // persDatas[thresh] = response.data[thresh].array
-                var max = 0
-                var imageData = new Uint8Array(4 * persDatas[thresh].length)
-                segsToPixels2[thresh] = {}
-                for (var x = 0; x < persDatas[thresh].length; x++) {
-                    var segID = persDatas[thresh][x]
-                    if (segID > max) {
-                        max = segID
+                .then((r) => r.arrayBuffer())
+                .then((response) => {
+                    persDatas[thresh] = new Int16Array(response)
+                    // segsMax[thresh] = response.data[thresh].max
+                    // persDatas[thresh] = response.data[thresh].array
+                    var max = 0
+                    var imageData = new Uint8Array(4 * persDatas[thresh].length)
+                    segsToPixels2[thresh] = {}
+                    for (var x = 0; x < persDatas[thresh].length; x++) {
+                        var segID = persDatas[thresh][x]
+                        if (segID > max) {
+                            max = segID
+                        }
+                        imageData[x * 4] = Math.floor(segID / 1000)
+                        imageData[x * 4 + 1] = Math.floor((segID % 1000) / 100)
+                        imageData[x * 4 + 2] = Math.floor((segID % 100) / 10)
+                        imageData[x * 4 + 3] = segID % 10
+                        // if (segsToPixels2[thresh][segID]) {
+                        //     segsToPixels2[thresh][segID].push(x)
+                        // } else {
+                        //     segsToPixels2[thresh][segID] = [x]
+                        // }
                     }
-                    imageData[x * 4] = Math.floor(segID / 1000)
-                    imageData[x * 4 + 1] = Math.floor((segID % 1000) / 100)
-                    imageData[x * 4 + 2] = Math.floor((segID % 100) / 10)
-                    imageData[x * 4 + 3] = segID % 10
-                    // if (segsToPixels2[thresh][segID]) {
-                    //     segsToPixels2[thresh][segID].push(x)
-                    // } else {
-                    //     segsToPixels2[thresh][segID] = [x]
-                    // }
-                }
-                segsMax[thresh] = max
-                persTextures[thresh] = new THREE.DataTexture(
-                    imageData,
-                    regionDimensions[0],
-                    regionDimensions[1]
-                )
-                persTextures[thresh].needsUpdate = true
-                if (thresh == persIndex[params.pers]) {
-                    uniforms.persTexture.value = persTextures[thresh]
-                    uniforms.segsMax.value = segsMax[thresh]
-                }
-            })
-            .catch((error) => {
-                console.log(error)
-            })
+                    segsMax[thresh] = max
+                    persTextures[thresh] = new THREE.DataTexture(
+                        imageData,
+                        regionDimensions[0],
+                        regionDimensions[1]
+                    )
+                    persTextures[thresh].needsUpdate = true
+                    if (thresh == persIndex[params.pers]) {
+                        uniforms.persTexture.value = persTextures[thresh]
+                        uniforms.segsMax.value = segsMax[thresh]
+                    }
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
         })
     )
     console.timeEnd('process')
@@ -281,14 +298,14 @@ var params = {
     dry: false,
     clear: false,
 }
-let persIndex : {[key: number]: number}= {
+let persIndex: { [key: number]: number } = {
     1: 0.1,
     2: 0.08,
     3: 0.06,
     4: 0.04,
     5: 0.02,
     6: 0.015,
-    7: 0.01
+    7: 0.01,
 }
 // var persIndex = persToIndex[params.pers];
 
@@ -306,7 +323,7 @@ var uniforms = {
     dimensions: { type: 'vec2', value: regionDimensions },
     dry: { type: 'bool', value: params.dry },
     flood: { type: 'bool', value: params.flood },
-    quadrant: { value: metaState.quadrant }
+    quadrant: { value: metaState.quadrant },
 }
 const viewFolder = gui.addFolder('Settings')
 
@@ -327,18 +344,18 @@ const viewFolder = gui.addFolder('Settings')
 //     .name('Annotate Dry Area')
 if (metaState.flat == 0) {
     viewFolder
-    .add(params, 'dimension')
-    .onChange(() => {
-        scene.remove(scene.children[0])
-        if (params.dimension) {
-            uniforms.z.value = 500
-            scene.add(meshes[3])
-        } else {
-            uniforms.z.value = 0
-            scene.add(meshes[2])
-        }
-    })
-    .name('3D View')
+        .add(params, 'dimension')
+        .onChange(() => {
+            scene.remove(scene.children[0])
+            if (params.dimension) {
+                uniforms.z.value = 500
+                scene.add(meshes[3])
+            } else {
+                uniforms.z.value = 0
+                scene.add(meshes[2])
+            }
+        })
+        .name('3D View')
 }
 viewFolder
     .add(params, 'annotation')
@@ -352,12 +369,12 @@ viewFolder
     .name('Show Annotation')
 if (metaState.segEnabled) {
     viewFolder
-    .add(params, 'pers', 1, 7, 1)
-    .onFinishChange(() => {
-        uniforms.persTexture.value = persTextures[persIndex[params.pers]]
-        uniforms.segsMax.value = segsMax[persIndex[params.pers]]
-    })
-    .name('Segmentation Detail')
+        .add(params, 'pers', 1, 7, 1)
+        .onFinishChange(() => {
+            uniforms.persTexture.value = persTextures[persIndex[params.pers]]
+            uniforms.segsMax.value = segsMax[persIndex[params.pers]]
+        })
+        .name('Segmentation Detail')
     viewFolder
         .add(params, 'persShow')
         .onChange(() => {
@@ -385,26 +402,27 @@ viewFolder
     .setValue(8)
     .onChange((value) => {
         params.brushSize = value
-    }).name("Brush Size")
+    })
+    .name('Brush Size')
 
 viewFolder
     .add(
         {
             x: () => {
                 new TWEEN.Tween(controls.target)
-                .to(
-                    {
-                        x: (regionBounds[1] + regionBounds[0]) / 2,
-                        y: (regionBounds[2] + regionBounds[3]) / 2,
-                        z: 0,
-                    },
-                    1000
-                )
-                .easing(TWEEN.Easing.Cubic.Out)
-                .onUpdate(() => {
-                    controls.update()
-                })
-                .start()
+                    .to(
+                        {
+                            x: (regionBounds[1] + regionBounds[0]) / 2,
+                            y: (regionBounds[2] + regionBounds[3]) / 2,
+                            z: 0,
+                        },
+                        1000
+                    )
+                    .easing(TWEEN.Easing.Cubic.Out)
+                    .onUpdate(() => {
+                        controls.update()
+                    })
+                    .start()
                 new TWEEN.Tween(camera.position)
                     .to(
                         {
@@ -565,29 +583,21 @@ const searchFunction = {
     },
     BFS_Segment: {
         E: (x: number, y: number, value: number) =>
-            persDatas[persIndex[params.pers]][x + 1 + y * regionDimensions[0]] ==
-            value,
+            persDatas[persIndex[params.pers]][x + 1 + y * regionDimensions[0]] == value,
         W: (x: number, y: number, value: number) =>
-            persDatas[persIndex[params.pers]][x - 1 + y * regionDimensions[0]] ==
-            value,
+            persDatas[persIndex[params.pers]][x - 1 + y * regionDimensions[0]] == value,
         N: (x: number, y: number, value: number) =>
-            persDatas[persIndex[params.pers]][x + (y + 1) * regionDimensions[0]] ==
-            value,
+            persDatas[persIndex[params.pers]][x + (y + 1) * regionDimensions[0]] == value,
         S: (x: number, y: number, value: number) =>
-            persDatas[persIndex[params.pers]][x + (y - 1) * regionDimensions[0]] ==
-            value,
+            persDatas[persIndex[params.pers]][x + (y - 1) * regionDimensions[0]] == value,
         EN: (x: number, y: number, value: number) =>
-            persDatas[persIndex[params.pers]][x + 1 + (y + 1) * regionDimensions[0]] ==
-            value,
+            persDatas[persIndex[params.pers]][x + 1 + (y + 1) * regionDimensions[0]] == value,
         WN: (x: number, y: number, value: number) =>
-            persDatas[persIndex[params.pers]][x - 1 + (y + 1) * regionDimensions[0]] ==
-            value,
+            persDatas[persIndex[params.pers]][x - 1 + (y + 1) * regionDimensions[0]] == value,
         SW: (x: number, y: number, value: number) =>
-            persDatas[persIndex[params.pers]][x - 1 + (y - 1) * regionDimensions[0]] ==
-            value,
+            persDatas[persIndex[params.pers]][x - 1 + (y - 1) * regionDimensions[0]] == value,
         SE: (x: number, y: number, value: number) =>
-            persDatas[persIndex[params.pers]][x + 1 + (y - 1) * regionDimensions[0]] ==
-            value,
+            persDatas[persIndex[params.pers]][x + 1 + (y - 1) * regionDimensions[0]] == value,
     },
 }
 
@@ -615,7 +625,12 @@ function BFS(x: number, y: number, direction: string, color: string) {
     while (stack.length > 0) {
         y = stack.pop()!
         x = stack.pop()!
-        if (x < regionBounds[0] || x > regionBounds[1] || y < regionBounds[2] || y > regionBounds[3]) {
+        if (
+            x < regionBounds[0] ||
+            x > regionBounds[1] ||
+            y < regionBounds[2] ||
+            y > regionBounds[3]
+        ) {
             continue
         }
         let [fillX, fillY] = fillFunction[_direction](x, y)
@@ -790,7 +805,19 @@ function brushLineHandler(linePixels: Array<number>, flood: boolean, clear: bool
         }
     }
     annotationTexture.needsUpdate = true
-    logMyState('t', 'brushLine', flood, clear, camera, undefined, undefined, undefined, params.brushSize, linePixels, time)
+    logMyState(
+        't',
+        'brushLine',
+        flood,
+        clear,
+        camera,
+        undefined,
+        undefined,
+        undefined,
+        params.brushSize,
+        linePixels,
+        time
+    )
 }
 
 function polygonSelectionHandler(x: number, y: number, flood: boolean, clear: boolean) {
@@ -809,7 +836,19 @@ function polygonSelectionHandler(x: number, y: number, flood: boolean, clear: bo
         context!.fillRect(x - 2, regionDimensions[1] - 1 - y - 2, 4, 4)
         sessionData.annotatedPixelCount += 16 //follow this with the line selection to minimize the double counting
     }
-    logMyState('p', 'polygonSelector', flood, clear, camera, pointer, x, y, params.brushSize, undefined, time)
+    logMyState(
+        'p',
+        'polygonSelector',
+        flood,
+        clear,
+        camera,
+        pointer,
+        x,
+        y,
+        params.brushSize,
+        undefined,
+        time
+    )
     annotationTexture.needsUpdate = true
 }
 
@@ -951,7 +990,19 @@ function connectedSegAnnotationHandler(
 ) {
     sessionData.numberofClick++
     connectedSegSelect(x, y, flood, clear)
-    logMyState(key, 'connectedSegmentation', flood, clear, camera, pointer, x, y, undefined, undefined, time)
+    logMyState(
+        key,
+        'connectedSegmentation',
+        flood,
+        clear,
+        camera,
+        pointer,
+        x,
+        y,
+        undefined,
+        undefined,
+        time
+    )
 }
 
 let [lastX, lastY] = [0, 0]
@@ -999,7 +1050,14 @@ const onKeyPress = (event: KeyboardEvent) => {
         BFSHandler(x, y, params.flood, params.clear)
     } else if (event.key == 't' && metaState.brushSelection) {
         let [x, y] = performRayCasting()
-        if (!(x < regionBounds[0] || x > regionBounds[1] || y < regionBounds[2] || y > regionBounds[3])) {
+        if (
+            !(
+                x < regionBounds[0] ||
+                x > regionBounds[1] ||
+                y < regionBounds[2] ||
+                y > regionBounds[3]
+            )
+        ) {
             if (event.repeat) {
                 var linePixels = []
                 var x0 = lastX
@@ -1067,15 +1125,22 @@ const onKeyPress = (event: KeyboardEvent) => {
         }
     } else if (event.key == 'p' && metaState.polygonSelection) {
         let [x, y] = performRayCasting()
-        if (!(x < regionBounds[0] || x > regionBounds[1] || y < regionBounds[2] || y > regionBounds[3])) {
-        // y = regionDimensions[1] - y
+        if (
+            !(
+                x < regionBounds[0] ||
+                x > regionBounds[1] ||
+                y < regionBounds[2] ||
+                y > regionBounds[3]
+            )
+        ) {
+            // y = regionDimensions[1] - y
             polygonSelectionHandler(x, y, params.flood, params.clear)
         }
     } else if (event.key == 'o' && metaState.polygonSelection) {
         polygonFillHandler(params.flood, params.clear)
-    // } else if (event.key == 's' && metaState.segEnabled) {
-    //     let [x, y] = performRayCasting()
-    //     segAnnotationHandler('s', x, y, params.flood, params.clear)
+        // } else if (event.key == 's' && metaState.segEnabled) {
+        //     let [x, y] = performRayCasting()
+        //     segAnnotationHandler('s', x, y, params.flood, params.clear)
     } else if (event.key == 's' && metaState.segEnabled) {
         let [x, y] = performRayCasting()
         connectedSegAnnotationHandler('s', x, y, params.flood, params.clear)
@@ -1122,7 +1187,7 @@ satelliteLoader.load(
                 if (metaState.flat == 0) {
                     if (x == 3) {
                         scene.add(mesh)
-                        console.log(scene)
+                        // console.log(scene)
                         isSTLDone = true
                     }
                 } else {
@@ -1132,7 +1197,6 @@ satelliteLoader.load(
                         isSTLDone = true
                     }
                 }
-
             } catch (e) {
                 console.error(`error on reading STL file ${x}Dregion${metaState.region}.stl`)
             }
@@ -1161,6 +1225,23 @@ satelliteLoader.load(
     }
 )
 
+function disposeUniform() {
+    type ObjectKeyUniforms = keyof typeof uniforms
+    for (let key in uniforms) {
+        if (uniforms[key as ObjectKeyUniforms]) {
+            let x: any = uniforms[key as ObjectKeyUniforms]
+            if (x['type'] !== undefined && x['type'] == 't') {
+                x['value'].dispose()
+                uniforms[key as ObjectKeyUniforms].value = new THREE.Texture()
+            }
+        }
+    }
+    for (let key in persTextures) {
+        // persTextures[key].dispose()
+        persTextures[key] = new THREE.Texture()
+    }
+}
+
 window.addEventListener('resize', onWindowResize, false)
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight
@@ -1172,6 +1253,7 @@ function onWindowResize() {
 
 function animate() {
     requestAnimationFrame(animate)
+    stats_mb.update()
     if (camera.position.z <= 100) {
         camera.position.z = 100
         camera.updateProjectionMatrix()
@@ -1211,5 +1293,6 @@ export {
     scene,
     params,
     uniforms,
-    gui
+    gui,
+    disposeUniform,
 }

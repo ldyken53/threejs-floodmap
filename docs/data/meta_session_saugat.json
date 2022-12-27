@@ -1,0 +1,20 @@
+{
+    "name": "saugat",
+    "sessionStart": "2022-11-14T17:45:47.548Z",
+    "sessionEnd": "2022-11-14T19:29:48.739Z",
+    "totalSessionTime_M:S:MS": "104:01:191",
+    "wasCompleted": true,
+    "annotatedPixelCount": 84233390,
+    "numberofClick": 107927,
+    "numberofUndo": 103,
+    "numberofRedo": 4,
+    "metaState": {
+        "BFS": true,
+        "brushSelection": true,
+        "polygonSelection": true,
+        "segEnabled": true,
+        "region": "2",
+        "quadrant": 0,
+        "flat": 0
+    }
+}
