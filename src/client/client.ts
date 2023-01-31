@@ -23,9 +23,6 @@ import { terrainDimensions } from './constants'
 import './styles/style.css'
 import * as tiff from 'tiff'
 import Stats from 'three/examples/jsm/libs/stats.module'
-import * as unzip from './worker'
-
-unzip.intialize()
 
 // -------------------------------unzip ---------------------------
 

@@ -158,16 +158,16 @@ async function readstateFile() {
     return _fetchData
 }
 
-async function readMetaFile() {
-    let _fetchData: any
-    const response = await fetch('./data/meta_session_saugat.json')
-    _fetchData = await response.json()
-    return _fetchData
-}
+// async function readMetaFile() {
+//     let _fetchData: any
+//     const response = await fetch('./data/meta_session_saugat.json')
+//     _fetchData = await response.json()
+//     return _fetchData
+// }
 
-;(async () => {
-    let result = await readMetaFile()
-})()
+// ;(async () => {
+//     let result = await readMetaFile()
+// })()
 
 function logMyState(
     key: string,
@@ -619,7 +619,7 @@ export {
     logMyState,
     getLocalCordinate,
     readstateFile,
-    readMetaFile,
+    // readMetaFile,
     toggleAnnoation,
     annotationTimeTable,
     makeContinousData,
