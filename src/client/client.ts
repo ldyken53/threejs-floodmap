@@ -139,6 +139,7 @@ let _readstateFile = async (array: any[]) => {
     }
     time = undefined
 }
+const persLoader = new THREE.TextureLoader()
 
 ;(document.getElementById('upload') as HTMLElement).oninput = () => {
     if ((document.getElementById('upload') as HTMLInputElement).files) {
@@ -147,15 +148,37 @@ let _readstateFile = async (array: any[]) => {
         ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'none'
         var fr = new FileReader()
 
-        fr.onload = async function (e) {
-            var result = JSON.parse(e.target!.result as string)
-            // console.log(result)
-            await _readstateFile(result)
+        if (file.type == "application/json") {
+            fr.onload = async function (e) {
+                var result = JSON.parse(e.target!.result as string)
+                // console.log(result)
+                await _readstateFile(result)
+                ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
+                ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
+            }
+            fr.readAsText(file)
+        } else if (file.type == "image/png") {
+            fr.onload = async function (e) {
+                let image = document.createElement('img')
+                image.src = e.target!.result as string
+                image.onload = function() {
+                    if (image.width == regionDimensions[0] && image.height == regionDimensions[1]) {
+                        context!.drawImage(image, 0, 0)
+                        annotationTexture.needsUpdate = true
+                    } else {
+                        alert("Wrong dimensions for annotation image, check that the region is correct")
+                    }
+                    ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
+                    ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
+                }
+            }
+            fr.readAsDataURL(file)
+        } else {
+            alert('Invalid file type, must be .png or .json!')
             ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
             ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
         }
 
-        fr.readAsText(file)
         ;(document.getElementById('upload') as HTMLInputElement).files = null
     }
 }
@@ -168,7 +191,6 @@ fetch(`${host}img/elevation${metaState.region}.tiff`).then((res) =>
 )
 window.onload = init
 
-const persLoader = new THREE.TextureLoader()
 var segsToPixels2: {
     [key: number]: {
         [key: number]: Array<number>
