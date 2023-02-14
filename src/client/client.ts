@@ -183,7 +183,8 @@ const persLoader = new THREE.TextureLoader()
     }
 }
 
-fetch(`${host}img/elevation${metaState.region}.tiff`).then((res) =>
+// fetch(`${host}img/elevation${metaState.region}.tiff`).then((res) =>
+fetch(`${host}img/test0.1.tiff`).then((res) =>
     res.arrayBuffer().then(function (arr) {
         var tif = tiff.decode(arr)
         data = tif[0].data as Float32Array

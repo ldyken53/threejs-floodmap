@@ -11,6 +11,7 @@ import gc
 from vtkmodules.util.numpy_support import vtk_to_numpy
 import numpy as np
 import json
+import subprocess, sys
 
 from topologytoolkit import (
     ttkFTMTree,
@@ -54,17 +55,19 @@ tree.SetTreeType(2)
 tree.SetWithSegmentation(1)
 # tree.Update()
 
-
+@app.route('/upload', methods=['GET'])
+def upload():
+    file = request.files.get("file")
+    fileName = secure_filename(file.filename)
+    destination = "/".join([target, fileName])
+    file.save(destination)
+    args = ['./hmm', destination, 'a.stl', '-z', '500', '-t', '1000000']
 
 @app.route('/test', methods=['GET'])
 def test():
     response = {}
-<<<<<<< Updated upstream
     # ranges = [0.02, 0.04, 0.06, 0.08, 0.1]
     ranges = [0.02]
-=======
-    ranges = [0.05]
->>>>>>> Stashed changes
     for i in ranges:
         simplify.SetPersistenceThreshold(i)
         simplify.Update()
