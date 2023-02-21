@@ -32,6 +32,7 @@
             <button class="session-terminal button_red" id="end">FINISH</button>
             <!-- <button class="session-terminal button_red" id="start">START</button> -->
         </div>
+
         <div id="uploadForm">
             <h3 id="upload-message"></h3>
             <img src="./img/giphy.gif" />
@@ -139,11 +140,21 @@
                         Press <b>d</b> to annotate the connected segmentation under current point
                     </li> -->
                 </ul>
+                <form id="uploadData">
+                    <label class="button_white">
+                        Data
+                        <input id="data" type = "file" name = "file" />
+                    </label>
+                    <label class="button_red">
+                        Submit
+                        <input type = "submit"/>
+                    </label>   
+                </form>   
                 <label class="button_white">
                     Load Annotation From Checkpoint or Image
                     <input type="file" id="upload" />
                 </label>
-                <button id="exploration" class="button_red">Start New!</button>
+                <button id="exploration" class="button_red">Start!</button>
             </div>
         </div>
 

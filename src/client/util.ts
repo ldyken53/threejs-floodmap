@@ -278,8 +278,8 @@ function startSession() {
     new TWEEN.Tween(controls.target)
         .to(
             {
-                x: (regionBounds[1] + regionBounds[0]) / 2,
-                y: (regionBounds[2] + regionBounds[3]) / 2,
+                x: 0,
+                y: 0,
                 z: 0,
             },
             1000
@@ -293,8 +293,8 @@ function startSession() {
     new TWEEN.Tween(camera.position)
         .to(
             {
-                x: (regionBounds[1] + regionBounds[0]) / 2,
-                y: (regionBounds[2] + regionBounds[3]) / 2,
+                x: 0,
+                y: 0,
                 z: 1000,
             },
             1000

@@ -23,6 +23,7 @@ import { terrainDimensions } from './constants'
 import './styles/style.css'
 import * as tiff from 'tiff'
 import Stats from 'three/examples/jsm/libs/stats.module'
+import { ajax } from 'jquery'
 
 // -------------------------------unzip ---------------------------
 
@@ -48,7 +49,7 @@ let _fetchData: any
 let mesh: THREE.Mesh
 
 let isSegmentationDone = false
-let isSTLDone = false
+let isSTLDone = true
 let isModelLoaded = false
 let isSatelliteImageLoaded = false
 
@@ -56,12 +57,12 @@ const scene = new THREE.Scene()
 // const blurs = [0, 1, 2];
 // const zs = [100, 200, 300, 400, 500];
 
-const pers = [0.01, 0.015, 0.02, 0.04, 0.06, 0.08, 0.1]
+const pers = [0.1]
 // const pers = [0.06]
 var meshes: { [key: string]: Mesh } = {}
 
 let host = ''
-if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+if (location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.hostname === '172.28.200.135') {
     host = ''
 } else {
     host = 'https://floodmap.b-cdn.net/'
@@ -184,12 +185,12 @@ const persLoader = new THREE.TextureLoader()
 }
 
 // fetch(`${host}img/elevation${metaState.region}.tiff`).then((res) =>
-fetch(`${host}img/test0.1.tiff`).then((res) =>
-    res.arrayBuffer().then(function (arr) {
-        var tif = tiff.decode(arr)
-        data = tif[0].data as Float32Array
-    })
-)
+// fetch(`${host}img/test0.1.tiff`).then((res) =>
+//     res.arrayBuffer().then(function (arr) {
+//         var tif = tiff.decode(arr)
+//         data = tif[0].data as Float32Array
+//     })
+// )
 window.onload = init
 
 var segsToPixels2: {
@@ -280,7 +281,7 @@ persLoader.load(
 // scene.add( ambient );
 
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 5000)
-camera.position.set(regionDimensions[0] / 2, regionDimensions[1] / 2, 2000)
+camera.position.set(0, 0, 2000)
 
 const renderer = new THREE.WebGLRenderer({ preserveDrawingBuffer: true })
 renderer.outputEncoding = THREE.sRGBEncoding
@@ -340,7 +341,7 @@ var uniforms = {
     persShow: { value: 0 },
     hoverValue: { type: 'f', value: 0 },
     guide: { value: params.guide },
-    dimensions: { type: 'vec2', value: regionDimensions },
+    dimensions: { type: 'vec2', value: [100, 100] },
     dry: { type: 'bool', value: params.dry },
     flood: { type: 'bool', value: params.flood },
     quadrant: { value: metaState.quadrant },
@@ -1183,67 +1184,76 @@ async function startUp() {
     })
 }
 
-const satelliteLoader = new THREE.TextureLoader()
-satelliteLoader.load(
-    `./img/Region_${metaState.region}_RGB.png`,
-    function (texture) {
-        uniforms.diffuseTexture.value = texture
-        const meshMaterial = new THREE.RawShaderMaterial({
-            uniforms: uniforms,
-            vertexShader: terrainShader._VS,
-            fragmentShader: terrainShader._FS,
-        })
-        const terrainLoader = new STLLoader()
-        ;[2, 3].forEach(async (x) => {
-            try {
-                let response: THREE.BufferGeometry = await terrainLoader.loadAsync(
-                    `stl/${x}Dregion${metaState.region}.stl`
-                )
-                mesh = new THREE.Mesh(response, meshMaterial)
-                mesh.receiveShadow = true
-                mesh.castShadow = true
-                mesh.position.set(0, 0, -100)
-                meshes[x] = mesh
-                if (metaState.flat == 0) {
-                    if (x == 3) {
-                        scene.add(mesh)
-                        // console.log(scene)
-                        isSTLDone = true
-                    }
-                } else {
-                    if (x == 2) {
-                        scene.add(mesh)
-                        console.log(scene)
-                        isSTLDone = true
-                    }
+var diffuseTexture : THREE.Texture
+;(document.getElementById('uploadData') as HTMLFormElement).addEventListener("submit", function(e) {
+    e.preventDefault()
+    if ((document.getElementById('data') as HTMLInputElement).files) {
+        let file = (document.getElementById('data') as HTMLInputElement).files![0]
+        if (file.type == "image/png") {
+            ;(document.getElementById('loader') as HTMLElement).style.display = 'block'
+            ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'none'
+            let fr = new FileReader();
+            fr.onload = async function (e) {
+                let image = document.createElement('img')
+                image.src = e.target!.result as string
+                image.onload = function() {   
+                    var texCanvas = document.createElement('canvas')
+                    texCanvas.width = image.width
+                    texCanvas.height = image.height
+                    var texContext = texCanvas.getContext('2d')
+                    diffuseTexture = new THREE.Texture(texCanvas)
+                    uniforms.diffuseTexture.value = diffuseTexture
+                    const meshMaterial = new THREE.RawShaderMaterial({
+                        uniforms: uniforms,
+                        vertexShader: terrainShader._VS,
+                        fragmentShader: terrainShader._FS,
+                    })
+                    texContext!.drawImage(image, 0, 0)
+                    diffuseTexture.needsUpdate = true
+                    uniforms.dimensions.value = [image.width, image.height]
+                    var formData = new FormData();
+                    formData.append('file', file);
+                    ajax({
+                        url: 'http://127.0.0.1:5000/upload',
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: async function(data) {
+                            const terrainLoader = new STLLoader()
+                            try {
+                                let response: THREE.BufferGeometry = await terrainLoader.loadAsync(
+                                    `img/a.stl`
+                                )
+                                mesh = new THREE.Mesh(response, meshMaterial)
+                                mesh.receiveShadow = true
+                                mesh.castShadow = true
+                                mesh.position.set(0, 0, -100)
+                                scene.add(mesh)
+                                console.log(scene)
+                            } catch (e) {
+                                console.error(`error on reading STL file a.stl`)
+                            }                
+                            ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
+                            ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
+                            console.log('File uploaded successfully');
+                        },
+                        error: function(xhr, status, error) {
+                            ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
+                            ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
+                            console.log('Error uploading file: ' + error);
+                        }
+                    });
                 }
-            } catch (e) {
-                console.error(`error on reading STL file ${x}Dregion${metaState.region}.stl`)
             }
-            // geometry.computeBoundingBox()
-            // geometry.computeVertexNormals()
-
-            // .catch((error: any) => {
-            //     console.log(error)
-            // })
-        })
-        setTimeout(async function () {
-            if (isSegmentationDone) {
-                if (Developer) {
-                    const array = await readstateFile()
-                    await _readstateFile(array)
-                }
-                ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
-                ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
-            }
-            // isModelLoaded = true
-        }, 5000)
-    },
-    undefined,
-    function (err) {
-        console.error('An error happened.')
+            fr.readAsDataURL(file)
+        } else {
+            alert('Invalid file type, must be .png!')
+        }
+    } else {
+        alert('No data uploaded!')
     }
-)
+})
 
 function disposeUniform() {
     type ObjectKeyUniforms = keyof typeof uniforms
