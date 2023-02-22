@@ -1,6 +1,4 @@
-# from crypt import methods
 from flask import jsonify, Flask, send_file, request, make_response
-from flask_cors import CORS, cross_origin
 from werkzeug.utils import secure_filename
 import os
 
@@ -66,9 +64,11 @@ def upload():
     if request.method == 'POST':
         f = request.files['file']
         f.save(secure_filename(f.filename))
-        subprocess.check_output(['./hmm', f.filename, 'a.stl', '-z', '500', '-t', '1000000', '--blur', '2'])
+        subprocess.check_output(['./hmm', f.filename, 'a.stl', '-z', '500', '-t', '1000000'])
         payload = make_response(send_file('a.stl'))
         payload.headers.add('Access-Control-Allow-Origin', '*')
+        os.remove('a.stl')
+        os.remove(f.filename)
         return payload
     
 # @app.route('/test', methods=['POST'])

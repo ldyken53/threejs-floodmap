@@ -3,3 +3,4 @@ dist/client/stl
 dist/client/img/static/files
 dist/client/img/__pycache__
 src/python_check/*.npy
+docs/img/__pycache__

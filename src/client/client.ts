@@ -24,6 +24,7 @@ import './styles/style.css'
 import * as tiff from 'tiff'
 import Stats from 'three/examples/jsm/libs/stats.module'
 import { ajax } from 'jquery'
+import { url } from 'inspector'
 
 // -------------------------------unzip ---------------------------
 
@@ -1219,11 +1220,17 @@ var diffuseTexture : THREE.Texture
                         data: formData,
                         processData: false,
                         contentType: false,
+                        xhr: function() {
+                            var xhr = new XMLHttpRequest()
+                            xhr.responseType = 'blob'
+                            return xhr
+                        },
                         success: async function(data) {
                             const terrainLoader = new STLLoader()
                             try {
+                                var test = window.URL.createObjectURL(data)
                                 let response: THREE.BufferGeometry = await terrainLoader.loadAsync(
-                                    `img/a.stl`
+                                    test
                                 )
                                 mesh = new THREE.Mesh(response, meshMaterial)
                                 mesh.receiveShadow = true
@@ -1232,6 +1239,7 @@ var diffuseTexture : THREE.Texture
                                 scene.add(mesh)
                                 console.log(scene)
                             } catch (e) {
+                                console.log(e)
                                 console.error(`error on reading STL file a.stl`)
                             }                
                             ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
