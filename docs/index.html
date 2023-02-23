@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <system.web.extensions>
+            <scripting>
+                <webServices>
+                    <jsonSerialization maxJsonLength="2147483647" />
+                </webServices>
+            </scripting>
+        </system.web.extensions>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Three.js Flood Annotation</title>
@@ -140,16 +147,19 @@
                         Press <b>d</b> to annotate the connected segmentation under current point
                     </li> -->
                 </ul>
-                <form id="uploadData">
-                    <label class="button_white">
-                        Data
-                        <input id="data" type = "file" name = "file" />
-                    </label>
-                    <label class="button_red">
-                        Submit
-                        <input type = "submit"/>
-                    </label>   
-                </form>   
+                <label class="button_white">
+                    PNG for STL
+                    <input id="stl" type = "file" name = "file" />
+                </label>
+                <label class="button_white">
+                    PNG for Texture
+                    <input id="texture" type = "file" name = "file" />
+                </label>
+                <label class="button_white">
+                    TIFF for Data
+                    <input id="data" type = "file" name = "file" />
+                </label>  
+                <button id="submit" class="button_red">Submit!</button>
                 <label class="button_white">
                     Load Annotation From Checkpoint or Image
                     <input type="file" id="upload" />

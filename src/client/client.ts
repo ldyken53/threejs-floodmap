@@ -16,8 +16,6 @@ import {
     getLocalCordinate,
     readstateFile,
     toggleAnnoation,
-    regionBounds,
-    regionDimensions,
 } from './util'
 import { terrainDimensions } from './constants'
 import './styles/style.css'
@@ -44,12 +42,14 @@ import { url } from 'inspector'
 // worker.postMessage('i am in worker')
 let Developer = false
 let overRideControl = false
-var data: Float32Array
+var data : { [x : number]: Array<number> } = {}
+var regionBounds : Array<number> = [0, 0, 0, 0]
+var regionDimensions : Array<number> = [0, 0]
 
 let _fetchData: any
 let mesh: THREE.Mesh
 
-let isSegmentationDone = false
+let isSegmentationDone = true
 let isSTLDone = true
 let isModelLoaded = false
 let isSatelliteImageLoaded = false
@@ -58,8 +58,7 @@ const scene = new THREE.Scene()
 // const blurs = [0, 1, 2];
 // const zs = [100, 200, 300, 400, 500];
 
-const pers = [0.1]
-// const pers = [0.06]
+const pers = [0, 0.01, 0.16]
 var meshes: { [key: string]: Mesh } = {}
 
 let host = ''
@@ -204,6 +203,7 @@ var persDatas: {
 } = {}
 
 var persTextures: { [key: number]: THREE.Texture } = {}
+var dataTextures: { [key: number]: THREE.Texture } = {}
 var segsMax: { [key: number]: number } = {}
 let mappedMaxMap: { [key: number]: number } = {}
 async function getPersistence() {
@@ -264,7 +264,9 @@ async function getPersistence() {
         ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
     }
 }
-getPersistence()
+// getPersistence()
+;(document.getElementById('loader') as HTMLElement).style.display = 'none'
+;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
 persLoader.load(
     './img/rainbow.png',
     function (texture) {
@@ -292,7 +294,6 @@ renderer.shadowMap.enabled = true
 document.body.appendChild(renderer.domElement)
 
 let controls = new OrbitControls(camera, renderer.domElement)
-controls.target = new THREE.Vector3(regionDimensions[0] / 2, regionDimensions[1] / 2, -2000)
 controls.dampingFactor = 1.25
 controls.enableDamping = true
 controls.maxPolarAngle = Math.PI / 1.5
@@ -302,10 +303,8 @@ controls.maxAzimuthAngle = 0.8
 controls.minAzimuthAngle = -0.65
 
 var canvas = document.createElement('canvas')
-canvas.width = regionDimensions[0]
-canvas.height = regionDimensions[1]
-var annotationTexture = new THREE.Texture(canvas)
-var context = canvas.getContext('2d')
+var context : CanvasRenderingContext2D
+var annotationTexture : THREE.Texture
 
 const gui = new GUI({ width: window.innerWidth / 5 })
 var params = {
@@ -313,31 +312,34 @@ var params = {
     dimension: metaState.flat == 0,
     annotation: true,
     brushSize: 8,
-    pers: 3,
+    pers: 6,
     persShow: false,
+    data: false,
     guide: 0,
     flood: true,
     dry: false,
     clear: false,
 }
 let persIndex: { [key: number]: number } = {
-    1: 0.1,
+    1: 0.16,
     2: 0.08,
-    3: 0.06,
-    4: 0.04,
-    5: 0.02,
-    6: 0.015,
-    7: 0.01,
+    3: 0.04,
+    4: 0.02,
+    5: 0.01,
+    6: 0,
 }
+var persVal = persIndex[params.pers]
 // var persIndex = persToIndex[params.pers];
 
 var uniforms = {
     z: { value: metaState.flat == 0 ? 500 : 0 },
     diffuseTexture: { type: 't', value: new THREE.Texture() },
-    annotationTexture: { type: 't', value: annotationTexture },
+    annotationTexture: { type: 't', value: new THREE.Texture() },
+    dataTexture: { type: 't', value: new THREE.Texture() },
     persTexture: { type: 't', value: new THREE.Texture() },
     colormap: { type: 't', value: new THREE.Texture() },
     annotation: { value: 1 },
+    data: { value: 0 },
     segsMax: { type: 'f', value: 0 },
     persShow: { value: 0 },
     hoverValue: { type: 'f', value: 0 },
@@ -380,6 +382,16 @@ if (metaState.flat == 0) {
         .name('3D View')
 }
 viewFolder
+.add(params, 'data')
+.onChange(() => {
+    if (params.data) {
+        uniforms.data.value = 1
+    } else {
+        uniforms.data.value = 0
+    }
+})
+.name('Color by Data')
+viewFolder
     .add(params, 'annotation')
     .onChange(() => {
         if (params.annotation) {
@@ -391,10 +403,12 @@ viewFolder
     .name('Show Annotation')
 if (metaState.segEnabled) {
     viewFolder
-        .add(params, 'pers', 1, 7, 1)
+        .add(params, 'pers', 1, 6, 1)
         .onFinishChange(() => {
-            uniforms.persTexture.value = persTextures[persIndex[params.pers]]
-            uniforms.segsMax.value = segsMax[persIndex[params.pers]]
+            persVal = persIndex[params.pers]
+            uniforms.persTexture.value = persTextures[persVal]
+            uniforms.segsMax.value = segsMax[persVal]
+            uniforms.dataTexture.value = dataTextures[persVal]
         })
         .name('Segmentation Detail')
     viewFolder
@@ -572,36 +586,36 @@ function connectedSegSelect(x: number, y: number, flood: boolean, clear: boolean
 
 const searchFunction = {
     BFS_Down: {
-        E: (x: number, y: number, value: number) => data[x + 1 + y * regionDimensions[0]] <= value,
-        W: (x: number, y: number, value: number) => data[x - 1 + y * regionDimensions[0]] <= value,
+        E: (x: number, y: number, value: number) => data[persVal][x + 1 + y * regionDimensions[0]] <= value,
+        W: (x: number, y: number, value: number) => data[persVal][x - 1 + y * regionDimensions[0]] <= value,
         N: (x: number, y: number, value: number) =>
-            data[x + (y + 1) * regionDimensions[0]] <= value,
+            data[persVal][x + (y + 1) * regionDimensions[0]] <= value,
         S: (x: number, y: number, value: number) =>
-            data[x + (y - 1) * regionDimensions[0]] <= value,
+            data[persVal][x + (y - 1) * regionDimensions[0]] <= value,
         EN: (x: number, y: number, value: number) =>
-            data[x + 1 + (y + 1) * regionDimensions[0]] <= value,
+            data[persVal][x + 1 + (y + 1) * regionDimensions[0]] <= value,
         WN: (x: number, y: number, value: number) =>
-            data[x - 1 + (y + 1) * regionDimensions[0]] <= value,
+            data[persVal][x - 1 + (y + 1) * regionDimensions[0]] <= value,
         SW: (x: number, y: number, value: number) =>
-            data[x - 1 + (y - 1) * regionDimensions[0]] <= value,
+            data[persVal][x - 1 + (y - 1) * regionDimensions[0]] <= value,
         SE: (x: number, y: number, value: number) =>
-            data[x + 1 + (y - 1) * regionDimensions[0]] <= value,
+            data[persVal][x + 1 + (y - 1) * regionDimensions[0]] <= value,
     },
     BFS_Hill: {
-        E: (x: number, y: number, value: number) => data[x + 1 + y * regionDimensions[0]] >= value,
-        W: (x: number, y: number, value: number) => data[x - 1 + y * regionDimensions[0]] >= value,
+        E: (x: number, y: number, value: number) => data[persVal][x + 1 + y * regionDimensions[0]] >= value,
+        W: (x: number, y: number, value: number) => data[persVal][x - 1 + y * regionDimensions[0]] >= value,
         N: (x: number, y: number, value: number) =>
-            data[x + (y + 1) * regionDimensions[0]] >= value,
+            data[persVal][x + (y + 1) * regionDimensions[0]] >= value,
         S: (x: number, y: number, value: number) =>
-            data[x + (y - 1) * regionDimensions[0]] >= value,
+            data[persVal][x + (y - 1) * regionDimensions[0]] >= value,
         EN: (x: number, y: number, value: number) =>
-            data[x + 1 + (y + 1) * regionDimensions[0]] >= value,
+            data[persVal][x + 1 + (y + 1) * regionDimensions[0]] >= value,
         WN: (x: number, y: number, value: number) =>
-            data[x - 1 + (y + 1) * regionDimensions[0]] >= value,
+            data[persVal][x - 1 + (y + 1) * regionDimensions[0]] >= value,
         SW: (x: number, y: number, value: number) =>
-            data[x - 1 + (y - 1) * regionDimensions[0]] >= value,
+            data[persVal][x - 1 + (y - 1) * regionDimensions[0]] >= value,
         SE: (x: number, y: number, value: number) =>
-            data[x + 1 + (y - 1) * regionDimensions[0]] >= value,
+            data[persVal][x + 1 + (y - 1) * regionDimensions[0]] >= value,
     },
     BFS_Segment: {
         E: (x: number, y: number, value: number) =>
@@ -624,16 +638,16 @@ const searchFunction = {
 }
 
 const valueFunction = {
-    BFS_Down: (x: number, y: number) => data[x + y * regionDimensions[0]],
-    BFS_Hill: (x: number, y: number) => data[x + y * regionDimensions[0]],
+    BFS_Down: (x: number, y: number) => data[persVal][x + y * regionDimensions[0]],
+    BFS_Hill: (x: number, y: number) => data[persVal][x + y * regionDimensions[0]],
     BFS_Segment: (x: number, y: number) =>
         persDatas[persIndex[params.pers]][x + y * regionDimensions[0]],
 }
 
 const fillFunction = {
-    BFS_Down: (x: number, y: number) => [x, regionDimensions[1] - 1 - y],
-    BFS_Hill: (x: number, y: number) => [x, regionDimensions[1] - 1 - y],
-    BFS_Segment: (x: number, y: number) => [x, regionDimensions[1] - 1 - y],
+    BFS_Down: (x: number, y: number) => [x, y],
+    BFS_Hill: (x: number, y: number) => [x, y],
+    BFS_Segment: (x: number, y: number) => [x, y],
 }
 
 var visited = new Map()
@@ -1069,6 +1083,7 @@ const onKeyPress = (event: KeyboardEvent) => {
         hoverHandler()
     } else if (event.key == 'f' && metaState.BFS) {
         let [x, y] = performRayCasting()
+        y = regionDimensions[1] - 1 - y
         BFSHandler(x, y, params.flood, params.clear)
     } else if (event.key == 't' && metaState.brushSelection) {
         let [x, y] = performRayCasting()
@@ -1186,36 +1201,53 @@ async function startUp() {
 }
 
 var diffuseTexture : THREE.Texture
-;(document.getElementById('uploadData') as HTMLFormElement).addEventListener("submit", function(e) {
+var texContext : CanvasRenderingContext2D
+;document.getElementById('submit')!.addEventListener('click', function(e) {
     e.preventDefault()
-    if ((document.getElementById('data') as HTMLInputElement).files) {
-        let file = (document.getElementById('data') as HTMLInputElement).files![0]
+    if ((document.getElementById('stl') as HTMLInputElement).files![0]) {
+        let file = (document.getElementById('stl') as HTMLInputElement).files![0]
         if (file.type == "image/png") {
             ;(document.getElementById('loader') as HTMLElement).style.display = 'block'
             ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'none'
-            let fr = new FileReader();
+            let fr = new FileReader()
             fr.onload = async function (e) {
                 let image = document.createElement('img')
                 image.src = e.target!.result as string
-                image.onload = function() {   
+                image.onload = function() { 
+                    regionBounds = [0, image.width, 0, image.height]
+                    regionDimensions = [image.width, image.height]
+                    controls.target = new THREE.Vector3(regionDimensions[0] / 2, regionDimensions[1] / 2, -2000)
                     var texCanvas = document.createElement('canvas')
                     texCanvas.width = image.width
                     texCanvas.height = image.height
-                    var texContext = texCanvas.getContext('2d')
+                    texContext = texCanvas.getContext('2d')!
                     diffuseTexture = new THREE.Texture(texCanvas)
+                    var annCanvas = document.createElement('canvas')
+                    annCanvas.width = image.width
+                    annCanvas.height = image.height
+                    context = annCanvas.getContext('2d')!
+                    annotationTexture = new THREE.Texture(annCanvas)
                     uniforms.diffuseTexture.value = diffuseTexture
+                    uniforms.annotationTexture.value = annotationTexture
                     const meshMaterial = new THREE.RawShaderMaterial({
                         uniforms: uniforms,
                         vertexShader: terrainShader._VS,
                         fragmentShader: terrainShader._FS,
                     })
-                    texContext!.drawImage(image, 0, 0)
+                    texContext.drawImage(image, 0, 0)
+                    // var imageData = texContext!.getImageData(0, 0, image.width, image.height).data
+                    // let temp = []
+                    // for (let i = 0; i < imageData.length; i+=4) {
+                    //     temp.push(imageData[i])
+                    // }
+                    // data = new Uint8Array(temp)
                     diffuseTexture.needsUpdate = true
+                    annotationTexture.needsUpdate = true
                     uniforms.dimensions.value = [image.width, image.height]
                     var formData = new FormData();
                     formData.append('file', file);
                     ajax({
-                        url: 'http://127.0.0.1:5000/upload',
+                        url: 'http://127.0.0.1:5000/stl',
                         type: 'POST',
                         data: formData,
                         processData: false,
@@ -1231,25 +1263,22 @@ var diffuseTexture : THREE.Texture
                                 var test = window.URL.createObjectURL(data)
                                 let response: THREE.BufferGeometry = await terrainLoader.loadAsync(
                                     test
-                                )
+                                ) 
                                 mesh = new THREE.Mesh(response, meshMaterial)
                                 mesh.receiveShadow = true
                                 mesh.castShadow = true
                                 mesh.position.set(0, 0, -100)
                                 scene.add(mesh)
-                                console.log(scene)
                             } catch (e) {
-                                console.log(e)
                                 console.error(`error on reading STL file a.stl`)
                             }                
                             ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
                             ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
-                            console.log('File uploaded successfully');
                         },
                         error: function(xhr, status, error) {
                             ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
                             ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
-                            console.log('Error uploading file: ' + error);
+                            console.log('Error uploading file: ' + error)
                         }
                     });
                 }
@@ -1260,6 +1289,74 @@ var diffuseTexture : THREE.Texture
         }
     } else {
         alert('No data uploaded!')
+    }
+    if ((document.getElementById('data') as HTMLInputElement).files![0]) {
+        let file = (document.getElementById('data') as HTMLInputElement).files![0]
+        if (file.type == "image/tiff") {
+            ;(document.getElementById('loader') as HTMLElement).style.display = 'block'
+            ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'none'
+            var formData = new FormData();
+            formData.append('file', file);
+            ajax({
+                url: 'http://127.0.0.1:5000/topology',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: async function(d) {
+                    console.log(d)
+                    data = d
+                    for (var i = 0; i < pers.length; i++) {
+                        var thresh = pers[i]
+                        var imageData = new Uint8Array(4 * data[thresh].length)
+                        console.log(regionDimensions)
+                        for (var x = 0; x < regionDimensions[0]; x++) {
+                            for (var y = 0; y < regionDimensions[1]; y++) {
+                                imageData[(x + (regionDimensions[1] - y - 1) * regionDimensions[0]) * 4] = Math.floor(255 * data[thresh][y * regionDimensions[0] + x])
+                                imageData[(x + (regionDimensions[1] - y - 1) * regionDimensions[0]) * 4 + 1] = Math.floor(255 * data[thresh][y * regionDimensions[0] + x])
+                                imageData[(x + (regionDimensions[1] - y - 1) * regionDimensions[0]) * 4 + 2] = Math.floor(255 * data[thresh][y * regionDimensions[0] + x])
+                                imageData[(x + (regionDimensions[1] - y - 1) * regionDimensions[0]) * 4 + 3] = 255
+                            }
+                        }
+                        dataTextures[thresh] = new THREE.DataTexture(
+                            imageData,
+                            regionDimensions[0],
+                            regionDimensions[1]
+                        )
+                        dataTextures[thresh].needsUpdate = true
+                    } 
+                    uniforms.dataTexture.value = dataTextures[persVal]
+                    ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
+                    ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr)
+                    ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
+                    ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
+                    console.log('Error uploading file: ' + error)
+                }
+            });
+        } else {
+            alert('Invalid file type, must be .tiff for data!')
+        }
+    } 
+    if ((document.getElementById('texture') as HTMLInputElement).files![0]) {
+        let file = (document.getElementById('texture') as HTMLInputElement).files![0]
+        if (file.type == "image/png") {
+            ;(document.getElementById('loader') as HTMLElement).style.display = 'block'
+            ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'none'
+            let fr = new FileReader()
+            fr.onload = async function (e) {
+                let image = document.createElement('img')
+                image.src = e.target!.result as string
+                image.onload = function() { 
+                    texContext!.drawImage(image, 0, 0)
+                }
+            }
+            fr.readAsDataURL(file)
+        } else {
+            alert('Invalid file type, must be .png!')
+        }
     }
 })
 
@@ -1277,6 +1374,7 @@ function disposeUniform() {
     for (let key in persTextures) {
         // persTextures[key].dispose()
         persTextures[key] = new THREE.Texture()
+        dataTextures[key] = new THREE.Texture()
     }
 }
 

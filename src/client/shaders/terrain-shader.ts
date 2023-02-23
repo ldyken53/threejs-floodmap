@@ -31,11 +31,13 @@ uniform mat4 modelMatrix;
 uniform mat4 modelViewMatrix;
 uniform vec3 cameraPosition;
 uniform sampler2D diffuseTexture;
+uniform sampler2D dataTexture;
 uniform sampler2D annotationTexture;
 uniform sampler2D persTexture;
 uniform sampler2D colormap;
 uniform int annotation;
 uniform int persShow;
+uniform int data;
 uniform float hoverValue;
 uniform float segsMax;
 uniform int guide;
@@ -67,7 +69,12 @@ void main(){
     if ((quadrant == 2 || quadrant == 4) && vPosition.x < float(dimensions.x) / 2.0) {
         discard;
     }
-    vec3 color = sampleTexture(diffuseTexture, vPosition.xy).rgb;
+    vec3 color;
+    if (data > 0) {
+        color = sampleTexture(dataTexture, vPosition.xy).rgb;
+    } else {
+        color = sampleTexture(diffuseTexture, vPosition.xy).rgb;
+    }
     vec4 _segID = sampleTexture(persTexture, vPosition.xy).rgba * 255.0;
       float segID = _segID.x*1000.0 + _segID.y*100.0 + _segID.z*10.0 + _segID.w*1.0;
       if(guide > 0){

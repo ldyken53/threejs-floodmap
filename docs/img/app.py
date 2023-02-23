@@ -1,22 +1,24 @@
 from flask import jsonify, Flask, send_file, request, make_response
 from werkzeug.utils import secure_filename
 import os
+from PIL import Image
 
-# from vtkmodules.all import (
-#     vtkTIFFReader,
-# )
+from vtkmodules.all import (
+    vtkTIFFReader,
+    vtkImageExtractComponents
+)
 
 import gc
-# from vtkmodules.util.numpy_support import vtk_to_numpy
+from vtkmodules.util.numpy_support import vtk_to_numpy
 import numpy as np
 import json
 import subprocess, sys
 
-# from topologytoolkit import (
-#     ttkFTMTree,
-#     ttkTopologicalSimplificationByPersistence,
-#     ttkScalarFieldSmoother
-# )
+from topologytoolkit import (
+    ttkFTMTree,
+    ttkTopologicalSimplificationByPersistence,
+    ttkScalarFieldSmoother
+)
 
 
 app = Flask(__name__)
@@ -24,9 +26,6 @@ app.config["UPLOAD_FOLDER"] = "static/files"
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 target = os.path.join(APP_ROOT, app.config["UPLOAD_FOLDER"])
-
-# pread = vtkTIFFReader()
-# pread.SetFileName("./elevation1.tiff")
 
 
 # extractComponent = vtkImageExtractComponents()
@@ -54,20 +53,46 @@ target = os.path.join(APP_ROOT, app.config["UPLOAD_FOLDER"])
 # tree.SetWithSegmentation(1)
 # tree.Update()
 
-@app.route('/upload', methods=['POST'])
-def upload():
-    # file = request.files.get("file")
-    # fileName = secure_filename(file.filename)
-    # destination = "/".join([target, fileName])
-    # file.save(destination)
-    # args = ['./hmm', destination, 'a.stl', '-z', '500', '-t', '1000000']
+@app.route('/stl', methods=['POST'])
+def stl():
     if request.method == 'POST':
         f = request.files['file']
-        f.save(secure_filename(f.filename))
-        subprocess.check_output(['./hmm', f.filename, 'a.stl', '-z', '500', '-t', '1000000'])
+        f.save(f.filename)
+        subprocess.check_output(['./hmm', f.filename, 'a.stl', '-z', '500', '-t', '10000000'])
         payload = make_response(send_file('a.stl'))
         payload.headers.add('Access-Control-Allow-Origin', '*')
         os.remove('a.stl')
+        os.remove(f.filename)
+        return payload
+
+@app.route('/topology', methods=['POST'])
+def topology():
+    if request.method == 'POST':
+        f = request.files['file']
+        f.save(f.filename)
+        pread = vtkTIFFReader()
+        pread.SetFileName(f.filename)
+        extractComponent = vtkImageExtractComponents()
+        extractComponent.SetInputConnection(pread.GetOutputPort())
+        extractComponent.SetComponents(0)
+        extractComponent.Update()
+        simplify = ttkTopologicalSimplificationByPersistence()
+        simplify.SetInputConnection(0, extractComponent.GetOutputPort())
+        simplify.SetInputArrayToProcess(0, 0, 0, 0, "Tiff Scalars")
+        simplify.SetThresholdIsAbsolute(False)
+        response = {}
+        dmax = 1
+        dmin = 0
+        for i in [0, 0.01, 0.16]:
+            simplify.SetPersistenceThreshold(i)
+            simplify.Update()
+            if i == 0:
+                dmax = np.max(vtk_to_numpy(simplify.GetOutput().GetPointData().GetArray(0)))
+                dmin = np.min(vtk_to_numpy(simplify.GetOutput().GetPointData().GetArray(0)))
+            response[i] = ((vtk_to_numpy(simplify.GetOutput().GetPointData().GetArray(0)) - dmin) / (dmax - dmin)).tolist()
+        payload = jsonify(response)
+        print(len(payload.response[0]))
+        payload.headers.add('Access-Control-Allow-Origin', '*')
         os.remove(f.filename)
         return payload
     
