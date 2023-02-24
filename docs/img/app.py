@@ -2,6 +2,7 @@ from flask import jsonify, Flask, send_file, request, make_response
 from werkzeug.utils import secure_filename
 import os
 from PIL import Image
+import gzip
 
 from vtkmodules.all import (
     vtkTIFFReader,
@@ -80,19 +81,28 @@ def topology():
         simplify.SetInputConnection(0, extractComponent.GetOutputPort())
         simplify.SetInputArrayToProcess(0, 0, 0, 0, "Tiff Scalars")
         simplify.SetThresholdIsAbsolute(False)
-        response = {}
+        tree = ttkFTMTree()
+        tree.SetInputConnection(0, simplify.GetOutputPort())
+        tree.SetInputArrayToProcess(0, 0, 0, 0, "Tiff Scalars")
+        tree.SetTreeType(2)
+        tree.SetWithSegmentation(1)
+        response = {'data': {}, 'segmentation': {}}
         dmax = 1
         dmin = 0
-        for i in [0, 0.01, 0.16]:
+        for i in [0, 0.01, 0.02, 0.04, 0.08, 0.16]:
             simplify.SetPersistenceThreshold(i)
             simplify.Update()
+            tree.Update()
             if i == 0:
                 dmax = np.max(vtk_to_numpy(simplify.GetOutput().GetPointData().GetArray(0)))
                 dmin = np.min(vtk_to_numpy(simplify.GetOutput().GetPointData().GetArray(0)))
-            response[i] = ((vtk_to_numpy(simplify.GetOutput().GetPointData().GetArray(0)) - dmin) / (dmax - dmin)).tolist()
-        payload = jsonify(response)
-        print(len(payload.response[0]))
+            response['data'][i] = ((vtk_to_numpy(simplify.GetOutput().GetPointData().GetArray(0)) - dmin) / (dmax - dmin)).tolist()
+            response['segmentation'][i] = vtk_to_numpy(tree.GetOutput(2).GetPointData().GetArray(2)).tolist()
+        content = gzip.compress(json.dumps(response).encode('utf8'), 9)
+        payload = make_response(content)
         payload.headers.add('Access-Control-Allow-Origin', '*')
+        payload.headers['Content-length'] = len(content)
+        payload.headers['Content-Encoding'] = 'gzip'
         os.remove(f.filename)
         return payload
     

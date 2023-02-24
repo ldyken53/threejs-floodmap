@@ -58,7 +58,7 @@ const scene = new THREE.Scene()
 // const blurs = [0, 1, 2];
 // const zs = [100, 200, 300, 400, 500];
 
-const pers = [0, 0.01, 0.16]
+const pers = [0, 0.01, 0.02, 0.04, 0.08, 0.16]
 var meshes: { [key: string]: Mesh } = {}
 
 let host = ''
@@ -205,66 +205,7 @@ var persDatas: {
 var persTextures: { [key: number]: THREE.Texture } = {}
 var dataTextures: { [key: number]: THREE.Texture } = {}
 var segsMax: { [key: number]: number } = {}
-let mappedMaxMap: { [key: number]: number } = {}
-async function getPersistence() {
-    // axios
-    //     .get(`http://localhost:5000/test`)
-    console.time('process')
-    await Promise.all(
-        pers.map(async (thresh) => {
-            await fetch(`${host}img/segmentation_region${metaState.region}_pers${thresh}.data`)
-                .then((r) => r.arrayBuffer())
-                .then((response) => {
-                    persDatas[thresh] = new Int16Array(response)
-                    // segsMax[thresh] = response.data[thresh].max
-                    // persDatas[thresh] = response.data[thresh].array
-                    var max = 0
-                    var imageData = new Uint8Array(4 * persDatas[thresh].length)
-                    segsToPixels2[thresh] = {}
-                    for (var x = 0; x < persDatas[thresh].length; x++) {
-                        var segID = persDatas[thresh][x]
-                        if (segID > max) {
-                            max = segID
-                        }
-                        imageData[x * 4] = Math.floor(segID / 1000)
-                        imageData[x * 4 + 1] = Math.floor((segID % 1000) / 100)
-                        imageData[x * 4 + 2] = Math.floor((segID % 100) / 10)
-                        imageData[x * 4 + 3] = segID % 10
-                        // if (segsToPixels2[thresh][segID]) {
-                        //     segsToPixels2[thresh][segID].push(x)
-                        // } else {
-                        //     segsToPixels2[thresh][segID] = [x]
-                        // }
-                    }
-                    segsMax[thresh] = max
-                    persTextures[thresh] = new THREE.DataTexture(
-                        imageData,
-                        regionDimensions[0],
-                        regionDimensions[1]
-                    )
-                    persTextures[thresh].needsUpdate = true
-                    if (thresh == persIndex[params.pers]) {
-                        uniforms.persTexture.value = persTextures[thresh]
-                        uniforms.segsMax.value = segsMax[thresh]
-                    }
-                })
-                .catch((error) => {
-                    console.log(error)
-                })
-        })
-    )
-    console.timeEnd('process')
-    isSegmentationDone = true
-    if (isSTLDone) {
-        if (Developer) {
-            const array = await readstateFile()
-            await _readstateFile(array)
-        }
-        ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
-        ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
-    }
-}
-// getPersistence()
+
 ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
 ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
 persLoader.load(
@@ -556,8 +497,8 @@ viewFolder.open()
 
 function segSelect(x: number, y: number, color: string) {
     context!.fillStyle = color
-    var value = persDatas[persIndex[params.pers]][x + y * regionDimensions[0]]
-    var pixels = segsToPixels2[persIndex[params.pers]][value]
+    var value = persDatas[persVal][x + y * regionDimensions[0]]
+    var pixels = segsToPixels2[persVal][value]
     for (var i = 0; i < pixels.length; i++) {
         var x = pixels[i] % regionDimensions[0]
         var y = regionDimensions[1] - 1 - Math.floor(pixels[i] / regionDimensions[0])
@@ -619,21 +560,21 @@ const searchFunction = {
     },
     BFS_Segment: {
         E: (x: number, y: number, value: number) =>
-            persDatas[persIndex[params.pers]][x + 1 + y * regionDimensions[0]] == value,
+            persDatas[persVal][x + 1 + y * regionDimensions[0]] == value,
         W: (x: number, y: number, value: number) =>
-            persDatas[persIndex[params.pers]][x - 1 + y * regionDimensions[0]] == value,
+            persDatas[persVal][x - 1 + y * regionDimensions[0]] == value,
         N: (x: number, y: number, value: number) =>
-            persDatas[persIndex[params.pers]][x + (y + 1) * regionDimensions[0]] == value,
+            persDatas[persVal][x + (y + 1) * regionDimensions[0]] == value,
         S: (x: number, y: number, value: number) =>
-            persDatas[persIndex[params.pers]][x + (y - 1) * regionDimensions[0]] == value,
+            persDatas[persVal][x + (y - 1) * regionDimensions[0]] == value,
         EN: (x: number, y: number, value: number) =>
-            persDatas[persIndex[params.pers]][x + 1 + (y + 1) * regionDimensions[0]] == value,
+            persDatas[persVal][x + 1 + (y + 1) * regionDimensions[0]] == value,
         WN: (x: number, y: number, value: number) =>
-            persDatas[persIndex[params.pers]][x - 1 + (y + 1) * regionDimensions[0]] == value,
+            persDatas[persVal][x - 1 + (y + 1) * regionDimensions[0]] == value,
         SW: (x: number, y: number, value: number) =>
-            persDatas[persIndex[params.pers]][x - 1 + (y - 1) * regionDimensions[0]] == value,
+            persDatas[persVal][x - 1 + (y - 1) * regionDimensions[0]] == value,
         SE: (x: number, y: number, value: number) =>
-            persDatas[persIndex[params.pers]][x + 1 + (y - 1) * regionDimensions[0]] == value,
+            persDatas[persVal][x + 1 + (y - 1) * regionDimensions[0]] == value,
     },
 }
 
@@ -641,7 +582,7 @@ const valueFunction = {
     BFS_Down: (x: number, y: number) => data[persVal][x + y * regionDimensions[0]],
     BFS_Hill: (x: number, y: number) => data[persVal][x + y * regionDimensions[0]],
     BFS_Segment: (x: number, y: number) =>
-        persDatas[persIndex[params.pers]][x + y * regionDimensions[0]],
+        persDatas[persVal][x + y * regionDimensions[0]],
 }
 
 const fillFunction = {
@@ -765,7 +706,8 @@ function performRayCasting() {
 
 function hoverHandler() {
     let [x, y] = performRayCasting()
-    let localId = persDatas[persIndex[params.pers]][x + y * regionDimensions[0]]
+    y = regionDimensions[1] - 1 - y
+    let localId = persDatas[persVal][x + y * regionDimensions[0]]
     uniforms.hoverValue.value = localId
     params.guide = 1
     uniforms.guide.value = params.guide
@@ -1180,6 +1122,7 @@ const onKeyPress = (event: KeyboardEvent) => {
         //     segAnnotationHandler('s', x, y, params.flood, params.clear)
     } else if (event.key == 's' && metaState.segEnabled) {
         let [x, y] = performRayCasting()
+        y = regionDimensions[1] - 1 - y
         connectedSegAnnotationHandler('s', x, y, params.flood, params.clear)
     }
 }
@@ -1303,29 +1246,55 @@ var texContext : CanvasRenderingContext2D
                 data: formData,
                 processData: false,
                 contentType: false,
+                dataType: 'json',
                 success: async function(d) {
                     console.log(d)
-                    data = d
+                    data = d['data']
                     for (var i = 0; i < pers.length; i++) {
                         var thresh = pers[i]
-                        var imageData = new Uint8Array(4 * data[thresh].length)
-                        console.log(regionDimensions)
+                        persDatas[thresh] = new Int16Array(d['segmentation'][thresh])
+                        var max = 0
+                        var imageData = new Uint8Array(4 * persDatas[thresh].length)
+                        // segsToPixels2[thresh] = {}
+                        var imageData2 = new Uint8Array(4 * data[thresh].length)
                         for (var x = 0; x < regionDimensions[0]; x++) {
                             for (var y = 0; y < regionDimensions[1]; y++) {
-                                imageData[(x + (regionDimensions[1] - y - 1) * regionDimensions[0]) * 4] = Math.floor(255 * data[thresh][y * regionDimensions[0] + x])
-                                imageData[(x + (regionDimensions[1] - y - 1) * regionDimensions[0]) * 4 + 1] = Math.floor(255 * data[thresh][y * regionDimensions[0] + x])
-                                imageData[(x + (regionDimensions[1] - y - 1) * regionDimensions[0]) * 4 + 2] = Math.floor(255 * data[thresh][y * regionDimensions[0] + x])
-                                imageData[(x + (regionDimensions[1] - y - 1) * regionDimensions[0]) * 4 + 3] = 255
+                                var segID = persDatas[thresh][x + y * regionDimensions[0]]
+                                if (segID > max) {
+                                    max = segID
+                                }
+                                imageData[(x + (regionDimensions[1] - y - 1) * regionDimensions[0]) * 4] = Math.floor(segID / 1000)
+                                imageData[(x + (regionDimensions[1] - y - 1) * regionDimensions[0]) * 4 + 1] = Math.floor((segID % 1000) / 100)
+                                imageData[(x + (regionDimensions[1] - y - 1) * regionDimensions[0]) * 4 + 2] = Math.floor((segID % 100) / 10)
+                                imageData[(x + (regionDimensions[1] - y - 1) * regionDimensions[0]) * 4 + 3] = segID % 10
+                                // if (segsToPixels2[thresh][segID]) {
+                                //     segsToPixels2[thresh][segID].push(x)
+                                // } else {
+                                //     segsToPixels2[thresh][segID] = [x]
+                                // }
+                                imageData2[(x + (regionDimensions[1] - y - 1) * regionDimensions[0]) * 4] = Math.floor(255 * data[thresh][y * regionDimensions[0] + x])
+                                imageData2[(x + (regionDimensions[1] - y - 1) * regionDimensions[0]) * 4 + 1] = Math.floor(255 * data[thresh][y * regionDimensions[0] + x])
+                                imageData2[(x + (regionDimensions[1] - y - 1) * regionDimensions[0]) * 4 + 2] = Math.floor(255 * data[thresh][y * regionDimensions[0] + x])
+                                imageData2[(x + (regionDimensions[1] - y - 1) * regionDimensions[0]) * 4 + 3] = 255
                             }
                         }
-                        dataTextures[thresh] = new THREE.DataTexture(
+                        segsMax[thresh] = max
+                        persTextures[thresh] = new THREE.DataTexture(
                             imageData,
+                            regionDimensions[0],
+                            regionDimensions[1]
+                        )
+                        persTextures[thresh].needsUpdate = true
+                        dataTextures[thresh] = new THREE.DataTexture(
+                            imageData2,
                             regionDimensions[0],
                             regionDimensions[1]
                         )
                         dataTextures[thresh].needsUpdate = true
                     } 
                     uniforms.dataTexture.value = dataTextures[persVal]
+                    uniforms.persTexture.value = persTextures[persVal]
+                    uniforms.segsMax.value = segsMax[persVal]
                     ;(document.getElementById('loader') as HTMLElement).style.display = 'none'
                     ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
                 },
