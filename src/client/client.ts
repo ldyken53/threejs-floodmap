@@ -261,7 +261,19 @@ async function getPersistence() {
         ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'block'
     }
 }
-getPersistence()
+if (
+    metaState.region != 'a' &&
+    metaState.region != 'b' &&
+    metaState.region != 'c' &&
+    metaState.region != 'd' &&
+    metaState.region != 'e' &&
+    metaState.region != 'f' 
+) {
+    getPersistence()
+} else {
+    isSegmentationDone = true
+}
+
 persLoader.load(
     './img/rainbow.png',
     function (texture) {
