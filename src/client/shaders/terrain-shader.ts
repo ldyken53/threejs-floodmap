@@ -105,10 +105,9 @@ void main(){
               );
               for (int i = 0; i < 12; i++) {
                 vec4 _segIDn = sampleTexture(persTexture, vPosition.xy + neighbors[i]).rgba * 255.0;
-                float segIDn = _segIDn.x*1000.0 + _segIDn.y*100.0 + _segIDn.z*10.0 + _segID.w*1.0;
+                float segIDn = _segIDn.x*1000.0 + _segIDn.y*100.0 + _segIDn.z*10.0 + _segIDn.w*1.0;
                 if (abs(segIDn - segID) > 0.001) {
-                  color = texture(colormap, vec2(segID / segsMax, 0)).rgb + vec3(1.0);
-                  break;
+                  color = vec3(1.0);
                 }
               }
             }    
