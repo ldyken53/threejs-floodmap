@@ -31,11 +31,13 @@ uniform mat4 modelMatrix;
 uniform mat4 modelViewMatrix;
 uniform vec3 cameraPosition;
 uniform sampler2D diffuseTexture;
+uniform sampler2D dataTexture;
 uniform sampler2D annotationTexture;
 uniform sampler2D persTexture;
 uniform sampler2D colormap;
 uniform int annotation;
 uniform int persShow;
+uniform int data;
 uniform float hoverValue;
 uniform float segsMax;
 uniform int guide;
@@ -67,7 +69,12 @@ void main(){
     if ((quadrant == 2 || quadrant == 4) && vPosition.x < float(dimensions.x) / 2.0) {
         discard;
     }
-    vec3 color = sampleTexture(diffuseTexture, vPosition.xy).rgb;
+    vec3 color;
+    if (data > 0) {
+        color = sampleTexture(dataTexture, vPosition.xy).rgb;
+    } else {
+        color = sampleTexture(diffuseTexture, vPosition.xy).rgb;
+    }
     vec4 _segID = sampleTexture(persTexture, vPosition.xy).rgba * 255.0;
       float segID = _segID.x*1000.0 + _segID.y*100.0 + _segID.z*10.0 + _segID.w*1.0;
       if(guide > 0){
@@ -98,9 +105,10 @@ void main(){
               );
               for (int i = 0; i < 12; i++) {
                 vec4 _segIDn = sampleTexture(persTexture, vPosition.xy + neighbors[i]).rgba * 255.0;
-                float segIDn = _segIDn.x*1000.0 + _segIDn.y*100.0 + _segIDn.z*10.0 + _segIDn.w*1.0;
+                float segIDn = _segIDn.x*1000.0 + _segIDn.y*100.0 + _segIDn.z*10.0 + _segID.w*1.0;
                 if (abs(segIDn - segID) > 0.001) {
-                  color = vec3(1.0);
+                  color = texture(colormap, vec2(segID / segsMax, 0)).rgb + vec3(1.0);
+                  break;
                 }
               }
             }    
