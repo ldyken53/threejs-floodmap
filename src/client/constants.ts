@@ -13,8 +13,10 @@ const terrainDimensions : {[key: string]: number[]} = {
     'c': [10032, 3402],
     'd': [10032, 2000],
     'e': [10032, 6000],
-    'f': [7000, 7000]
-
+    'f': [7000, 7000],
+    'x': [4512, 2213],
+    'y': [4803, 2307],
+    'z': [5286, 2828]
 }
 export {
     terrainDimensions

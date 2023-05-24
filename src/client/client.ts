@@ -267,7 +267,10 @@ if (
     metaState.region != 'c' &&
     metaState.region != 'd' &&
     metaState.region != 'e' &&
-    metaState.region != 'f' 
+    metaState.region != 'f' &&
+    metaState.region != 'x' &&
+    metaState.region != 'y' &&
+    metaState.region != 'z' 
 ) {
     getPersistence()
 } else {
