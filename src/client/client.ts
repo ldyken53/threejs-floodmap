@@ -58,7 +58,7 @@ const scene = new THREE.Scene()
 // const blurs = [0, 1, 2];
 // const zs = [100, 200, 300, 400, 500];
 
-const pers = [0, 0.01, 0.02, 0.04, 0.08, 0.16]
+const pers = [0, 0.02, 0.04, 0.08, 0.16, 0.32]
 var meshes: { [key: string]: Mesh } = {}
 
 let host = ''
@@ -262,11 +262,11 @@ var params = {
     clear: false,
 }
 let persIndex: { [key: number]: number } = {
-    1: 0.16,
-    2: 0.08,
-    3: 0.04,
-    4: 0.02,
-    5: 0.01,
+    1: 0.32,
+    2: 0.16,
+    3: 0.08,
+    4: 0.04,
+    5: 0.02,
     6: 0,
 }
 var persVal = persIndex[params.pers]
@@ -807,11 +807,11 @@ function polygonSelectionHandler(x: number, y: number, flood: boolean, clear: bo
     if (clear) {
         var cy = polyPoints.pop()!
         var cx = polyPoints.pop()!
-        context!.clearRect(cx - 2, regionDimensions[1] - 1 - cy - 2, 4, 4)
+        context!.clearRect(cx - 2, cy - 2, 4, 4)
         sessionData.annotatedPixelCount -= 16 //follow this with the line selection to minimize the double counting
     } else {
         polyPoints.push(x, y)
-        context!.fillRect(x - 2, regionDimensions[1] - 1 - y - 2, 4, 4)
+        context!.fillRect(x - 2, y - 2, 4, 4)
         sessionData.annotatedPixelCount += 16 //follow this with the line selection to minimize the double counting
     }
     logMyState(
@@ -1104,6 +1104,7 @@ const onKeyPress = (event: KeyboardEvent) => {
         }
     } else if (event.key == 'p' && metaState.polygonSelection) {
         let [x, y] = performRayCasting()
+        y = regionDimensions[1] - 1 - y
         if (
             !(
                 x < regionBounds[0] ||

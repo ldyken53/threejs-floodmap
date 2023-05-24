@@ -89,7 +89,7 @@ def topology():
         response = {'data': {}, 'segmentation': {}}
         dmax = 1
         dmin = 0
-        for i in [0, 0.01, 0.02, 0.04, 0.08, 0.16]:
+        for i in [0, 0.02, 0.04, 0.08, 0.16, 0.32]:
             simplify.SetPersistenceThreshold(i)
             simplify.Update()
             tree.Update()

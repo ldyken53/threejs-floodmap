@@ -93,6 +93,7 @@ void main(){
             if (persShow == 1 || persShow == 3) {
               color = 0.9 * color + 0.1 * texture(colormap, vec2(segID / segsMax, 0)).rgb;
             }
+            if (data < 1) { color = texture(colormap, vec2(segID / segsMax, 0)).rgb; }
     
             if (persShow > 1) {
               const vec2 neighbors[12] = vec2[12](
@@ -103,11 +104,13 @@ void main(){
                 // Further cross neighbors
                 vec2(-2, 0), vec2(0, -2), vec2(0, 2), vec2(2, 0)
               );
-              for (int i = 0; i < 12; i++) {
+              for (int i = 0; i < 8; i++) {
                 vec4 _segIDn = sampleTexture(persTexture, vPosition.xy + neighbors[i]).rgba * 255.0;
                 float segIDn = _segIDn.x*1000.0 + _segIDn.y*100.0 + _segIDn.z*10.0 + _segIDn.w*1.0;
                 if (abs(segIDn - segID) > 0.001) {
-                  color = vec3(1.0);
+                    if (data > 0) {
+                        color = vec3(1.0, 0.0, 0.0);
+                    }
                 }
               }
             }    
