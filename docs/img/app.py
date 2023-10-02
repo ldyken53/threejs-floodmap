@@ -58,12 +58,12 @@ target = os.path.join(APP_ROOT, app.config["UPLOAD_FOLDER"])
 def stl():
     if request.method == 'POST':
         f = request.files['file']
-        f.save(f.filename)
-        subprocess.check_output(['./hmm', f.filename, 'a.stl', '-z', '500', '-t', '10000000'])
+        # f.save(f.filename)
+        # subprocess.check_output(['./hmm', f.filename, 'a.stl', '-z', '500', '-t', '10000000'])
         payload = make_response(send_file('a.stl'))
         payload.headers.add('Access-Control-Allow-Origin', '*')
-        os.remove('a.stl')
-        os.remove(f.filename)
+        # os.remove('a.stl')
+        # os.remove(f.filename)
         return payload
 
 @app.route('/topology', methods=['POST'])
@@ -96,13 +96,16 @@ def topology():
             if i == 0:
                 dmax = np.max(vtk_to_numpy(simplify.GetOutput().GetPointData().GetArray(0)))
                 dmin = np.min(vtk_to_numpy(simplify.GetOutput().GetPointData().GetArray(0)))
-            response['data'][i] = ((vtk_to_numpy(simplify.GetOutput().GetPointData().GetArray(0)) - dmin) / (dmax - dmin)).tolist()
+                response['data'][i] = ((vtk_to_numpy(simplify.GetOutput().GetPointData().GetArray(0)) - dmin) / (dmax - dmin)).tolist()
+            else:
+                response['data'][i] = (vtk_to_numpy(simplify.GetOutput().GetPointData().GetArray(0))).tolist()
             response['segmentation'][i] = vtk_to_numpy(tree.GetOutput(2).GetPointData().GetArray(2)).tolist()
         content = gzip.compress(json.dumps(response).encode('utf8'), 9)
         payload = make_response(content)
         payload.headers.add('Access-Control-Allow-Origin', '*')
         payload.headers['Content-length'] = len(content)
         payload.headers['Content-Encoding'] = 'gzip'
+        del(response)
         os.remove(f.filename)
         return payload
     

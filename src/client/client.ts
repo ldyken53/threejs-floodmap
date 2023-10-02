@@ -59,6 +59,7 @@ const scene = new THREE.Scene()
 // const zs = [100, 200, 300, 400, 500];
 
 const pers = [0, 0.02, 0.04, 0.08, 0.16, 0.32]
+// const pers = [0]
 var meshes: { [key: string]: Mesh } = {}
 
 let host = ''
@@ -351,12 +352,12 @@ if (metaState.segEnabled) {
             uniforms.segsMax.value = segsMax[persVal]
             uniforms.dataTexture.value = dataTextures[persVal]
         })
-        .name('Segmentation Detail')
+        .name('Simplification Level')
     viewFolder
         .add(params, 'persShow')
         .onChange(() => {
             if (params.persShow) {
-                uniforms.persShow.value = 2
+                uniforms.persShow.value = 1
             } else {
                 uniforms.persShow.value = 0
             }
