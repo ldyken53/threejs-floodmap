@@ -362,7 +362,7 @@ if (metaState.segEnabled) {
                 uniforms.persShow.value = 0
             }
         })
-        .name('Show Borders')
+        .name('Show Segmentations')
 }
 // viewFolder.add(params, 'brushSize', 1, 50, 1)
 
@@ -1180,7 +1180,7 @@ var texContext : CanvasRenderingContext2D
                         fragmentShader: terrainShader._FS,
                     })
                     texContext.drawImage(image, 0, 0)
-                    if (!document.getElementById("topology")!.ariaChecked) {
+                    if (!(document.getElementById("topology") as HTMLInputElement).checked) {
                         var imageData = texContext!.getImageData(0, 0, image.width, image.height).data
                         let temp = []
                         for (let i = 0; i < imageData.length; i+=4) {
@@ -1237,7 +1237,7 @@ var texContext : CanvasRenderingContext2D
     } else {
         alert('No data uploaded!')
     }
-    if ((document.getElementById('data') as HTMLInputElement).files![0] && document.getElementById('topology')!.ariaChecked) {
+    if ((document.getElementById('data') as HTMLInputElement).files![0] && (document.getElementById('topology') as HTMLInputElement).checked) {
         let file = (document.getElementById('data') as HTMLInputElement).files![0]
         if (file.type == "image/tiff") {
             ;(document.getElementById('loader') as HTMLElement).style.display = 'block'

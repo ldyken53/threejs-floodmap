@@ -367,7 +367,6 @@ function downloadSession(event: Event) {
 }
 
 function hideModal() {
-    console.log("test")
     ;(document.getElementById('modal-wrapper') as HTMLElement).style.display = 'none'
     ;(document.getElementById('ui-menu') as HTMLElement).style.display = 'block'
     let userId = (document.getElementById('studentId') as HTMLInputElement).value
