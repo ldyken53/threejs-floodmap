@@ -844,10 +844,10 @@ function polygonFillHandler(flood: boolean, clear: boolean, linePoints?: Array<n
     }
     context!.fillStyle = color
     context!.beginPath()
-    context!.moveTo(polyPoints[0], regionDimensions[1] - 1 - polyPoints[1])
+    context!.moveTo(polyPoints[0], polyPoints[1])
     for (var i = 2; i < polyPoints.length; i += 2) {
-        context!.lineTo(polyPoints[i], regionDimensions[1] - 1 - polyPoints[i + 1])
-        context!.clearRect(polyPoints[i] - 2, regionDimensions[1] - 1 - polyPoints[i + 1] - 2, 4, 4)
+        context!.lineTo(polyPoints[i], polyPoints[i + 1])
+        context!.clearRect(polyPoints[i] - 2, polyPoints[i + 1] - 2, 4, 4)
     }
     context!.closePath()
     if (clear) {
