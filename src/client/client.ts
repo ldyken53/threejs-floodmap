@@ -1180,12 +1180,14 @@ var texContext : CanvasRenderingContext2D
                         fragmentShader: terrainShader._FS,
                     })
                     texContext.drawImage(image, 0, 0)
-                    // var imageData = texContext!.getImageData(0, 0, image.width, image.height).data
-                    // let temp = []
-                    // for (let i = 0; i < imageData.length; i+=4) {
-                    //     temp.push(imageData[i])
-                    // }
-                    // data = new Uint8Array(temp)
+                    if (!document.getElementById("topology")!.ariaChecked) {
+                        var imageData = texContext!.getImageData(0, 0, image.width, image.height).data
+                        let temp = []
+                        for (let i = 0; i < imageData.length; i+=4) {
+                            temp.push(imageData[i])
+                        }
+                        data = {0: temp}
+                    }
                     diffuseTexture.needsUpdate = true
                     annotationTexture.needsUpdate = true
                     uniforms.dimensions.value = [image.width, image.height]
@@ -1235,7 +1237,7 @@ var texContext : CanvasRenderingContext2D
     } else {
         alert('No data uploaded!')
     }
-    if ((document.getElementById('data') as HTMLInputElement).files![0]) {
+    if ((document.getElementById('data') as HTMLInputElement).files![0] && document.getElementById('topology')!.ariaChecked) {
         let file = (document.getElementById('data') as HTMLInputElement).files![0]
         if (file.type == "image/tiff") {
             ;(document.getElementById('loader') as HTMLElement).style.display = 'block'

@@ -58,12 +58,12 @@ target = os.path.join(APP_ROOT, app.config["UPLOAD_FOLDER"])
 def stl():
     if request.method == 'POST':
         f = request.files['file']
-        # f.save(f.filename)
-        # subprocess.check_output(['./hmm', f.filename, 'a.stl', '-z', '500', '-t', '10000000'])
+        f.save(f.filename)
+        subprocess.check_output(['./hmm', f.filename, 'a.stl', '-z', '500', '-t', '10000000'])
         payload = make_response(send_file('a.stl'))
         payload.headers.add('Access-Control-Allow-Origin', '*')
-        # os.remove('a.stl')
-        # os.remove(f.filename)
+        os.remove('a.stl')
+        os.remove(f.filename)
         return payload
 
 @app.route('/topology', methods=['POST'])
